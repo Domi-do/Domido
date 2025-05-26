@@ -11,29 +11,18 @@ export default [
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: "latest",
-        ecmaFeatures: { jsx: true },
-        sourceType: "module",
-      },
+      parserOptions: { ecmaVersion: "latest", ecmaFeatures: { jsx: true }, sourceType: "module" },
     },
-    plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
-      import: importPlugin,
-    },
+    plugins: { "react-hooks": reactHooks, "react-refresh": reactRefresh, "import": importPlugin },
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "import/order": [
         "error",
         {
-          groups: [
+          "groups": [
             "builtin",
             "external",
             "internal",
@@ -42,7 +31,7 @@ export default [
             "unknown",
           ],
           "newlines-between": "always",
-          alphabetize: { order: "asc", caseInsensitive: true },
+          "alphabetize": { order: "asc", caseInsensitive: true },
         },
       ],
     },
