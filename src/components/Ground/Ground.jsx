@@ -3,8 +3,8 @@ import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 import { TextureLoader } from "three";
 
-const DominoGround = () => {
-  const floorTexture = useLoader(TextureLoader, "/public/images/tile/wood_dark.png");
+const Ground = ({ type }) => {
+  const floorTexture = useLoader(TextureLoader, `/public/images/tile/${type}.png`);
 
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;
@@ -14,7 +14,7 @@ const DominoGround = () => {
     <RigidBody type="fixed">
       <mesh
         receiveShadow
-        position={[0, -0.5, 0]}
+        position={[0, -1, 0]}
       >
         <boxGeometry args={[20, 1, 20]} />
         <meshStandardMaterial
@@ -27,4 +27,4 @@ const DominoGround = () => {
   );
 };
 
-export default DominoGround;
+export default Ground;

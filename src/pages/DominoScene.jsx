@@ -18,7 +18,7 @@ const DominoScene = () => {
         onChangeSensitivity={handleRotationSensitivity}
       />
       <DominoCanvas rotationSensitivity={rotationSensitivity}>
-        <Ground />
+        <Ground type="wood_dark" />
       </DominoCanvas>
     </>
   );
