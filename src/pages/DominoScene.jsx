@@ -1,5 +1,8 @@
-import { RoundedBox, OrbitControls, Sky } from "@react-three/drei";
+import { RoundedBox, Sky } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+
+import CameraControls from "@/components/CameraControls/CameraControls";
 
 const DominoScene = () => {
   return (
@@ -12,13 +15,18 @@ const DominoScene = () => {
         castShadow
         position={[5, 10, 5]}
       />
-      <Sky
+      {/* <Sky
         distance={450000}
         sunPosition={[0, 1, 0]}
         inclination={0}
         azimuth={0.25}
+      /> */}
+      <CameraControls />
+      <OrbitControls
+        enableZoom={true}
+        mouseButtons={{ LEFT: null, MIDDLE: 0, RIGHT: null }}
+        rotateSpeed={1}
       />
-      <OrbitControls />
 
       <RoundedBox>
         <meshStandardMaterial color="orange" />
