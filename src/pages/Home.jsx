@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 
-import logo from "@/assets/images/logo.png";
-import startButton from "@/assets/images/start_button.png";
+import logo from "/public/images/logo.png";
+import startButton from "/public/images/start_button.png";
 
 const Home = () => {
   return (
-    <section className="relative w-full h-screen bg-[url('./assets/images/intro_bg.jpg')] bg-no-repeat bg-center bg-cover">
+    <section className="relative w-full h-screen bg-[url('/public/images/intro_bg.jpg')] bg-no-repeat bg-center bg-cover">
       <h1 className="absolute top-[10%] left-1/2 transform -translate-x-1/2 max-w-[700px] w-full">
         <img
           src={logo}

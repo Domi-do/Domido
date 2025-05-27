@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import backButton from "@/assets/images/back_button.png";
+import backButton from "/public/images/back_button.png";
 
 const NotFound = () => {
   return (
