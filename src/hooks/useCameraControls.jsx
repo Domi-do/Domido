@@ -2,7 +2,7 @@ import { useThree, useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const CameraControls = () => {
+const useCameraControls = () => {
   const { camera } = useThree();
   const speed = 0.1;
   const keys = useRef({});
@@ -32,8 +32,6 @@ const CameraControls = () => {
     if (keys.current["a"]) camera.position.addScaledVector(right, -speed);
     if (keys.current["d"]) camera.position.addScaledVector(right, speed);
   });
-
-  return null;
 };
 
-export default CameraControls;
+export default useCameraControls;

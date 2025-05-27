@@ -5,10 +5,10 @@ import { useState } from "react";
 import CameraControls from "@/components/CameraControls/CameraControls";
 
 const DominoScene = () => {
-  const [rotationSensitivity, setrotationSensitivity] = useState(1);
+  const [rotationSensitivity, setRotationSensitivity] = useState(1);
 
-  const testRotationSensitivity = (e) => {
-    setrotationSensitivity(e.target.value);
+  const handleRotationSensitivity = (e) => {
+    setRotationSensitivity(e.target.value);
   };
 
   return (
@@ -20,7 +20,7 @@ const DominoScene = () => {
         max={50}
         step={0.01}
         value={rotationSensitivity}
-        onChange={testRotationSensitivity}
+        onChange={handleRotationSensitivity}
         className="w-full"
       />
       <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
@@ -32,6 +32,7 @@ const DominoScene = () => {
           castShadow
           position={[5, 10, 5]}
         />
+        {/* Sky 컴포넌트가 렌더링 성능에 영향을 줘 일시적으로 비활성화함 (최적화 후 재사용 예정) */}
         {/* <Sky
           distance={450000}
           sunPosition={[0, 1, 0]}
