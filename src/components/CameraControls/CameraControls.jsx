@@ -1,8 +1,9 @@
+import { OrbitControls } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const useCameraControls = () => {
+const useCameraControls = ({ rotationSensitivity }) => {
   const { camera } = useThree();
   const speed = 0.1;
   const keys = useRef({});
@@ -32,6 +33,14 @@ const useCameraControls = () => {
     if (keys.current["a"]) camera.position.addScaledVector(right, -speed);
     if (keys.current["d"]) camera.position.addScaledVector(right, speed);
   });
+
+  return (
+    <OrbitControls
+      enableZoom={true}
+      mouseButtons={{ LEFT: null, MIDDLE: 0, RIGHT: null }}
+      rotateSpeed={rotationSensitivity}
+    />
+  );
 };
 
 export default useCameraControls;
