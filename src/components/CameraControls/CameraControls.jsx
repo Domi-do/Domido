@@ -1,46 +1,15 @@
 import { OrbitControls } from "@react-three/drei";
-import { useThree, useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
 
-const useCameraControls = ({ rotationSensitivity }) => {
-  const { camera } = useThree();
-  const speed = 0.1;
-  const keys = useRef({});
-
-  useEffect(() => {
-    const down = (e) => (keys.current[e.key.toLowerCase()] = true);
-    const up = (e) => (keys.current[e.key.toLowerCase()] = false);
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
-
-    return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
-    };
-  }, []);
-
-  useFrame(() => {
-    const direction = new THREE.Vector3();
-    camera.getWorldDirection(direction);
-    direction.y = 0;
-    direction.normalize();
-
-    const right = new THREE.Vector3().crossVectors(direction, camera.up).normalize();
-
-    if (keys.current["w"]) camera.position.addScaledVector(direction, speed);
-    if (keys.current["s"]) camera.position.addScaledVector(direction, -speed);
-    if (keys.current["a"]) camera.position.addScaledVector(right, -speed);
-    if (keys.current["d"]) camera.position.addScaledVector(right, speed);
-  });
-
+const CameraControls = ({ rotationSensitivity }) => {
   return (
     <OrbitControls
       enableZoom={true}
-      mouseButtons={{ LEFT: null, MIDDLE: 0, RIGHT: null }}
+      mouseButtons={{ LEFT: null, MIDDLE: 0, RIGHT: 2 }}
       rotateSpeed={rotationSensitivity}
+      enableDamping={true}
+      dampingFactor={1.25}
     />
   );
 };
 
-export default useCameraControls;
+export default CameraControls;
