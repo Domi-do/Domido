@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 
-const useCameraControls = ({ rotationSensitivity }) => {
+const CameraControls = ({ rotationSensitivity }) => {
   return (
     <OrbitControls
       enableZoom={true}
@@ -12,4 +12,4 @@ const useCameraControls = ({ rotationSensitivity }) => {
   );
 };
 
-export default useCameraControls;
+export default CameraControls;
