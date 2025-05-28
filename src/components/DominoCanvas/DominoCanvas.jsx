@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 
 import CameraControls from "@/components/CameraControls/CameraControls";
+import CursorFollowerObject from "@/components/CursorFollowerObject/CursorFollowerObject";
 
 const DominoCanvas = ({ rotationSensitivity, children }) => {
   return (
@@ -16,6 +17,7 @@ const DominoCanvas = ({ rotationSensitivity, children }) => {
         position={[5, 10, 5]}
       />
       <CameraControls rotationSensitivity={rotationSensitivity} />
+      <CursorFollowerObject />
       <Physics>{children}</Physics>
     </Canvas>
   );
