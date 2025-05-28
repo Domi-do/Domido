@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useDominoControls = (setDominos, selectedDominoKey, setGuideToastVisible, dominos) => {
+  const [isOpacity, setIsOpacity] = useState(false);
+
   useEffect(() => {
     const pressX = (e) => {
       if (e.key.toLowerCase() === "x") {
@@ -18,8 +20,12 @@ const useDominoControls = (setDominos, selectedDominoKey, setGuideToastVisible, 
         const key = selectedDominoKey;
         const updatedDominos = [...dominos];
         updatedDominos.forEach((item) => {
-          if (item.index === key) {
+          if (item.index === key && isOpacity === false) {
             item.opacity = 0.3;
+            setIsOpacity(true);
+          } else if (item.index === key && isOpacity === true) {
+            item.opacity = 1;
+            setIsOpacity(false);
           }
         });
         setDominos(updatedDominos);
