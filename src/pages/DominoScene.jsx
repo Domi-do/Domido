@@ -7,15 +7,34 @@ import DominoCanvas from "@/components/DominoCanvas/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import Ground from "@/components/Ground/Ground";
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
+import useDominoControls from "@/hooks/useDominoControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 
 const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
+  const [isGuideToastVisible, setisGuideToastVisible] = useState(false);
+  const [selectedDominoKey, setselectedDominoKey] = useState([]);
+  const [dominos, setDominos] = useState([
+    { position: [0, 0.5, 0], index: 0 },
+    { position: [1, 0.5, 0], index: 1 },
+  ]);
+
+  useDominoControls(setDominos, selectedDominoKey, setisGuideToastVisible);
   const { selectedObject, placedDominos, setSelectedObject, handlePlaceDomino } =
     useDominoPlacement();
 
   const handleRotationSensitivity = (e) => {
     setRotationSensitivity(e.target.value);
+  };
+
+  const openGuideToast = (key) => {
+    setisGuideToastVisible(true);
+    setselectedDominoKey(key);
+  };
+
+  const closeGuideToast = () => {
+    setisGuideToastVisible(false);
+    setselectedDominoKey(null);
   };
 
   const count = 30;
@@ -37,6 +56,7 @@ const DominoScene = () => {
         countdownNumber={countdownNumber}
         rotationSensitivity={rotationSensitivity}
         onChangeSensitivity={handleRotationSensitivity}
+        isGuideToastVisible={isGuideToastVisible}
         selectedObject={selectedObject}
         setSelectedObject={setSelectedObject}
       />
@@ -45,6 +65,25 @@ const DominoScene = () => {
         selectedObject={selectedObject}
         handlePlaceDomino={handlePlaceDomino}
       >
+        {dominos.map((item) => (
+          <RigidBody
+            key={item.index}
+            restitution={0.1}
+            friction={1}
+            position={item.position}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              onPointerOver={() => openGuideToast(item.index)}
+              onPointerOut={closeGuideToast}
+              position={item.position}
+            >
+              <boxGeometry args={[0.2, 1, 0.5]} />
+              <meshStandardMaterial color="orange" />
+            </mesh>
+          </RigidBody>
+        ))}
         <Ground type="wood_dark" />
         {placedDominos.length
           && placedDominos.map((domino, i) => (
