@@ -12,14 +12,14 @@ import useDominoSimulation from "@/hooks/useDominoSimulation";
 
 const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
-  const [isGuideToastVisible, setisGuideToastVisible] = useState(false);
+  const [isGuideToastVisible, setGuideToastVisible] = useState(false);
   const [selectedDominoKey, setselectedDominoKey] = useState([]);
   const [dominos, setDominos] = useState([
-    { position: [0, 0.5, 0], index: 0 },
-    { position: [1, 0.5, 0], index: 1 },
+    { position: [0, 0.5, 0], index: 0, opacity: 1 },
+    { position: [1, 0.5, 0], index: 1, opacity: 1 },
   ]);
 
-  useDominoControls(setDominos, selectedDominoKey, setisGuideToastVisible);
+  useDominoControls(setDominos, selectedDominoKey, setGuideToastVisible, dominos);
   const { selectedObject, placedDominos, setSelectedObject, handlePlaceDomino } =
     useDominoPlacement();
 
@@ -28,12 +28,12 @@ const DominoScene = () => {
   };
 
   const openGuideToast = (key) => {
-    setisGuideToastVisible(true);
+    setGuideToastVisible(true);
     setselectedDominoKey(key);
   };
 
   const closeGuideToast = () => {
-    setisGuideToastVisible(false);
+    setGuideToastVisible(false);
     setselectedDominoKey(null);
   };
 
@@ -56,7 +56,7 @@ const DominoScene = () => {
         countdownNumber={countdownNumber}
         rotationSensitivity={rotationSensitivity}
         onChangeSensitivity={handleRotationSensitivity}
-        isGuideToastVisible={isGuideToastVisible}
+        openGuideToastVisible={isGuideToastVisible}
         selectedObject={selectedObject}
         setSelectedObject={setSelectedObject}
       />
@@ -80,7 +80,11 @@ const DominoScene = () => {
               position={item.position}
             >
               <boxGeometry args={[0.2, 1, 0.5]} />
-              <meshStandardMaterial color="orange" />
+              <meshStandardMaterial
+                color="orange"
+                transparent={true}
+                opacity={item.opacity}
+              />
             </mesh>
           </RigidBody>
         ))}
@@ -103,7 +107,7 @@ const DominoScene = () => {
             </RigidBody>
           ))}
 
-        {Array.from({ length: count }, () => "orange").map((_, i) => (
+        {Array.from({ length: count }, () => "orange").map((item, i) => (
           <RigidBody
             key={i}
             restitution={0}
@@ -119,7 +123,11 @@ const DominoScene = () => {
               onClick={(e) => readyDominoSimulation(e, i)}
             >
               <boxGeometry args={[0.2, 1, 0.5]} />
-              <meshStandardMaterial color="orange" />
+              <meshStandardMaterial
+                color="orange"
+                transparent={true}
+                opacity={item.opacity}
+              />
             </mesh>
           </RigidBody>
         ))}
