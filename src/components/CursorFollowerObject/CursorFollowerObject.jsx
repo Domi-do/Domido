@@ -2,7 +2,9 @@ import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
 import * as THREE from "three";
 
-const CursorFollowerObject = () => {
+import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
+
+const CursorFollowerObject = ({ selectedObject }) => {
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
 
   useFrame((state) => {
@@ -16,10 +18,12 @@ const CursorFollowerObject = () => {
     setPosition({ x: newPos.x, y: newPos.y, z: newPos.z });
   });
   return (
-    <mesh position={[position.x, position.y, position.z]}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="orange" />
-    </mesh>
+    selectedObject !== null && (
+      <ObjectRenderer
+        url={selectedObject}
+        position={[position.x, position.y, position.z]}
+      />
+    )
   );
 };
 
