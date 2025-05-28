@@ -1,3 +1,8 @@
+import { useState, useEffect } from "react";
+
+import pushButton from "/images/push_button.png";
+import fingerCursor from "/images/finger_cursor.png";
+
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
 
 const DominoHUD = ({
@@ -6,6 +11,31 @@ const DominoHUD = ({
   selectedObject,
   setSelectedObject,
 }) => {
+  const [isClickedPushButton, setIsClickedPushButton] = useState(false);
+
+  useEffect(() => {
+    if (!isClickedPushButton) return;
+
+    togglePushCursor(true);
+    window.addEventListener("keydown", closePushMode);
+
+    return () => {
+      togglePushCursor(false);
+    };
+  }, [isClickedPushButton]);
+
+  const togglePushCursor = (isChange) => {
+    document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
+  };
+
+  const closePushMode = (e) => {
+    const isKeyUpToClosePushMode = e.keyCode === 27 || e.which === 27;
+
+    if (isKeyUpToClosePushMode) {
+      setIsClickedPushButton(false);
+    }
+  };
+
   return (
     <>
       <div className="fixed z-50">
@@ -19,6 +49,16 @@ const DominoHUD = ({
           onChange={onChangeSensitivity}
           className="w-full"
         />
+        <button
+          className="cursor-pointer w-[80px] h-[80px]"
+          onClick={() => setIsClickedPushButton(true)}
+        >
+          <img
+            src={pushButton}
+            alt="손가락 버튼"
+            draggable="false"
+          />
+        </button>
       </div>
       <SidePanel
         selectedObject={selectedObject}
