@@ -20,11 +20,12 @@ const SidePanel = ({ selectedObject, setSelectedObject }) => {
           >
             <h2 className="font-bold text-white">{groupName.toLowerCase()}</h2>
             <div className="grid grid-cols-3 gap-4">
-              {Object.entries(groupObjects).map(([name, paths]) => (
+              {Object.entries(groupObjects).map(([objectName, paths]) => (
                 <ObjectCard
-                  key={name}
-                  name={name}
+                  key={objectName}
+                  objectName={objectName}
                   paths={paths}
+                  groupName={groupName}
                   selectedObject={selectedObject}
                   setSelectedObject={setSelectedObject}
                 />

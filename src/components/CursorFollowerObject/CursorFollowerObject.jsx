@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
 
-const CursorFollowerObject = ({ selectedObject }) => {
+const CursorFollowerObject = ({ selectedObject, handlePlaceDomino }) => {
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
 
   useFrame((state) => {
@@ -19,10 +19,12 @@ const CursorFollowerObject = ({ selectedObject }) => {
   });
   return (
     selectedObject !== null && (
-      <ObjectRenderer
-        url={selectedObject}
-        position={[position.x, position.y, position.z]}
-      />
+      <mesh onPointerDown={(e) => handlePlaceDomino(e, selectedObject)}>
+        <ObjectRenderer
+          objectInfo={selectedObject}
+          position={[position.x, position.y, position.z]}
+        />
+      </mesh>
     )
   );
 };

@@ -1,5 +1,6 @@
 export const OBJECT_PATHS = {
   STATIC_OBJECTS: {
+    defaultObject: { thumbnail: "/images/domino.png", model: "defaultObject" },
     slide: { thumbnail: "/images/slide.png", model: "/objects/slide.glb" },
     spiralStairs: { thumbnail: "/images/spiral_stairs.png", model: "/objects/spiral_stairs.glb" },
     staircase: { thumbnail: "/images/staircase.png", model: "/objects/staircase.glb" },

@@ -1,16 +1,39 @@
 import { useGLTF } from "@react-three/drei";
-import React from "react";
+import { useMemo } from "react";
 
-const ObjectRenderer = ({ url, position }) => {
-  const model = useGLTF(url);
+const DefaultObject = ({ position }) => {
+  return (
+    <mesh position={position}>
+      <boxGeometry args={[0.2, 1, 0.5]} />
+      <meshStandardMaterial color="orange" />
+    </mesh>
+  );
+};
+
+const PrimitiveObject = ({ paths, position }) => {
+  const { scene } = useGLTF(paths);
+
+  const clonedScene = useMemo(() => scene.clone(true), [scene]);
 
   return (
     <primitive
-      object={model.scene}
+      object={clonedScene}
       position={position}
       scale={1}
     />
   );
+};
+
+const ObjectRenderer = ({ objectInfo, position }) => {
+  const { objectName, paths } = objectInfo;
+  const isDefaultObject = objectName === "defaultObject";
+
+  return isDefaultObject ?
+      <DefaultObject position={position} />
+    : <PrimitiveObject
+        paths={paths.model}
+        position={position}
+      />;
 };
 
 export default ObjectRenderer;
