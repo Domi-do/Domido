@@ -1,65 +1,54 @@
-import { useState, useEffect } from "react";
-
-import pushButton from "/images/push_button.png";
-import fingerCursor from "/images/finger_cursor.png";
+import playButton from "/images/play_button.png";
+import stopButton from "/images/stop_button.png";
 
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
 
 const DominoHUD = ({
   rotationSensitivity,
   onChangeSensitivity,
+  simulationMode,
+  countdownNumber,
+  updateSimulationState,
   selectedObject,
   setSelectedObject,
 }) => {
-  const [isClickedPushButton, setIsClickedPushButton] = useState(false);
+  const isSimulating = simulationMode === "SIMULATING";
 
-  useEffect(() => {
-    if (!isClickedPushButton) return;
-
-    togglePushCursor(true);
-    window.addEventListener("keydown", closePushMode);
-
-    return () => {
-      togglePushCursor(false);
-    };
-  }, [isClickedPushButton]);
-
-  const togglePushCursor = (isChange) => {
-    document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
-  };
-
-  const closePushMode = (e) => {
-    const isKeyUpToClosePushMode = e.keyCode === 27 || e.which === 27;
-
-    if (isKeyUpToClosePushMode) {
-      setIsClickedPushButton(false);
-    }
+  const buttonConfig = {
+    icon: isSimulating ? stopButton : playButton,
+    nextMode: isSimulating ? "EDIT" : "READY",
   };
 
   return (
     <>
-      <div className="fixed z-50">
-        <input
-          id="sensitivity"
-          type="range"
-          min={1}
-          max={50}
-          step={0.01}
-          value={rotationSensitivity}
-          onChange={onChangeSensitivity}
-          className="w-full"
+      <input
+        id="sensitivity"
+        type="range"
+        min={1}
+        max={50}
+        step={0.01}
+        value={rotationSensitivity}
+        onChange={onChangeSensitivity}
+        className="fixed z-50 bottom-0 w-full"
+      />
+
+      <button
+        className="fixed z-50 cursor-pointer w-[60px] h-[60px]"
+        onClick={() => updateSimulationState(buttonConfig.nextMode)}
+      >
+        <img
+          src={buttonConfig.icon}
+          alt={buttonConfig.alt}
+          draggable="false"
         />
-        <button
-          className="cursor-pointer w-[80px] h-[80px]"
-          onClick={() => setIsClickedPushButton(true)}
-        >
-          <img
-            src={pushButton}
-            alt="손가락 버튼"
-            draggable="false"
-          />
-        </button>
-      </div>
+      </button>
+
+      {simulationMode === "COUNTDOWN" && (
+        <span className="fixed z-50 text-[200px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold">
+          {countdownNumber}
+        </span>
+      )}
+
       <SidePanel
         selectedObject={selectedObject}
         setSelectedObject={setSelectedObject}
