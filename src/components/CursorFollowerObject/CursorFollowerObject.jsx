@@ -5,9 +5,22 @@ import * as THREE from "three";
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
 import useDominoStore from "@/store/useDominoStore";
 
-const CursorFollowerObject = ({ handlePlaceDomino }) => {
+const CursorFollowerObject = () => {
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
-  const selectedDomino = useDominoStore((state) => state.selectedDomino);
+  const { dominos, setDominos, selectedDomino } = useDominoStore();
+
+  const handlePlaceDomino = (e, objectInfo) => {
+    const clickedPosition = e.point;
+    const newDomino = {
+      id: Date.now(),
+      position: [clickedPosition.x, clickedPosition.y, clickedPosition.z],
+      objectInfo,
+      opacity: 1,
+    };
+    const updateDominos = [...dominos, newDomino];
+    setDominos(updateDominos);
+  };
+
   useFrame((state) => {
     const { pointer, camera } = state;
 
