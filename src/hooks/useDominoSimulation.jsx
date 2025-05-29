@@ -1,32 +1,21 @@
+import { useRef, useEffect } from "react";
+import * as THREE from "three";
+
 import fingerCursor from "/images/finger_cursor.png";
 
-import * as THREE from "three";
-import { useRef, useEffect, useState } from "react";
+import useSimulationStore from "../store/useSimulationStore";
 
 const useDominoSimulation = () => {
-  const [countdownNumber, setCountdownNumber] = useState(3);
-  const [simulationMode, setSimulationMode] = useState("EDIT");
-
+  const { simulationMode, countdownNumber, setSimulationMode, setCountdownNumber } =
+    useSimulationStore();
   const dominoRefs = useRef([]);
-
-  useEffect(() => {
-    if (simulationMode !== "READY") return;
-
-    changePushCursor(true);
-    window.addEventListener("keydown", closePushMode);
-
-    return () => {
-      changePushCursor(false);
-      window.removeEventListener("keydown", closePushMode);
-    };
-  }, [simulationMode]);
 
   const changePushCursor = (isChange) => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
   };
 
   const closePushMode = (e) => {
-    const isKeyUpToClosePushMode = e.keyCode === 27 || e.which === 27;
+    const isKeyUpToClosePushMode = e.key === "Escape";
 
     if (isKeyUpToClosePushMode) {
       setSimulationMode("EDIT");
@@ -48,16 +37,16 @@ const useDominoSimulation = () => {
     setSimulationMode("COUNTDOWN");
 
     const timer = setInterval(() => {
-      setCountdownNumber((prev) => {
-        if (prev > 1) {
-          return prev - 1;
-        } else {
-          clearInterval(timer);
-          setSimulationMode("SIMULATING");
-          startDominoSimulation(e, i, normal);
-          return null;
-        }
-      });
+      const current = useSimulationStore.getState().countdownNumber;
+
+      if (current <= 1) {
+        clearInterval(timer);
+        setCountdownNumber(0);
+        setSimulationMode("SIMULATING");
+        startDominoSimulation(e, i, normal);
+      } else {
+        setCountdownNumber(current - 1);
+      }
     }, 1000);
   };
 
@@ -68,6 +57,18 @@ const useDominoSimulation = () => {
     e.object.localToWorld(worldNormal.copy(normal));
     dominoRefs.current[i]?.applyImpulse(force, true);
   };
+
+  useEffect(() => {
+    if (simulationMode !== "READY") return;
+
+    changePushCursor(true);
+    window.addEventListener("keydown", closePushMode);
+
+    return () => {
+      changePushCursor(false);
+      window.removeEventListener("keydown", closePushMode);
+    };
+  }, [simulationMode]);
 
   return {
     dominoRefs,
