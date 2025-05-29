@@ -1,10 +1,14 @@
-const ObjectCard = ({ objectName, paths, groupName, selectedObject, setSelectedObject }) => {
-  const isSelected = selectedObject?.objectName === objectName;
+import useDominoStore from "@/store/useDominoStore";
+
+const ObjectCard = ({ objectName, paths, groupName }) => {
+  const { selectedDomino, setSelectedDomino } = useDominoStore();
+  const isSelected = selectedDomino?.objectName === objectName;
+
   return (
     <div
       key={objectName}
       className="group flex flex-col items-center gap-1 text-white text-xs cursor-pointer"
-      onClick={() => setSelectedObject({ objectName, paths, groupName })}
+      onClick={() => setSelectedDomino({ objectName, paths, groupName })}
     >
       <div
         className={`${isSelected && "border-2 border-[#22ff00]"} w-26 h-26 bg-black/50 rounded overflow-hidden flex items-center justify-center`}

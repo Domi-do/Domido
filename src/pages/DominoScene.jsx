@@ -16,7 +16,7 @@ const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
   const dominos = useDominoStore((state) => state.dominos);
 
-  const { selectedObject, setSelectedObject, handlePlaceDomino } = useDominoPlacement();
+  const { handlePlaceDomino } = useDominoPlacement();
 
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
@@ -36,41 +36,39 @@ const DominoScene = () => {
         rotationSensitivity={rotationSensitivity}
         onChangeSensitivity={handleRotationSensitivity}
         isOpenGuideToastVisible={isOpenGuideToastVisible}
-        selectedObject={selectedObject}
-        setSelectedObject={setSelectedObject}
       />
       <DominoCanvas
         rotationSensitivity={rotationSensitivity}
-        selectedObject={selectedObject}
         handlePlaceDomino={handlePlaceDomino}
       >
-        {dominos.map((item, index) => (
-          <RigidBody
-            key={item.index}
-            restitution={0}
-            friction={1}
-            linearDamping={0.01}
-            angularDamping={0.01}
-            position={item.position}
-            ref={(ref) => (dominoRefs.current[index] = ref)}
-          >
-            <mesh
-              castShadow
-              receiveShadow
-              onPointerOver={() => openGuideToast(item.index)}
-              onPointerOut={closeGuideToast}
+        {dominos.length
+          && dominos.map((item, index) => (
+            <RigidBody
+              key={item.index}
+              restitution={0}
+              friction={1}
+              linearDamping={0.01}
+              angularDamping={0.01}
               position={item.position}
-              onClick={(event) => readyDominoSimulation(event, index)}
+              ref={(ref) => (dominoRefs.current[index] = ref)}
             >
-              <boxGeometry args={[0.2, 1, 0.5]} />
-              <meshStandardMaterial
-                color="orange"
-                transparent={true}
-                opacity={item.opacity}
-              />
-            </mesh>
-          </RigidBody>
-        ))}
+              <mesh
+                castShadow
+                receiveShadow
+                onPointerOver={() => openGuideToast(item.index)}
+                onPointerOut={closeGuideToast}
+                position={item.position}
+                onClick={(event) => readyDominoSimulation(event, index)}
+              >
+                <boxGeometry args={[0.2, 1, 0.5]} />
+                <meshStandardMaterial
+                  color="orange"
+                  transparent={true}
+                  opacity={item.opacity}
+                />
+              </mesh>
+            </RigidBody>
+          ))}
         <Ground type="wood_dark" />
         {/* {placedDominos.length
           && placedDominos.map((domino) => (

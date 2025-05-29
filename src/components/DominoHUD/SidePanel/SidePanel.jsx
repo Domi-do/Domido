@@ -3,7 +3,7 @@ import { useState } from "react";
 import ObjectCard from "@/components/DominoHUD/SidePanel/ObjectCard";
 import { OBJECT_PATHS } from "@/constants/objectPaths";
 
-const SidePanel = ({ selectedObject, setSelectedObject }) => {
+const SidePanel = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -28,8 +28,6 @@ const SidePanel = ({ selectedObject, setSelectedObject }) => {
                   objectName={objectName}
                   paths={paths}
                   groupName={groupName}
-                  selectedObject={selectedObject}
-                  setSelectedObject={setSelectedObject}
                 />
               ))}
             </div>

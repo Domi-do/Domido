@@ -3,10 +3,11 @@ import { useState } from "react";
 import * as THREE from "three";
 
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
+import useDominoStore from "@/store/useDominoStore";
 
-const CursorFollowerObject = ({ selectedObject, handlePlaceDomino }) => {
+const CursorFollowerObject = ({ handlePlaceDomino }) => {
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
-
+  const selectedDomino = useDominoStore((state) => state.selectedDomino);
   useFrame((state) => {
     const { pointer, camera } = state;
 
@@ -18,10 +19,10 @@ const CursorFollowerObject = ({ selectedObject, handlePlaceDomino }) => {
     setPosition({ x: newPos.x, y: newPos.y, z: newPos.z });
   });
   return (
-    selectedObject !== null && (
-      <mesh onPointerDown={(e) => handlePlaceDomino(e, selectedObject)}>
+    selectedDomino !== null && (
+      <mesh onPointerDown={(e) => handlePlaceDomino(e, selectedDomino)}>
         <ObjectRenderer
-          objectInfo={selectedObject}
+          dominoInfo={selectedDomino}
           position={[position.x, position.y, position.z]}
         />
       </mesh>

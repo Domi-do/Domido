@@ -24,8 +24,8 @@ const PrimitiveObject = ({ paths, position }) => {
   );
 };
 
-const ObjectRenderer = ({ objectInfo, position }) => {
-  const { objectName, paths } = objectInfo;
+const ObjectRenderer = ({ dominoInfo, position }) => {
+  const { objectName, paths } = dominoInfo;
   const isDefaultObject = objectName === "defaultObject";
 
   return isDefaultObject ?

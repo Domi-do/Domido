@@ -4,7 +4,7 @@ import { Physics } from "@react-three/rapier";
 import CameraControls from "@/components/CameraControls/CameraControls";
 import CursorFollowerObject from "@/components/CursorFollowerObject/CursorFollowerObject";
 
-const DominoCanvas = ({ rotationSensitivity, selectedObject, handlePlaceDomino, children }) => {
+const DominoCanvas = ({ rotationSensitivity, handlePlaceDomino, children }) => {
   return (
     <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
       <ambientLight
@@ -19,10 +19,7 @@ const DominoCanvas = ({ rotationSensitivity, selectedObject, handlePlaceDomino, 
       <CameraControls rotationSensitivity={rotationSensitivity} />
       <Physics>
         <>
-          <CursorFollowerObject
-            selectedObject={selectedObject}
-            handlePlaceDomino={handlePlaceDomino}
-          />
+          <CursorFollowerObject handlePlaceDomino={handlePlaceDomino} />
           {children}
         </>
       </Physics>

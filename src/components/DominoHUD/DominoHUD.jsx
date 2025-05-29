@@ -10,8 +10,6 @@ const DominoHUD = ({
   rotationSensitivity,
   onChangeSensitivity,
   updateSimulationState,
-  selectedObject,
-  setSelectedObject,
   isOpenGuideToastVisible,
 }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
@@ -52,10 +50,7 @@ const DominoHUD = ({
         </span>
       )}
 
-      <SidePanel
-        selectedObject={selectedObject}
-        setSelectedObject={setSelectedObject}
-      />
+      <SidePanel />
       {isOpenGuideToastVisible && <GuideToast />}
     </>
   );

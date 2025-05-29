@@ -1,10 +1,7 @@
 import { create } from "zustand";
 
 const useDominoStore = create((set) => ({
-  dominos: [
-    { position: [0.6, 0.5, 0], index: 0, opacity: 1 },
-    { position: [1, 0.5, 0], index: 1, opacity: 1 },
-  ],
+  dominos: [],
   selectedDomino: null,
   selectedDominoKey: null,
 
