@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useDominoControls = (setDominos, selectedDominoKey, setGuideToastVisible, dominos) => {
+const useDominoControls = ({ selectedDominoKey, dominos, onUpdateDominos, onToggleGuideToast }) => {
   const [isOpacity, setIsOpacity] = useState(false);
 
   useEffect(() => {
@@ -8,9 +8,9 @@ const useDominoControls = (setDominos, selectedDominoKey, setGuideToastVisible, 
       if (e.key.toLowerCase() === "x") {
         const key = selectedDominoKey;
 
-        setDominos((prev) => prev.filter((dominos) => dominos.index !== key));
+        onUpdateDominos((prev) => prev.filter((dominos) => dominos.index !== key));
         setTimeout(() => {
-          setGuideToastVisible(false);
+          onToggleGuideToast(false);
         }, 100);
       }
     };
@@ -28,9 +28,9 @@ const useDominoControls = (setDominos, selectedDominoKey, setGuideToastVisible, 
             setIsOpacity(false);
           }
         });
-        setDominos(updatedDominos);
+        onUpdateDominos(updatedDominos);
         setTimeout(() => {
-          setGuideToastVisible(false);
+          onToggleGuideToast(false);
         }, 100);
       }
     };
@@ -42,7 +42,7 @@ const useDominoControls = (setDominos, selectedDominoKey, setGuideToastVisible, 
       window.removeEventListener("keydown", pressX);
       window.removeEventListener("keydown", pressH);
     };
-  }, [selectedDominoKey, setDominos, setGuideToastVisible]);
+  }, [selectedDominoKey]);
 };
 
 export default useDominoControls;
