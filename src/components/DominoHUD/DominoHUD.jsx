@@ -5,6 +5,7 @@ import resetButton from "/images/reset_button.png";
 
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
 import MODE from "@/constants/mode";
+import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
 const DominoHUD = ({
@@ -14,6 +15,7 @@ const DominoHUD = ({
   isOpenGuideToastVisible,
 }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
+  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
   const isSimulating = simulationMode === MODE.SIMULATING;
 
@@ -43,6 +45,7 @@ const DominoHUD = ({
         <button
           className="fixed z-50 cursor-pointer w-[60px] h-[60px]"
           onClick={() => updateSimulationState(getNextMode())}
+          onMouseOver={() => setSelectedDomino(null)}
         >
           <img
             src={isSimulating ? resetButton : playButton}
