@@ -8,7 +8,7 @@ import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
 const useDominoSimulation = (changeResetKey) => {
-  const { dominos, setDominos } = useDominoStore();
+  const { dominos, setDominos, setSelectedDomino } = useDominoStore();
   const { simulationMode, setSimulationMode, setCountdownNumber } = useSimulationStore();
 
   const dominoRefs = useRef([]);
@@ -18,11 +18,17 @@ const useDominoSimulation = (changeResetKey) => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
   };
 
-  const closePushMode = (e) => {
-    const isKeyUpToClosePushMode = e.key === "Escape";
+  const closeCurrentMode = (event) => {
+    if (event.key !== "Escape") return;
 
-    if (isKeyUpToClosePushMode) {
+    if (simulationMode === MODE.EDIT) {
+      setSelectedDomino(null);
+      return;
+    }
+
+    if (simulationMode === MODE.READY) {
       setSimulationMode(MODE.EDIT);
+      return;
     }
   };
 
@@ -73,12 +79,13 @@ const useDominoSimulation = (changeResetKey) => {
 
     if (simulationMode === MODE.READY) {
       changePushCursor(true);
-      window.addEventListener("keydown", closePushMode);
     }
+
+    window.addEventListener("keydown", closeCurrentMode);
 
     return () => {
       changePushCursor(false);
-      window.removeEventListener("keydown", closePushMode);
+      window.removeEventListener("keydown", closeCurrentMode);
     };
   }, [simulationMode, dominoesBackup]);
 
