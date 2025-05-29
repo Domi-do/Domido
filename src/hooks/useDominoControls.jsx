@@ -6,9 +6,7 @@ const useDominoControls = ({ selectedDominoKey, dominos, onUpdateDominos, onTogg
   useEffect(() => {
     const pressX = (e) => {
       if (e.key.toLowerCase() === "x") {
-        const key = selectedDominoKey;
-
-        onUpdateDominos((prev) => prev.filter((dominos) => dominos.index !== key));
+        onUpdateDominos((prev) => prev.filter((dominos) => dominos.index !== selectedDominoKey));
         setTimeout(() => {
           onToggleGuideToast(false);
         }, 100);
@@ -17,13 +15,12 @@ const useDominoControls = ({ selectedDominoKey, dominos, onUpdateDominos, onTogg
 
     const pressH = (e) => {
       if (e.key.toLowerCase() === "h") {
-        const key = selectedDominoKey;
         const updatedDominos = [...dominos];
         updatedDominos.forEach((item) => {
-          if (item.index === key && isOpacity === false) {
+          if (item.index === selectedDominoKey && isOpacity === false) {
             item.opacity = 0.3;
             setIsOpacity(true);
-          } else if (item.index === key && isOpacity === true) {
+          } else if (item.index === selectedDominoKey && isOpacity === true) {
             item.opacity = 1;
             setIsOpacity(false);
           }
