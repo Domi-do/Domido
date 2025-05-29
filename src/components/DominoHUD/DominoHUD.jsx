@@ -1,20 +1,20 @@
 import GuideToast from "@/components/DominoHUD/GuideToast/GuideToast";
 
-import playButton from "/images/play_button.png";
 import stopButton from "/images/stop_button.png";
+import playButton from "/images/play_button.png";
 
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
+import useSimulationStore from "@/store/useSimulationStore";
 
 const DominoHUD = ({
   rotationSensitivity,
   onChangeSensitivity,
-  simulationMode,
-  countdownNumber,
   updateSimulationState,
   selectedObject,
   setSelectedObject,
   isOpenGuideToastVisible,
 }) => {
+  const { simulationMode, countdownNumber } = useSimulationStore();
   const isSimulating = simulationMode === "SIMULATING";
 
   const buttonConfig = {

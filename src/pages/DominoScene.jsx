@@ -16,8 +16,7 @@ const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
   const dominos = useDominoStore((state) => state.dominos);
 
-  const { selectedObject, placedDominos, setSelectedObject, handlePlaceDomino } =
-    useDominoPlacement();
+  const { selectedObject, setSelectedObject, handlePlaceDomino } = useDominoPlacement();
 
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
@@ -28,20 +27,12 @@ const DominoScene = () => {
     setRotationSensitivity(e.target.value);
   };
 
-  const {
-    dominoRefs,
-    simulationMode,
-    countdownNumber,
-    updateSimulationState,
-    readyDominoSimulation,
-  } = useDominoSimulation();
+  const { dominoRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
 
   return (
     <>
       <DominoHUD
-        simulationMode={simulationMode}
         updateSimulationState={updateSimulationState}
-        countdownNumber={countdownNumber}
         rotationSensitivity={rotationSensitivity}
         onChangeSensitivity={handleRotationSensitivity}
         isOpenGuideToastVisible={isOpenGuideToastVisible}
@@ -81,7 +72,7 @@ const DominoScene = () => {
           </RigidBody>
         ))}
         <Ground type="wood_dark" />
-        {placedDominos.length
+        {/* {placedDominos.length
           && placedDominos.map((domino) => (
             <RigidBody
               key={domino.id}
@@ -95,7 +86,7 @@ const DominoScene = () => {
                 position={domino.position}
               />
             </RigidBody>
-          ))}
+          ))} */}
       </DominoCanvas>
     </>
   );

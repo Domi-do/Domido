@@ -3,11 +3,10 @@ import * as THREE from "three";
 
 import fingerCursor from "/images/finger_cursor.png";
 
-import useSimulationStore from "../store/useSimulationStore";
+import useSimulationStore from "@/store/useSimulationStore";
 
 const useDominoSimulation = () => {
-  const { simulationMode, countdownNumber, setSimulationMode, setCountdownNumber } =
-    useSimulationStore();
+  const { simulationMode, setSimulationMode, setCountdownNumber } = useSimulationStore();
   const dominoRefs = useRef([]);
 
   const changePushCursor = (isChange) => {
@@ -70,13 +69,7 @@ const useDominoSimulation = () => {
     };
   }, [simulationMode]);
 
-  return {
-    dominoRefs,
-    simulationMode,
-    countdownNumber,
-    updateSimulationState,
-    readyDominoSimulation,
-  };
+  return { dominoRefs, updateSimulationState, readyDominoSimulation };
 };
 
 export default useDominoSimulation;
