@@ -7,15 +7,39 @@ import DominoCanvas from "@/components/DominoCanvas/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import Ground from "@/components/Ground/Ground";
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
+import useDominoControls from "@/hooks/useDominoControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 
 const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
+  const [isOpenGuideToastVisible, setIsGuideToastVisible] = useState(false);
+  const [selectedDominoKey, setselectedDominoKey] = useState(null);
+  const [dominos, setDominos] = useState([
+    { position: [0, 0.5, 0], index: 0, opacity: 1 },
+    { position: [1, 0.5, 0], index: 1, opacity: 1 },
+  ]);
+
+  useDominoControls({
+    selectedDominoKey,
+    dominos,
+    onUpdateDominos: setDominos,
+    onToggleGuideToast: (visible) => setIsGuideToastVisible(visible),
+  });
   const { selectedObject, placedDominos, setSelectedObject, handlePlaceDomino } =
     useDominoPlacement();
 
   const handleRotationSensitivity = (e) => {
     setRotationSensitivity(e.target.value);
+  };
+
+  const openGuideToast = (key) => {
+    setIsGuideToastVisible(true);
+    setselectedDominoKey(key);
+  };
+
+  const closeGuideToast = () => {
+    setIsGuideToastVisible(false);
+    setselectedDominoKey(null);
   };
 
   const count = 30;
@@ -37,6 +61,7 @@ const DominoScene = () => {
         countdownNumber={countdownNumber}
         rotationSensitivity={rotationSensitivity}
         onChangeSensitivity={handleRotationSensitivity}
+        isOpenGuideToastVisible={isOpenGuideToastVisible}
         selectedObject={selectedObject}
         setSelectedObject={setSelectedObject}
       />
@@ -45,6 +70,29 @@ const DominoScene = () => {
         selectedObject={selectedObject}
         handlePlaceDomino={handlePlaceDomino}
       >
+        {dominos.map((item) => (
+          <RigidBody
+            key={item.index}
+            restitution={0.1}
+            friction={1}
+            position={item.position}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              onPointerOver={() => openGuideToast(item.index)}
+              onPointerOut={closeGuideToast}
+              position={item.position}
+            >
+              <boxGeometry args={[0.2, 1, 0.5]} />
+              <meshStandardMaterial
+                color="orange"
+                transparent={true}
+                opacity={item.opacity}
+              />
+            </mesh>
+          </RigidBody>
+        ))}
         <Ground type="wood_dark" />
         {placedDominos.length
           && placedDominos.map((domino, i) => (
@@ -64,7 +112,7 @@ const DominoScene = () => {
             </RigidBody>
           ))}
 
-        {Array.from({ length: count }, () => "orange").map((_, i) => (
+        {Array.from({ length: count }, () => "orange").map((item, i) => (
           <RigidBody
             key={i}
             restitution={0}
@@ -80,7 +128,11 @@ const DominoScene = () => {
               onClick={(e) => readyDominoSimulation(e, i)}
             >
               <boxGeometry args={[0.2, 1, 0.5]} />
-              <meshStandardMaterial color="orange" />
+              <meshStandardMaterial
+                color="orange"
+                transparent={true}
+                opacity={item.opacity}
+              />
             </mesh>
           </RigidBody>
         ))}
