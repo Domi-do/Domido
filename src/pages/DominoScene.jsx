@@ -9,40 +9,26 @@ import Ground from "@/components/Ground/Ground";
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
 import useDominoControls from "@/hooks/useDominoControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
+import useToastControls from "@/hooks/useToastControls";
+import useDominoStore from "@/store/useDominoStore";
 
 const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
-  const [isOpenGuideToastVisible, setIsGuideToastVisible] = useState(false);
-  const [selectedDominoKey, setselectedDominoKey] = useState(null);
-  const [dominos, setDominos] = useState([
-    { position: [0, 0.5, 0], index: 0, opacity: 1 },
-    { position: [1, 0.5, 0], index: 1, opacity: 1 },
-  ]);
+  const dominos = useDominoStore((state) => state.dominos);
 
-  useDominoControls({
-    selectedDominoKey,
-    dominos,
-    onUpdateDominos: setDominos,
-    onToggleGuideToast: (visible) => setIsGuideToastVisible(visible),
-  });
   const { selectedObject, placedDominos, setSelectedObject, handlePlaceDomino } =
     useDominoPlacement();
+
+  const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
+    useToastControls();
+
+  useDominoControls({ onToggleGuideToast: (visible) => setIsGuideToastVisible(visible) });
 
   const handleRotationSensitivity = (e) => {
     setRotationSensitivity(e.target.value);
   };
 
-  const openGuideToast = (key) => {
-    setIsGuideToastVisible(true);
-    setselectedDominoKey(key);
-  };
-
-  const closeGuideToast = () => {
-    setIsGuideToastVisible(false);
-    setselectedDominoKey(null);
-  };
-
-  const count = 30;
+  // const count = 30;
   const spacing = 0.6;
 
   const {
@@ -50,7 +36,7 @@ const DominoScene = () => {
     simulationMode,
     countdownNumber,
     updateSimulationState,
-    readyDominoSimulation,
+    // readyDominoSimulation,
   } = useDominoSimulation();
 
   return (
@@ -112,7 +98,7 @@ const DominoScene = () => {
             </RigidBody>
           ))}
 
-        {Array.from({ length: count }, () => "orange").map((item, i) => (
+        {/* {Array.from({ length: count }, () => "orange").map((item, i) => (
           <RigidBody
             key={i}
             restitution={0}
@@ -135,7 +121,7 @@ const DominoScene = () => {
               />
             </mesh>
           </RigidBody>
-        ))}
+        ))} */}
       </DominoCanvas>
     </>
   );

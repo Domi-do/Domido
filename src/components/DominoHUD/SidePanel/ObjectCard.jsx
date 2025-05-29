@@ -2,7 +2,7 @@ const ObjectCard = ({ objectName, paths, groupName, selectedObject, setSelectedO
   const isSelected = selectedObject?.objectName === objectName;
   return (
     <div
-      key={name}
+      key={objectName}
       className="group flex flex-col items-center gap-1 text-white text-xs cursor-pointer"
       onClick={() => setSelectedObject({ objectName, paths, groupName })}
     >
