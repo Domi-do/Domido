@@ -12,7 +12,7 @@ import useDominoSimulation from "@/hooks/useDominoSimulation";
 
 const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
-  const [isGuideToastVisible, setGuideToastVisible] = useState(false);
+  const [isOpenGuideToastVisible, setIsGuideToastVisible] = useState(false);
   const [selectedDominoKey, setselectedDominoKey] = useState([]);
   const [dominos, setDominos] = useState([
     { position: [0, 0.5, 0], index: 0, opacity: 1 },
@@ -23,7 +23,7 @@ const DominoScene = () => {
     selectedDominoKey,
     dominos,
     onUpdateDominos: setDominos,
-    onToggleGuideToast: (visible) => setGuideToastVisible(visible),
+    onToggleGuideToast: (visible) => setIsGuideToastVisible(visible),
   });
   const { selectedObject, placedDominos, setSelectedObject, handlePlaceDomino } =
     useDominoPlacement();
@@ -33,12 +33,12 @@ const DominoScene = () => {
   };
 
   const openGuideToast = (key) => {
-    setGuideToastVisible(true);
+    setIsGuideToastVisible(true);
     setselectedDominoKey(key);
   };
 
   const closeGuideToast = () => {
-    setGuideToastVisible(false);
+    setIsGuideToastVisible(false);
     setselectedDominoKey(null);
   };
 
@@ -61,7 +61,7 @@ const DominoScene = () => {
         countdownNumber={countdownNumber}
         rotationSensitivity={rotationSensitivity}
         onChangeSensitivity={handleRotationSensitivity}
-        openGuideToastVisible={isGuideToastVisible}
+        isOpenGuideToastVisible={isOpenGuideToastVisible}
         selectedObject={selectedObject}
         setSelectedObject={setSelectedObject}
       />
