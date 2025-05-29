@@ -5,4 +5,5 @@ const MODE = {
   SIMULATING: "SIMULATING",
   END: "END",
 };
+
 export default MODE;
