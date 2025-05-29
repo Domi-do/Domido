@@ -12,7 +12,7 @@ const DominoHUD = ({
   updateSimulationState,
   selectedObject,
   setSelectedObject,
-  isGuideToastVisible,
+  isOpenGuideToastVisible,
 }) => {
   const isSimulating = simulationMode === "SIMULATING";
 
@@ -55,7 +55,7 @@ const DominoHUD = ({
         selectedObject={selectedObject}
         setSelectedObject={setSelectedObject}
       />
-      {isGuideToastVisible && <GuideToast />}
+      {isOpenGuideToastVisible && <GuideToast />}
     </>
   );
 };
