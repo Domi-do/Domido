@@ -3,8 +3,11 @@ import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 import { TextureLoader } from "three";
 
-const Ground = ({ type }) => {
-  const floorTexture = useLoader(TextureLoader, `/images/tile/${type}.png`);
+import useSettingStore from "@/store/useSettingStore";
+
+const Ground = () => {
+  const groundType = useSettingStore((state) => state.groundType);
+  const floorTexture = useLoader(TextureLoader, `/images/tile/${groundType}.png`);
 
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;

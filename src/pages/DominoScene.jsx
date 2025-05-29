@@ -55,7 +55,7 @@ const DominoScene = () => {
               />
             </RigidBody>
           ))}
-        <Ground type="wood_dark" />
+        <Ground />
       </DominoCanvas>
     </>
   );
