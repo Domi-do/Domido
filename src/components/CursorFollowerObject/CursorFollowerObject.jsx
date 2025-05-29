@@ -11,9 +11,11 @@ const CursorFollowerObject = () => {
 
   const handlePlaceDomino = (e, objectInfo) => {
     const clickedPosition = e.point;
+    const clikedRotated = e.object.rotation;
     const newDomino = {
       id: Date.now(),
       position: [clickedPosition.x, clickedPosition.y, clickedPosition.z],
+      rotation: [clikedRotated.x, clikedRotated.y, clikedRotated.z],
       objectInfo,
       opacity: 1,
     };

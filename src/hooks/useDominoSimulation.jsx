@@ -1,13 +1,18 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import * as THREE from "three";
 
 import fingerCursor from "/images/finger_cursor.png";
 
+import MODE from "@/constants/mode";
+import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
-const useDominoSimulation = () => {
+const useDominoSimulation = (changeResetKey) => {
+  const { dominos, setDominos } = useDominoStore();
   const { simulationMode, setSimulationMode, setCountdownNumber } = useSimulationStore();
+
   const dominoRefs = useRef([]);
+  const [dominoesBackup, setDominoesBackup] = useState([]);
 
   const changePushCursor = (isChange) => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
@@ -17,7 +22,7 @@ const useDominoSimulation = () => {
     const isKeyUpToClosePushMode = e.key === "Escape";
 
     if (isKeyUpToClosePushMode) {
-      setSimulationMode("EDIT");
+      setSimulationMode(MODE.EDIT);
     }
   };
 
@@ -29,11 +34,11 @@ const useDominoSimulation = () => {
     e.stopPropagation();
 
     const normal = e.face?.normal;
-    const isReadyToStartGame = simulationMode === "READY" && normal;
+    const isReadyToStartGame = simulationMode === MODE.READY && normal;
 
     if (!isReadyToStartGame) return;
 
-    setSimulationMode("COUNTDOWN");
+    setSimulationMode(MODE.COUNTDOWN);
 
     const timer = setInterval(() => {
       const current = useSimulationStore.getState().countdownNumber;
@@ -41,7 +46,8 @@ const useDominoSimulation = () => {
       if (current <= 1) {
         clearInterval(timer);
         setCountdownNumber(0);
-        setSimulationMode("SIMULATING");
+        setDominoesBackup(dominos);
+        setSimulationMode(MODE.SIMULATING);
         startDominoSimulation(e, i, normal);
       } else {
         setCountdownNumber(current - 1);
@@ -58,16 +64,23 @@ const useDominoSimulation = () => {
   };
 
   useEffect(() => {
-    if (simulationMode !== "READY") return;
+    const isClickedResetButton = simulationMode === MODE.EDIT && dominoesBackup.length > 0;
 
-    changePushCursor(true);
-    window.addEventListener("keydown", closePushMode);
+    if (isClickedResetButton) {
+      setDominos(dominoesBackup);
+      changeResetKey();
+    }
+
+    if (simulationMode === MODE.READY) {
+      changePushCursor(true);
+      window.addEventListener("keydown", closePushMode);
+    }
 
     return () => {
       changePushCursor(false);
       window.removeEventListener("keydown", closePushMode);
     };
-  }, [simulationMode]);
+  }, [simulationMode, dominoesBackup]);
 
   return { dominoRefs, updateSimulationState, readyDominoSimulation };
 };
