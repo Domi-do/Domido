@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { TextureLoader } from "three";
 
 const Ground = ({ type }) => {
-  const floorTexture = useLoader(TextureLoader, `/public/images/tile/${type}.png`);
+  const floorTexture = useLoader(TextureLoader, `/images/tile/${type}.png`);
 
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;

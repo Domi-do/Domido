@@ -3,14 +3,16 @@ import { useState } from "react";
 import ObjectCard from "@/components/DominoHUD/SidePanel/ObjectCard";
 import { OBJECT_PATHS } from "@/constants/objectPaths";
 
-const SidePanel = () => {
+const SidePanel = ({ selectedObject, setSelectedObject }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div
       className={`fixed top-0 right-0 z-50 h-full flex transform transition-transform duration-300 ${
-        isOpen ? "translate-x-0" : "translate-x-full"
+        isOpen ? "translate-x-0" : "translate-x-[99%]"
       }`}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
     >
       <aside className="w-100 h-full bg-black/40 shadow-lg p-3 flex flex-col relative gap-6">
         {Object.entries(OBJECT_PATHS).map(([groupName, groupObjects]) => (
@@ -20,18 +22,20 @@ const SidePanel = () => {
           >
             <h2 className="font-bold text-white">{groupName.toLowerCase()}</h2>
             <div className="grid grid-cols-3 gap-4">
-              {Object.entries(groupObjects).map(([name, paths]) => (
+              {Object.entries(groupObjects).map(([objectName, paths]) => (
                 <ObjectCard
-                  key={name}
-                  name={name}
+                  key={objectName}
+                  objectName={objectName}
                   paths={paths}
+                  groupName={groupName}
+                  selectedObject={selectedObject}
+                  setSelectedObject={setSelectedObject}
                 />
               ))}
             </div>
           </section>
         ))}
         <button
-          onClick={() => setIsOpen(!isOpen)}
           className="absolute top-0 left-[-32px] transform
                      text-white h-12 w-8 bg-black/40 rounded-l flex items-center justify-center font-bold"
         >
