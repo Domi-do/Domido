@@ -1,6 +1,5 @@
 import GuideToast from "@/components/DominoHUD/GuideToast/GuideToast";
 
-import stopButton from "/images/stop_button.png";
 import playButton from "/images/play_button.png";
 import resetButton from "/images/reset_button.png";
 
@@ -16,11 +15,10 @@ const DominoHUD = ({
 }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
 
-  const buttonImage =
-    { [MODE.SIMULATING]: stopButton, [MODE.END]: resetButton }[simulationMode] || playButton;
+  const isSimulating = simulationMode === MODE.SIMULATING;
 
   const getNextMode = () => {
-    const order = [MODE.EDIT, MODE.READY, MODE.COUNTDOWN, MODE.SIMULATING, MODE.END];
+    const order = [MODE.EDIT, MODE.READY, MODE.COUNTDOWN, MODE.SIMULATING];
     const currentStep = order.indexOf(simulationMode);
     const isLastStep = currentStep >= order.length - 1;
 
@@ -47,7 +45,7 @@ const DominoHUD = ({
           onClick={() => updateSimulationState(getNextMode())}
         >
           <img
-            src={buttonImage}
+            src={isSimulating ? resetButton : playButton}
             draggable="false"
           />
         </button>

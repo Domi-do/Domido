@@ -73,6 +73,7 @@ const useDominoSimulation = (changeResetKey) => {
     const isClickedResetButton = simulationMode === MODE.EDIT && dominoesBackup.length > 0;
 
     if (isClickedResetButton) {
+      setCountdownNumber(3);
       setDominos(dominoesBackup);
       changeResetKey();
     }
