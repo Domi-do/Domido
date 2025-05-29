@@ -1,6 +1,11 @@
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
 
-const DominoHUD = ({ rotationSensitivity, onChangeSensitivity }) => {
+const DominoHUD = ({
+  rotationSensitivity,
+  onChangeSensitivity,
+  selectedObject,
+  setSelectedObject,
+}) => {
   return (
     <>
       <div className="fixed z-50">
@@ -15,7 +20,10 @@ const DominoHUD = ({ rotationSensitivity, onChangeSensitivity }) => {
           className="w-full"
         />
       </div>
-      <SidePanel />
+      <SidePanel
+        selectedObject={selectedObject}
+        setSelectedObject={setSelectedObject}
+      />
     </>
   );
 };
