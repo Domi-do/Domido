@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+* {
+  outline: none;
+}
+
 #root, html, body {
   height: 100vh;
 }

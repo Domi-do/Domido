@@ -11,12 +11,15 @@ const Ground = ({ type }) => {
   floorTexture.repeat.set(10, 10);
 
   return (
-    <RigidBody type="fixed">
+    <RigidBody
+      type="fixed"
+      friction={1}
+    >
       <mesh
         receiveShadow
         position={[0, -1, 0]}
       >
-        <boxGeometry args={[20, 1, 20]} />
+        <boxGeometry args={[40, 1, 40]} />
         <meshStandardMaterial
           map={floorTexture}
           metalness={0.05}
