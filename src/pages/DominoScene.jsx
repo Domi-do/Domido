@@ -13,7 +13,7 @@ import useDominoSimulation from "@/hooks/useDominoSimulation";
 const DominoScene = () => {
   const [rotationSensitivity, setRotationSensitivity] = useState(1);
   const [isOpenGuideToastVisible, setIsGuideToastVisible] = useState(false);
-  const [selectedDominoKey, setselectedDominoKey] = useState([]);
+  const [selectedDominoKey, setselectedDominoKey] = useState(null);
   const [dominos, setDominos] = useState([
     { position: [0, 0.5, 0], index: 0, opacity: 1 },
     { position: [1, 0.5, 0], index: 1, opacity: 1 },
