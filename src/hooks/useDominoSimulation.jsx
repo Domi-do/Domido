@@ -79,6 +79,7 @@ const useDominoSimulation = (changeResetKey) => {
     }
 
     if (simulationMode === MODE.READY) {
+      setSelectedDomino(null);
       changePushCursor(true);
     }
 
