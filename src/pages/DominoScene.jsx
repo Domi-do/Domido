@@ -19,7 +19,12 @@ const DominoScene = () => {
     { position: [1, 0.5, 0], index: 1, opacity: 1 },
   ]);
 
-  useDominoControls(setDominos, selectedDominoKey, setGuideToastVisible, dominos);
+  useDominoControls({
+    selectedDominoKey,
+    dominos,
+    onUpdateDominos: setDominos,
+    onToggleGuideToast: (visible) => setGuideToastVisible(visible),
+  });
   const { selectedObject, placedDominos, setSelectedObject, handlePlaceDomino } =
     useDominoPlacement();
 
