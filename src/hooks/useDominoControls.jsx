@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const useDominoControls = ({ selectedDominoKey, dominos, onUpdateDominos, onToggleGuideToast }) => {
-  const [isOpacity, setIsOpacity] = useState(false);
-
   useEffect(() => {
     const pressX = (e) => {
       if (e.key.toLowerCase() === "x") {
@@ -15,20 +13,16 @@ const useDominoControls = ({ selectedDominoKey, dominos, onUpdateDominos, onTogg
 
     const pressH = (e) => {
       if (e.key.toLowerCase() === "h") {
-        const updatedDominos = [...dominos];
-        updatedDominos.forEach((item) => {
-          if (item.index === selectedDominoKey && isOpacity === false) {
-            item.opacity = 0.3;
-            setIsOpacity(true);
-          } else if (item.index === selectedDominoKey && isOpacity === true) {
-            item.opacity = 1;
-            setIsOpacity(false);
+        const updatedDominos = dominos.map((item) => {
+          if (item.index === selectedDominoKey) {
+            const isTransparent = item.opacity < 1;
+            return { ...item, opacity: isTransparent ? 1 : 0.3 };
           }
+          return item;
         });
+
         onUpdateDominos(updatedDominos);
-        setTimeout(() => {
-          onToggleGuideToast(false);
-        }, 100);
+        onToggleGuideToast(false);
       }
     };
 
