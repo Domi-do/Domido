@@ -18,10 +18,10 @@ const CursorFollowerObject = () => {
     if (!ground) return;
 
     const intersects = raycaster.intersectObject(ground);
-    const groundHit = intersects[0];
+    const isOnGround = intersects[0];
 
-    if (groundHit) {
-      const pos = groundHit.point;
+    if (isOnGround) {
+      const pos = isOnGround.point;
       const newPos = { x: pos.x, y: 0, z: pos.z };
       setPosition(newPos);
     }

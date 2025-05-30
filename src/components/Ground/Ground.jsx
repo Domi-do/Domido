@@ -13,7 +13,8 @@ const Ground = ({ type }) => {
   floorTexture.repeat.set(10, 10);
 
   const handlePlaceDomino = (e) => {
-    if (e.button === 1 || e.button === 2 || !selectedDomino) return;
+    const isNotLeftClick = e.button === 1 || e.button === 2;
+    if (isNotLeftClick || !selectedDomino) return;
 
     const pos = e.point;
     const newDomino = {
