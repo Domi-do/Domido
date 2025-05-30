@@ -7,7 +7,7 @@ import useDominoStore from "@/store/useDominoStore";
 
 const CursorFollowerObject = () => {
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
-  const { selectedDomino } = useDominoStore();
+  const selectedDomino = useDominoStore((state) => state.selectedDomino);
   const { camera, pointer, scene } = useThree();
 
   useFrame(() => {
@@ -17,7 +17,7 @@ const CursorFollowerObject = () => {
     const ground = scene.getObjectByName("ground");
     if (!ground) return;
 
-    const intersects = raycaster.intersectObject(ground, true);
+    const intersects = raycaster.intersectObject(ground);
     const groundHit = intersects[0];
 
     if (groundHit) {
