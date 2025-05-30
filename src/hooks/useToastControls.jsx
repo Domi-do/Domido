@@ -1,13 +1,19 @@
 import { useState } from "react";
 
-import useDominoStore from "../store/useDominoStore";
+import MODE from "@/constants/mode";
+import useDominoStore from "@/store/useDominoStore";
+import useSimulationStore from "@/store/useSimulationStore";
 
 const useToastControls = () => {
   const [isOpenGuideToastVisible, setIsGuideToastVisible] = useState(false);
   const setSelectedDominoKey = useDominoStore((state) => state.setSelectedDominoKey);
+  const simulationMode = useSimulationStore((state) => state.simulationMode);
+
   const openGuideToast = (key) => {
-    setIsGuideToastVisible(true);
-    setSelectedDominoKey(key);
+    if (simulationMode === MODE.EDIT) {
+      setIsGuideToastVisible(true);
+      setSelectedDominoKey(key);
+    }
   };
 
   const closeGuideToast = () => {
