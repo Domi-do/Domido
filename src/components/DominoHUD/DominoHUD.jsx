@@ -8,20 +8,15 @@ import resetButton from "/images/reset_button.png";
 import settingButton from "/images/setting_button.png";
 
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
-import ModalOverlay from "@/components/ModalOverlay/ModalOverlay";
-import Setting from "@/components/Setting/Setting";
+import SettingModal from "@/components/Setting/SettingModal";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
-const DominoHUD = ({
-  rotationSensitivity,
-  onChangeSensitivity,
-  updateSimulationState,
-  isOpenGuideToastVisible,
-}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
+const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
+
   const isSimulating = simulationMode === "SIMULATING";
 
   const buttonConfig = {
@@ -29,11 +24,15 @@ const DominoHUD = ({
     nextMode: isSimulating ? "EDIT" : "READY",
   };
 
+  const handleCloseModal = () => {
+    setIsSettingModalOpen(false);
+  };
+
   return (
     <>
       <div className="fixed top-[10px] left-[10px] z-50 flex">
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsSettingModalOpen(true)}
           className="w-[60px] h-[60px] cursor-pointer"
         >
           <img
@@ -67,14 +66,7 @@ const DominoHUD = ({
       <SidePanel />
       {isOpenGuideToastVisible && <GuideToast />}
 
-      {isModalOpen && (
-        <ModalOverlay closeModal={() => setIsModalOpen(false)}>
-          <Setting
-            rotationSensitivity={rotationSensitivity}
-            onChangeSensitivity={onChangeSensitivity}
-          />
-        </ModalOverlay>
-      )}
+      {isSettingModalOpen && <SettingModal closeModal={handleCloseModal} />}
     </>
   );
 };

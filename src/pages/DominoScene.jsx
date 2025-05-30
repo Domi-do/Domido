@@ -1,5 +1,4 @@
 import { RigidBody } from "@react-three/rapier";
-import { useState } from "react";
 
 import DominoCanvas from "@/components/DominoCanvas/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
@@ -9,28 +8,22 @@ import useDominoControls from "@/hooks/useDominoControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
 import useDominoStore from "@/store/useDominoStore";
+import useSettingStore from "@/store/useSettingStore";
 
 const DominoScene = () => {
-  const [rotationSensitivity, setRotationSensitivity] = useState(1);
   const dominos = useDominoStore((state) => state.dominos);
+  const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
 
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
 
   useDominoControls({ onToggleGuideToast: (visible) => setIsGuideToastVisible(visible) });
-
-  const handleRotationSensitivity = (e) => {
-    setRotationSensitivity(e.target.value);
-  };
-
   const { dominoRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
 
   return (
     <>
       <DominoHUD
         updateSimulationState={updateSimulationState}
-        rotationSensitivity={rotationSensitivity}
-        onChangeSensitivity={handleRotationSensitivity}
         isOpenGuideToastVisible={isOpenGuideToastVisible}
       />
       <DominoCanvas rotationSensitivity={rotationSensitivity}>
