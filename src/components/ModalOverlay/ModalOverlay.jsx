@@ -1,6 +1,8 @@
 import { useContext, useRef } from "react";
 import { createPortal } from "react-dom";
 
+import closeButton from "/images/close_button.png";
+
 import { PortalContext } from "@/GlobalPortal";
 import useOnClickOutSide from "@/hooks/useOnClickOutSide";
 
@@ -16,13 +18,17 @@ const ModalOverlay = ({ closeModal, children }) => {
       <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
         <div
           ref={modalRef}
-          className="bg-white p-5 rounded-lg shadow"
+          className="relative bg-white pt-[50px] pr-[30px] pb-[30px] pl-[30px] rounded-lg shadow min-w-[400px]"
         >
           <button
             onClick={closeModal}
-            className="ml-auto block"
+            className="ml-auto block absolute right-[20px] top-[20px] cursor-pointer"
           >
-            X
+            <img
+              src={closeButton}
+              className="w-[30px] h-[30px]"
+              alt=""
+            />
           </button>
           {children}
         </div>

@@ -1,20 +1,20 @@
+import { useState } from "react";
+
 import GuideToast from "@/components/DominoHUD/GuideToast/GuideToast";
 
 import playButton from "/images/play_button.png";
+import settingButton from "/images/setting_button.png";
 import resetButton from "/images/reset_button.png";
 
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
+import SettingModal from "@/components/Setting/SettingModal";
 import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
-const DominoHUD = ({
-  rotationSensitivity,
-  onChangeSensitivity,
-  updateSimulationState,
-  isOpenGuideToastVisible,
-}) => {
+const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
   const isSimulating = simulationMode === MODE.SIMULATING;
@@ -29,30 +29,38 @@ const DominoHUD = ({
     return order[currentStep + 1];
   };
 
+  const handleCloseModal = () => {
+    setIsSettingModalOpen(false);
+  };
+
   return (
     <>
-      <input
-        id="sensitivity"
-        type="range"
-        min={1}
-        max={50}
-        step={0.01}
-        value={rotationSensitivity}
-        onChange={onChangeSensitivity}
-        className="fixed z-50 bottom-0 w-full"
-      />
-      {simulationMode !== MODE.COUNTDOWN && (
+      <div className="fixed top-[10px] left-[10px] z-50 flex">
         <button
-          className="fixed z-50 cursor-pointer w-[60px] h-[60px]"
-          onClick={() => updateSimulationState(getNextMode())}
-          onMouseOver={() => setSelectedDomino(null)}
+          onClick={() => setIsSettingModalOpen(true)}
+          className="w-[60px] h-[60px] cursor-pointer"
         >
           <img
-            src={isSimulating ? resetButton : playButton}
-            draggable="false"
+            src={settingButton}
+            alt="설정"
+            className="w-full h-full"
           />
         </button>
-      )}
+
+        {simulationMode !== "COUNTDOWN" && (
+          <button
+            onMouseOver={() => setSelectedDomino(null)}
+            onClick={() => updateSimulationState(getNextMode())}
+            className="w-[60px] h-[60px] cursor-pointer"
+          >
+            <img
+              src={isSimulating ? resetButton : playButton}
+              className="w-full h-full"
+              draggable="false"
+            />
+          </button>
+        )}
+      </div>
 
       {simulationMode === MODE.COUNTDOWN && (
         <span className="fixed z-50 text-[200px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold">
@@ -62,6 +70,8 @@ const DominoHUD = ({
 
       <SidePanel />
       {isOpenGuideToastVisible && <GuideToast />}
+
+      {isSettingModalOpen && <SettingModal closeModal={handleCloseModal} />}
     </>
   );
 };

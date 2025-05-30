@@ -63,7 +63,7 @@ const useDominoSimulation = (changeResetKey) => {
 
   const startDominoSimulation = (e, i, normal) => {
     const worldNormal = new THREE.Vector3();
-    const force = normal.negate().multiplyScalar(0.9);
+    const force = normal.clone().negate().multiplyScalar(0.9);
 
     e.object.localToWorld(worldNormal.copy(normal));
     dominoRefs.current[i]?.applyImpulse(force, true);
