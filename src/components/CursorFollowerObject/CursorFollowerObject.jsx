@@ -1,5 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { Children, useState } from "react";
+import { useState } from "react";
 import * as THREE from "three";
 
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
