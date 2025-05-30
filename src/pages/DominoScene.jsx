@@ -47,7 +47,8 @@ const DominoScene = () => {
               <ObjectRenderer
                 dominoInfo={domino.objectInfo}
                 position={domino.position}
-                onPointerOver={() => openGuideToast(domino.index)}
+                key={domino.id}
+                onPointerOver={() => openGuideToast(domino.id)}
                 onPointerOut={closeGuideToast}
                 onClick={(event) => readyDominoSimulation(event, index)}
                 opacity={domino.opacity}

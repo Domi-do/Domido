@@ -9,7 +9,7 @@ const useDominoControls = ({ onToggleGuideToast }) => {
     const pressX = (e) => {
       if (e.key.toLowerCase() === "x") {
         const updateDominos = [...dominos];
-        setDominos(updateDominos.filter((dominos) => dominos.index !== selectedDominoKey));
+        setDominos(updateDominos.filter((dominos) => dominos.id !== selectedDominoKey));
         setTimeout(() => {
           onToggleGuideToast(false);
         }, 100);
@@ -19,7 +19,8 @@ const useDominoControls = ({ onToggleGuideToast }) => {
     const pressH = (e) => {
       if (e.key.toLowerCase() === "h") {
         const updatedDominos = dominos.map((item) => {
-          if (item.index === selectedDominoKey) {
+          const currentDominoIds = item.id;
+          if (currentDominoIds === selectedDominoKey) {
             const isTransparent = item.opacity < 1;
             return { ...item, opacity: isTransparent ? 1 : 0.3 };
           }
