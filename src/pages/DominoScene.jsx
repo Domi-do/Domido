@@ -49,14 +49,14 @@ const DominoScene = () => {
               friction={1}
               linearDamping={0.01}
               angularDamping={0.01}
-              position={domino.position}
-              rotation={domino.rotation}
+              rotation={[0, 0, 0]}
               ref={(ref) => (dominoRefs.current[index] = ref)}
             >
               <ObjectRenderer
                 dominoInfo={domino.objectInfo}
                 position={domino.position}
-                onPointerOver={() => openGuideToast(domino.index)}
+                key={domino.id}
+                onPointerOver={() => openGuideToast(domino.id)}
                 onPointerOut={closeGuideToast}
                 onClick={(event) => readyDominoSimulation(event, index)}
                 opacity={domino.opacity}
