@@ -6,7 +6,7 @@ import CursorFollowerObject from "@/components/CursorFollowerObject/CursorFollow
 
 const DominoCanvas = ({ rotationSensitivity, children }) => {
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+    <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
       <ambientLight
         color="white"
         intensity={1}

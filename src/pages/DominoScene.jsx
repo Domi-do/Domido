@@ -42,7 +42,6 @@ const DominoScene = () => {
               friction={1}
               linearDamping={0.01}
               angularDamping={0.01}
-              position={domino.position}
               ref={(ref) => (dominoRefs.current[index] = ref)}
             >
               <ObjectRenderer
