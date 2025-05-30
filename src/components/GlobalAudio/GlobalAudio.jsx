@@ -1,24 +1,24 @@
 import { useThree } from "@react-three/fiber";
 import { useEffect } from "react";
-import * as THREE from "three";
+
+import useSettingStore from "@/store/useSettingStore";
+import audioController from "@/utils/audioController";
 
 const GlobalAudio = () => {
   const { camera } = useThree();
+  const volumeLevel = useSettingStore((state) => state.volumeLevel);
 
   useEffect(() => {
-    const listener = new THREE.AudioListener();
-    camera.add(listener);
+    audioController.init(camera, volumeLevel);
 
-    const sound = new THREE.Audio(listener);
+    return () => {
+      audioController.cleanup(camera);
+    };
+  }, []);
 
-    const audioLoader = new THREE.AudioLoader();
-    audioLoader.load("/sounds/bgm.mp3", (buffer) => {
-      sound.setBuffer(buffer);
-      sound.setLoop(true);
-      sound.setVolume(0.5);
-      sound.play();
-    });
-  }, [camera]);
+  useEffect(() => {
+    audioController.setVolume(volumeLevel);
+  }, [volumeLevel]);
 
   return null;
 };
