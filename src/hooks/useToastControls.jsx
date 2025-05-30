@@ -9,7 +9,8 @@ const useToastControls = () => {
   const setSelectedDominoKey = useDominoStore((state) => state.setSelectedDominoKey);
   const simulationMode = useSimulationStore((state) => state.simulationMode);
 
-  const openGuideToast = (key) => {
+  const openGuideToast = (event, key) => {
+    event.stopPropagation();
     if (simulationMode === MODE.EDIT) {
       setIsGuideToastVisible(true);
       setSelectedDominoKey(key);

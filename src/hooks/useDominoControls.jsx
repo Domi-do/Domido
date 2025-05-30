@@ -2,14 +2,15 @@ import { useEffect } from "react";
 
 import useDominoStore from "@/store/useDominoStore";
 
-const useDominoControls = ({ onToggleGuideToast }) => {
+const useDominoControls = (onToggleGuideToast) => {
   const { dominos, setDominos, selectedDominoKey } = useDominoStore();
 
   useEffect(() => {
     const pressX = (e) => {
       if (e.key.toLowerCase() === "x") {
-        const updateDominos = [...dominos];
-        setDominos(updateDominos.filter((dominos) => dominos.id !== selectedDominoKey));
+        const updateDominos = [...dominos].filter((dominos) => dominos.id !== selectedDominoKey);
+
+        setDominos(updateDominos);
         setTimeout(() => {
           onToggleGuideToast(false);
         }, 100);

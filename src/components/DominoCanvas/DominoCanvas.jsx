@@ -1,3 +1,4 @@
+import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 
@@ -15,6 +16,10 @@ const DominoCanvas = ({ rotationSensitivity, children }) => {
         castShadow
         intensity={1}
         position={[5, 10, 5]}
+      />
+      <Environment
+        preset="park"
+        background
       />
       <CameraControls rotationSensitivity={rotationSensitivity} />
       <Physics>

@@ -4,10 +4,14 @@ import * as THREE from "three";
 import { TextureLoader } from "three";
 
 import useDominoStore from "@/store/useDominoStore";
+import useSettingStore from "@/store/useSettingStore";
 
-const Ground = ({ type }) => {
-  const floorTexture = useLoader(TextureLoader, `/images/tile/${type}.png`);
+const Ground = () => {
+  const groundType = useSettingStore((state) => state.groundType);
   const { dominos, setDominos, selectedDomino } = useDominoStore();
+
+  const floorTexture = useLoader(TextureLoader, `/images/tile/${groundType}.png`);
+
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;
   floorTexture.repeat.set(10, 10);

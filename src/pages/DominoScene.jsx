@@ -9,19 +9,16 @@ import useDominoControls from "@/hooks/useDominoControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
 import useDominoStore from "@/store/useDominoStore";
+import useSettingStore from "@/store/useSettingStore";
 
 const DominoScene = () => {
-  const [rotationSensitivity, setRotationSensitivity] = useState(1);
+  const [resetKey, setResetKey] = useState(0);
+
   const dominos = useDominoStore((state) => state.dominos);
+  const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
 
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
-
-  useDominoControls({ onToggleGuideToast: (visible) => setIsGuideToastVisible(visible) });
-
-  const handleRotationSensitivity = (e) => {
-    setRotationSensitivity(e.target.value);
-  };
 
   const changeResetKey = () => {
     setResetKey((prev) => prev + 1);
@@ -30,14 +27,12 @@ const DominoScene = () => {
   const { dominoRefs, updateSimulationState, readyDominoSimulation } =
     useDominoSimulation(changeResetKey);
 
-  const [resetKey, setResetKey] = useState(0);
+  useDominoControls((visible) => setIsGuideToastVisible(visible));
 
   return (
     <>
       <DominoHUD
         updateSimulationState={updateSimulationState}
-        rotationSensitivity={rotationSensitivity}
-        onChangeSensitivity={handleRotationSensitivity}
         isOpenGuideToastVisible={isOpenGuideToastVisible}
       />
       <DominoCanvas rotationSensitivity={rotationSensitivity}>
@@ -56,14 +51,14 @@ const DominoScene = () => {
                 dominoInfo={domino.objectInfo}
                 position={domino.position}
                 key={domino.id}
-                onPointerOver={() => openGuideToast(domino.id)}
+                onPointerOver={(event) => openGuideToast(event, domino.id)}
                 onPointerOut={closeGuideToast}
                 onClick={(event) => readyDominoSimulation(event, index)}
                 opacity={domino.opacity}
               />
             </RigidBody>
           ))}
-        <Ground type="wood_dark" />
+        <Ground />
       </DominoCanvas>
     </>
   );
