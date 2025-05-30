@@ -1,4 +1,4 @@
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useState } from "react";
 import * as THREE from "three";
 
@@ -7,37 +7,30 @@ import useDominoStore from "@/store/useDominoStore";
 
 const CursorFollowerObject = () => {
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
-  const { dominos, setDominos, selectedDomino } = useDominoStore();
+  const selectedDomino = useDominoStore((state) => state.selectedDomino);
+  const { camera, pointer, scene } = useThree();
 
-  const handlePlaceDomino = (e, objectInfo) => {
-    const clickedPosition = e.point;
-    const newDomino = {
-      id: Date.now(),
-      position: [clickedPosition.x, clickedPosition.y, clickedPosition.z],
-      objectInfo,
-      opacity: 1,
-    };
-    const updateDominos = [...dominos, newDomino];
-    setDominos(updateDominos);
-  };
+  useFrame(() => {
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(pointer, camera);
 
-  useFrame((state) => {
-    const { pointer, camera } = state;
+    const ground = scene.getObjectByName("ground");
+    if (!ground) return;
 
-    const vector = new THREE.Vector3(pointer.x, pointer.y, 0.5).unproject(camera);
-    const direction = vector.clone().sub(camera.position).normalize();
+    const intersects = raycaster.intersectObject(ground);
+    const isOnGround = intersects[0];
 
-    const newPos = camera.position.clone().add(direction.multiplyScalar(5));
-
-    setPosition({ x: newPos.x, y: newPos.y, z: newPos.z });
+    if (isOnGround) {
+      const pos = isOnGround.point;
+      const newPos = { x: pos.x, y: 0, z: pos.z };
+      setPosition(newPos);
+    }
   });
+
   return (
     selectedDomino !== null && (
-      <mesh onPointerDown={(e) => handlePlaceDomino(e, selectedDomino)}>
-        <ObjectRenderer
-          dominoInfo={selectedDomino}
-          position={[position.x, position.y, position.z]}
-        />
+      <mesh position={[position.x, position.y, position.z]}>
+        <ObjectRenderer dominoInfo={selectedDomino} />
       </mesh>
     )
   );

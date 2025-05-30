@@ -1,4 +1,5 @@
 import { RigidBody } from "@react-three/rapier";
+import { useState } from "react";
 
 import DominoCanvas from "@/components/DominoCanvas/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
@@ -11,14 +12,22 @@ import useDominoStore from "@/store/useDominoStore";
 import useSettingStore from "@/store/useSettingStore";
 
 const DominoScene = () => {
+  const [resetKey, setResetKey] = useState(0);
+
   const dominos = useDominoStore((state) => state.dominos);
   const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
 
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
 
-  useDominoControls({ onToggleGuideToast: (visible) => setIsGuideToastVisible(visible) });
-  const { dominoRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
+  const changeResetKey = () => {
+    setResetKey((prev) => prev + 1);
+  };
+
+  const { dominoRefs, updateSimulationState, readyDominoSimulation } =
+    useDominoSimulation(changeResetKey);
+
+  useDominoControls((visible) => setIsGuideToastVisible(visible));
 
   return (
     <>
@@ -30,18 +39,19 @@ const DominoScene = () => {
         {dominos.length
           && dominos.map((domino, index) => (
             <RigidBody
-              key={domino.id}
+              key={`${resetKey}-${domino.id}`}
               restitution={0}
               friction={1}
               linearDamping={0.01}
               angularDamping={0.01}
-              position={domino.position}
+              rotation={[0, 0, 0]}
               ref={(ref) => (dominoRefs.current[index] = ref)}
             >
               <ObjectRenderer
                 dominoInfo={domino.objectInfo}
                 position={domino.position}
-                onPointerOver={() => openGuideToast(domino.index)}
+                key={domino.id}
+                onPointerOver={(event) => openGuideToast(event, domino.id)}
                 onPointerOut={closeGuideToast}
                 onClick={(event) => readyDominoSimulation(event, index)}
                 opacity={domino.opacity}

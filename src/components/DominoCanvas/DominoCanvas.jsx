@@ -1,3 +1,4 @@
+import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 
@@ -6,7 +7,7 @@ import CursorFollowerObject from "@/components/CursorFollowerObject/CursorFollow
 
 const DominoCanvas = ({ rotationSensitivity, children }) => {
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+    <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
       <ambientLight
         color="white"
         intensity={1}
@@ -15,6 +16,10 @@ const DominoCanvas = ({ rotationSensitivity, children }) => {
         castShadow
         intensity={1}
         position={[5, 10, 5]}
+      />
+      <Environment
+        preset="park"
+        background
       />
       <CameraControls rotationSensitivity={rotationSensitivity} />
       <Physics>

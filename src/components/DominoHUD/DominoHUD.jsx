@@ -2,13 +2,13 @@ import { useState } from "react";
 
 import GuideToast from "@/components/DominoHUD/GuideToast/GuideToast";
 
-import stopButton from "/images/stop_button.png";
 import playButton from "/images/play_button.png";
-import resetButton from "/images/reset_button.png";
 import settingButton from "/images/setting_button.png";
+import resetButton from "/images/reset_button.png";
 
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
 import SettingModal from "@/components/Setting/SettingModal";
+import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
@@ -17,11 +17,16 @@ const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
-  const isSimulating = simulationMode === "SIMULATING";
+  const isSimulating = simulationMode === MODE.SIMULATING;
 
-  const buttonConfig = {
-    icon: isSimulating ? stopButton : playButton,
-    nextMode: isSimulating ? "EDIT" : "READY",
+  const getNextMode = () => {
+    const order = [MODE.EDIT, MODE.READY, MODE.COUNTDOWN, MODE.SIMULATING];
+    const currentStep = order.indexOf(simulationMode);
+    const isLastStep = currentStep >= order.length - 1;
+
+    if (isLastStep) return order[0];
+
+    return order[currentStep + 1];
   };
 
   const handleCloseModal = () => {
@@ -45,7 +50,7 @@ const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
         {simulationMode !== "COUNTDOWN" && (
           <button
             onMouseOver={() => setSelectedDomino(null)}
-            onClick={() => updateSimulationState(buttonConfig.nextMode)}
+            onClick={() => updateSimulationState(getNextMode())}
             className="w-[60px] h-[60px] cursor-pointer"
           >
             <img
@@ -57,7 +62,7 @@ const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
         )}
       </div>
 
-      {simulationMode === "COUNTDOWN" && (
+      {simulationMode === MODE.COUNTDOWN && (
         <span className="fixed z-50 text-[200px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold">
           {countdownNumber}
         </span>
