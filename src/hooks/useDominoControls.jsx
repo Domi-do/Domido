@@ -19,7 +19,8 @@ const useDominoControls = ({ onToggleGuideToast }) => {
     const pressH = (e) => {
       if (e.key.toLowerCase() === "h") {
         const updatedDominos = dominos.map((item) => {
-          if (item.id === selectedDominoKey) {
+          const currentDominoIds = item.id;
+          if (currentDominoIds === selectedDominoKey) {
             const isTransparent = item.opacity < 1;
             return { ...item, opacity: isTransparent ? 1 : 0.3 };
           }

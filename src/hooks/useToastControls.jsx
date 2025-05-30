@@ -7,7 +7,7 @@ import useSimulationStore from "@/store/useSimulationStore";
 const useToastControls = () => {
   const [isOpenGuideToastVisible, setIsGuideToastVisible] = useState(false);
   const setSelectedDominoKey = useDominoStore((state) => state.setSelectedDominoKey);
-  const { simulationMode } = useSimulationStore();
+  const simulationMode = useSimulationStore((state) => state.simulationMode);
 
   const openGuideToast = (key) => {
     if (simulationMode === MODE.EDIT) {
