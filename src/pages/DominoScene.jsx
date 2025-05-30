@@ -23,7 +23,14 @@ const DominoScene = () => {
     setRotationSensitivity(e.target.value);
   };
 
-  const { dominoRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
+  const changeResetKey = () => {
+    setResetKey((prev) => prev + 1);
+  };
+
+  const { dominoRefs, updateSimulationState, readyDominoSimulation } =
+    useDominoSimulation(changeResetKey);
+
+  const [resetKey, setResetKey] = useState(0);
 
   return (
     <>
@@ -37,11 +44,12 @@ const DominoScene = () => {
         {dominos.length
           && dominos.map((domino, index) => (
             <RigidBody
-              key={domino.id}
+              key={`${resetKey}-${domino.id}`}
               restitution={0}
               friction={1}
               linearDamping={0.01}
               angularDamping={0.01}
+              rotation={[0, 0, 0]}
               ref={(ref) => (dominoRefs.current[index] = ref)}
             >
               <ObjectRenderer

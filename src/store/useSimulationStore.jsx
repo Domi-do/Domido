@@ -1,7 +1,9 @@
 import { create } from "zustand";
 
+import MODE from "@/constants/mode";
+
 const useSimulationStore = create((set) => ({
-  simulationMode: "EDIT",
+  simulationMode: MODE.EDIT,
   countdownNumber: 3,
   setSimulationMode: (mode) => set(() => ({ simulationMode: mode })),
   setCountdownNumber: (num) => set(() => ({ countdownNumber: num })),

@@ -1,9 +1,11 @@
 import GuideToast from "@/components/DominoHUD/GuideToast/GuideToast";
 
-import stopButton from "/images/stop_button.png";
 import playButton from "/images/play_button.png";
+import resetButton from "/images/reset_button.png";
 
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
+import MODE from "@/constants/mode";
+import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
 const DominoHUD = ({
@@ -13,11 +15,18 @@ const DominoHUD = ({
   isOpenGuideToastVisible,
 }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
-  const isSimulating = simulationMode === "SIMULATING";
+  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
-  const buttonConfig = {
-    icon: isSimulating ? stopButton : playButton,
-    nextMode: isSimulating ? "EDIT" : "READY",
+  const isSimulating = simulationMode === MODE.SIMULATING;
+
+  const getNextMode = () => {
+    const order = [MODE.EDIT, MODE.READY, MODE.COUNTDOWN, MODE.SIMULATING];
+    const currentStep = order.indexOf(simulationMode);
+    const isLastStep = currentStep >= order.length - 1;
+
+    if (isLastStep) return order[0];
+
+    return order[currentStep + 1];
   };
 
   return (
@@ -32,19 +41,20 @@ const DominoHUD = ({
         onChange={onChangeSensitivity}
         className="fixed z-50 bottom-0 w-full"
       />
+      {simulationMode !== MODE.COUNTDOWN && (
+        <button
+          className="fixed z-50 cursor-pointer w-[60px] h-[60px]"
+          onClick={() => updateSimulationState(getNextMode())}
+          onMouseOver={() => setSelectedDomino(null)}
+        >
+          <img
+            src={isSimulating ? resetButton : playButton}
+            draggable="false"
+          />
+        </button>
+      )}
 
-      <button
-        className="fixed z-50 cursor-pointer w-[60px] h-[60px]"
-        onClick={() => updateSimulationState(buttonConfig.nextMode)}
-      >
-        <img
-          src={buttonConfig.icon}
-          alt={buttonConfig.alt}
-          draggable="false"
-        />
-      </button>
-
-      {simulationMode === "COUNTDOWN" && (
+      {simulationMode === MODE.COUNTDOWN && (
         <span className="fixed z-50 text-[200px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold">
           {countdownNumber}
         </span>
