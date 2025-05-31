@@ -6,7 +6,7 @@ import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
-const FORCE = 4.5;
+const FORCE = 6;
 
 const useDominoSimulation = () => {
   const { dominos, setSelectedDomino } = useDominoStore();
@@ -50,19 +50,20 @@ const useDominoSimulation = () => {
     const rigidBodyRef = rigidBodyRefs.current[index];
     if (!rigidBodyRef) return;
 
-    const clickedNormal = event.face?.normal.clone().normalize();
+    const clickedNormal = event.face?.normal.clone();
     if (!clickedNormal) return;
 
-    const worldDirection = event.object
-      .localToWorld(clickedNormal.clone())
-      .sub(event.object.position)
-      .normalize();
+    const worldDirection = clickedNormal.clone().transformDirection(event.object.matrixWorld);
+
+    worldDirection.y = 0;
+    worldDirection.normalize();
 
     const fallDirection = worldDirection.clone().multiplyScalar(-1);
     const { x: pushX, z: pushZ } = fallDirection;
 
     const isFallDirectionX = Math.abs(pushX) > Math.abs(pushZ);
     const spinDirection = isFallDirectionX ? -Math.sign(pushX) : -Math.sign(pushZ);
+
     const angularForce = {
       x: isFallDirectionX ? 0 : spinDirection * FORCE,
       y: 0,
