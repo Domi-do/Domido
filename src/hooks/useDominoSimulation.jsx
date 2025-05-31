@@ -82,9 +82,9 @@ const useDominoSimulation = () => {
   };
 
   useEffect(() => {
-    const isClickedResetButton = simulationMode === MODE.EDIT && rigidBodyRefs.current.length > 0;
+    const canResetDominoes = simulationMode === MODE.EDIT && rigidBodyRefs.current.length > 0;
 
-    if (isClickedResetButton) {
+    if (canResetDominoes) {
       setCountdownNumber(3);
       resetAllDominoes();
     }
