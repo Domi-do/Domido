@@ -17,7 +17,7 @@ import useSimulationStore from "@/store/useSimulationStore";
 const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
-  const [isUndoUnabledModalOpen, setUndoUnabledModalOpen] = useState(false);
+  const [isDisabledModalOpen, setUndoDisabledModalOpen] = useState(false);
   const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
   const isSimulating = simulationMode === MODE.SIMULATING;
@@ -34,7 +34,7 @@ const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
 
   const handleCloseModal = () => {
     setIsSettingModalOpen(false);
-    setUndoUnabledModalOpen(false);
+    setUndoDisabledModalOpen(false);
   };
 
   return (
@@ -66,7 +66,7 @@ const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
         )}
 
         <button
-          onClick={() => setUndoUnabledModalOpen(true)}
+          onClick={() => setUndoDisabledModalOpen(true)}
           className="w-[60px] h-[60px] cursor-pointer"
         >
           <img
@@ -87,7 +87,7 @@ const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
       {isOpenGuideToastVisible && <GuideToast />}
 
       {isSettingModalOpen && <SettingModal closeModal={handleCloseModal} />}
-      {isUndoUnabledModalOpen && <UndoDisabledModal closeModal={handleCloseModal} />}
+      {isDisabledModalOpen && <UndoDisabledModal closeModal={handleCloseModal} />}
     </>
   );
 };

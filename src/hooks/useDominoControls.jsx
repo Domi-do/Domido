@@ -4,13 +4,13 @@ import useDominoStore from "@/store/useDominoStore";
 
 const useDominoControls = (onToggleGuideToast) => {
   const { dominos, setDominos, selectedDominoKey, setSelectedDominoKey } = useDominoStore();
-  const historyRef = useRef([]);
+  const historys = useRef([]);
   const prevLengthRef = useRef(dominos.length);
 
   useEffect(() => {
-    const pressX = (e) => {
-      if (e.key.toLowerCase() === "x") {
-        historyRef.current.push([...dominos]);
+    const pressX = (event) => {
+      if (event.key.toLowerCase() === "x") {
+        historys.current.push([...dominos]);
         const updateDominos = dominos.filter((domino) => domino.id !== selectedDominoKey);
         setDominos(updateDominos);
         setSelectedDominoKey(null);
@@ -18,11 +18,11 @@ const useDominoControls = (onToggleGuideToast) => {
       }
     };
 
-    const pressH = (e) => {
-      if (e.key.toLowerCase() === "h") {
-        historyRef.current.push([...dominos]);
+    const pressH = (event) => {
+      if (event.key.toLowerCase() === "h") {
+        historys.current.push([...dominos]);
         const updatedDominos = dominos.map((item) =>
-          item.id === selectedDominoKey ? { ...item, opacity: item.opacity < 1 ? 1 : 0.3 } : item,
+          item.id === selectedDominoKey ? { ...item, opacity: item.opacity === 1 ? 1 : 0.3 } : item,
         );
         setDominos(updatedDominos);
         onToggleGuideToast(false);
@@ -39,20 +39,18 @@ const useDominoControls = (onToggleGuideToast) => {
 
   useEffect(() => {
     if (dominos.length > prevLengthRef.current) {
-      historyRef.current.push([...dominos]);
+      historys.current.push([...dominos]);
     }
     prevLengthRef.current = dominos.length;
   }, [dominos]);
 
   useEffect(() => {
-    const pressU = (e) => {
-      if (e.key.toLowerCase() === "u") {
-        if (historyRef.current.length > 0) {
-          historyRef.current.pop();
-          console.log("history", historyRef.current);
-          if (historyRef.current.length >= 1) {
-            setDominos(historyRef.current[historyRef.current.length - 1]);
-          }
+    const pressU = (event) => {
+      if (historys.current.length < 0) return;
+      if (event.key.toLowerCase() === "u") {
+        historys.current.pop();
+        if (historys.current.length >= 1) {
+          setDominos(historys.current[historys.current.length - 1]);
         }
       }
     };

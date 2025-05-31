@@ -2,10 +2,10 @@ import ModalOverlay from "@/components/ModalOverlay/ModalOverlay";
 import useDominoStore from "@/store/useDominoStore";
 
 const UndoDisabledModal = ({ closeModal }) => {
-  const resetDominos = useDominoStore((state) => state.resetDominos);
+  const clearDominos = useDominoStore((state) => state.clearDominos);
 
   const handleConfirm = () => {
-    resetDominos();
+    clearDominos();
     closeModal();
   };
 
