@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 import fingerCursor from "/images/finger_cursor.png";
@@ -7,12 +7,11 @@ import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
-const useDominoSimulation = (changeResetKey) => {
-  const { dominos, setDominos, setSelectedDomino } = useDominoStore();
+const useDominoSimulation = () => {
+  const { dominos, setSelectedDomino } = useDominoStore();
   const { simulationMode, setSimulationMode, setCountdownNumber } = useSimulationStore();
 
-  const dominoRefs = useRef([]);
-  const [dominoesBackup, setDominoesBackup] = useState([]);
+  const rigidBodyRefs = useRef([]);
 
   const changePushCursor = (isChange) => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
@@ -52,7 +51,6 @@ const useDominoSimulation = (changeResetKey) => {
       if (current <= 1) {
         clearInterval(timer);
         setCountdownNumber(0);
-        setDominoesBackup(dominos);
         setSimulationMode(MODE.SIMULATING);
         startDominoSimulation(e, i, normal);
       } else {
@@ -66,16 +64,29 @@ const useDominoSimulation = (changeResetKey) => {
     const force = normal.clone().negate().multiplyScalar(0.9);
 
     e.object.localToWorld(worldNormal.copy(normal));
-    dominoRefs.current[i]?.applyImpulse(force, true);
+    rigidBodyRefs.current[i]?.applyImpulse(force, true);
+  };
+
+  const resetAllDominoes = () => {
+    dominos.forEach((domino, index) => {
+      const rigidBodyRef = rigidBodyRefs.current[index];
+      if (!rigidBodyRef) return;
+
+      const { position } = domino;
+
+      rigidBodyRef.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
+      rigidBodyRef.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
+      rigidBodyRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
+      rigidBodyRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
+    });
   };
 
   useEffect(() => {
-    const isClickedResetButton = simulationMode === MODE.EDIT && dominoesBackup.length > 0;
+    const canResetDominoes = simulationMode === MODE.EDIT && rigidBodyRefs.current.length > 0;
 
-    if (isClickedResetButton) {
+    if (canResetDominoes) {
       setCountdownNumber(3);
-      setDominos(dominoesBackup);
-      changeResetKey();
+      resetAllDominoes();
     }
 
     if (simulationMode === MODE.READY) {
@@ -89,9 +100,9 @@ const useDominoSimulation = (changeResetKey) => {
       changePushCursor(false);
       window.removeEventListener("keydown", closeCurrentMode);
     };
-  }, [simulationMode, dominoesBackup]);
+  }, [simulationMode]);
 
-  return { dominoRefs, updateSimulationState, readyDominoSimulation };
+  return { rigidBodyRefs, updateSimulationState, readyDominoSimulation };
 };
 
 export default useDominoSimulation;
