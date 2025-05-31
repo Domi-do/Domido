@@ -1,23 +1,24 @@
 import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import useSettingStore from "@/store/useSettingStore";
-import audioController from "@/utils/audioController";
+import AudioController from "@/utils/AudioController";
 
 const GlobalAudio = () => {
   const { camera } = useThree();
   const volumeLevel = useSettingStore((state) => state.volumeLevel);
+  const audioControllerRef = useRef(new AudioController());
 
   useEffect(() => {
-    audioController.init(camera, volumeLevel);
+    audioControllerRef.current.init(camera, volumeLevel);
 
     return () => {
-      audioController.cleanup(camera);
+      audioControllerRef.current.cleanup(camera);
     };
   }, []);
 
   useEffect(() => {
-    audioController.setVolume(volumeLevel);
+    audioControllerRef.current.setVolume(volumeLevel);
   }, [volumeLevel]);
 
   return null;
