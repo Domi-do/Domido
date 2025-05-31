@@ -1,11 +1,12 @@
 import { useRef, useEffect } from "react";
-import * as THREE from "three";
 
 import fingerCursor from "/images/finger_cursor.png";
 
 import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
+
+const FORCE = 4.5;
 
 const useDominoSimulation = () => {
   const { dominos, setSelectedDomino } = useDominoStore();
@@ -35,10 +36,10 @@ const useDominoSimulation = () => {
     setSimulationMode(mode);
   };
 
-  const readyDominoSimulation = (e, i) => {
-    e.stopPropagation();
+  const readyDominoSimulation = (event, index) => {
+    event.stopPropagation();
 
-    const normal = e.face?.normal;
+    const normal = event.face?.normal;
     const isReadyToStartGame = simulationMode === MODE.READY && normal;
 
     if (!isReadyToStartGame) return;
@@ -52,19 +53,39 @@ const useDominoSimulation = () => {
         clearInterval(timer);
         setCountdownNumber(0);
         setSimulationMode(MODE.SIMULATING);
-        startDominoSimulation(e, i, normal);
+        startDominoSimulation(event, index, normal);
       } else {
         setCountdownNumber(current - 1);
       }
     }, 1000);
   };
 
-  const startDominoSimulation = (e, i, normal) => {
-    const worldNormal = new THREE.Vector3();
-    const force = normal.clone().negate().multiplyScalar(0.9);
+  const startDominoSimulation = (event, index) => {
+    const rigidBodyRef = rigidBodyRefs.current[index];
+    if (!rigidBodyRef) return;
 
-    e.object.localToWorld(worldNormal.copy(normal));
-    rigidBodyRefs.current[i]?.applyImpulse(force, true);
+    const clickedNormal = event.face?.normal.clone().normalize();
+    if (!clickedNormal) return;
+
+    const worldDirection = event.object
+      .localToWorld(clickedNormal.clone())
+      .sub(event.object.position)
+      .normalize();
+
+    const fallDirection = worldDirection.clone().multiplyScalar(-1);
+    const { x: pushX, z: pushZ } = fallDirection;
+
+    const isFallDirectionX = Math.abs(pushX) > Math.abs(pushZ);
+    const spinDirection = isFallDirectionX ? -Math.sign(pushX) : -Math.sign(pushZ);
+    const angularForce = {
+      x: isFallDirectionX ? 0 : spinDirection * FORCE,
+      y: 0,
+      z: isFallDirectionX ? spinDirection * FORCE : 0,
+    };
+
+    rigidBodyRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
+    rigidBodyRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
+    rigidBodyRef.setAngvel(angularForce, true);
   };
 
   const resetAllDominoes = () => {
