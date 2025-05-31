@@ -17,7 +17,7 @@ const DominoScene = () => {
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
 
-  const { dominoRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
+  const { rigidBodyRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
 
   useDominoControls((visible) => setIsGuideToastVisible(visible));
 
@@ -37,7 +37,7 @@ const DominoScene = () => {
               linearDamping={0.01}
               angularDamping={0.01}
               position={domino.position}
-              ref={(ref) => (dominoRefs.current[index] = ref)}
+              ref={(ref) => (rigidBodyRefs.current[index] = ref)}
             >
               <ObjectRenderer
                 dominoInfo={domino.objectInfo}

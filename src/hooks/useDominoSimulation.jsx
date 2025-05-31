@@ -11,7 +11,7 @@ const useDominoSimulation = () => {
   const { dominos, setSelectedDomino } = useDominoStore();
   const { simulationMode, setSimulationMode, setCountdownNumber } = useSimulationStore();
 
-  const dominoRefs = useRef([]);
+  const rigidBodyRefs = useRef([]);
 
   const changePushCursor = (isChange) => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
@@ -64,25 +64,25 @@ const useDominoSimulation = () => {
     const force = normal.clone().negate().multiplyScalar(0.9);
 
     e.object.localToWorld(worldNormal.copy(normal));
-    dominoRefs.current[i]?.applyImpulse(force, true);
+    rigidBodyRefs.current[i]?.applyImpulse(force, true);
   };
 
   const resetAllDominoes = () => {
     dominos.forEach((domino, index) => {
-      const dominoRef = dominoRefs.current[index];
-      if (!dominoRef) return;
+      const rigidBodyRef = rigidBodyRefs.current[index];
+      if (!rigidBodyRef) return;
 
       const { position } = domino;
 
-      dominoRef.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
-      dominoRef.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
-      dominoRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
-      dominoRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
+      rigidBodyRef.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
+      rigidBodyRef.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
+      rigidBodyRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
+      rigidBodyRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
     });
   };
 
   useEffect(() => {
-    const isClickedResetButton = simulationMode === MODE.EDIT && dominoRefs.current.length > 0;
+    const isClickedResetButton = simulationMode === MODE.EDIT && rigidBodyRefs.current.length > 0;
 
     if (isClickedResetButton) {
       setCountdownNumber(3);
@@ -102,7 +102,7 @@ const useDominoSimulation = () => {
     };
   }, [simulationMode]);
 
-  return { dominoRefs, updateSimulationState, readyDominoSimulation };
+  return { rigidBodyRefs, updateSimulationState, readyDominoSimulation };
 };
 
 export default useDominoSimulation;
