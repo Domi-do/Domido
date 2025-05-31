@@ -4,10 +4,12 @@ import { Physics } from "@react-three/rapier";
 
 import CameraControls from "@/components/CameraControls/CameraControls";
 import CursorFollowerObject from "@/components/CursorFollowerObject/CursorFollowerObject";
+import GlobalAudio from "@/components/GlobalAudio/GlobalAudio";
 
 const DominoCanvas = ({ rotationSensitivity, children }) => {
   return (
     <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
+      <GlobalAudio />
       <ambientLight
         color="white"
         intensity={1}

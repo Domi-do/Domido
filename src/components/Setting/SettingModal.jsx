@@ -14,8 +14,14 @@ const groundOptions = [
 ];
 
 const SettingModal = ({ closeModal }) => {
-  const { rotationSensitivity, setRotationSensitivity, groundType, setGroundType } =
-    useSettingStore();
+  const {
+    rotationSensitivity,
+    setRotationSensitivity,
+    groundType,
+    setGroundType,
+    volumeLevel,
+    setVolumeLevel,
+  } = useSettingStore();
 
   return (
     <ModalOverlay closeModal={closeModal}>
@@ -36,9 +42,11 @@ const SettingModal = ({ closeModal }) => {
           <input
             id="volume"
             type="range"
-            value={0}
-            disabled
-            className="w-full mb-[16px] appearance-none h-[8px] rounded bg-gray-100 cursor-not-allowed"
+            max={4}
+            step={0.01}
+            value={volumeLevel}
+            onChange={(e) => setVolumeLevel(parseFloat(e.target.value))}
+            className="w-full mb-[16px] appearance-none h-[8px] rounded bg-gray-100 custom-slider"
           />
         </SettingGroup>
 
