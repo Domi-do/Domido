@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import * as THREE from "three";
 
 import fingerCursor from "/images/finger_cursor.png";
 
 import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
+
+const FORCE = 4.5;
 
 const useDominoSimulation = (changeResetKey) => {
   const { dominos, setDominos, setSelectedDomino } = useDominoStore();
@@ -62,8 +63,6 @@ const useDominoSimulation = (changeResetKey) => {
   };
 
   const startDominoSimulation = (event, index) => {
-    const FORCE = 4.5;
-
     const dominoRef = dominoRefs.current[index];
     if (!dominoRef) return;
 
