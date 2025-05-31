@@ -8,6 +8,7 @@ const useDominoStore = create((set) => ({
   setDominos: (updatedDominos) => set(() => ({ dominos: updatedDominos })),
   setSelectedDomino: (selectedDomino) => set(() => ({ selectedDomino })),
   setSelectedDominoKey: (selectedDominoKey) => set(() => ({ selectedDominoKey })),
+  clearDominos: () => set({ dominos: [] }),
 }));
 
 export default useDominoStore;
