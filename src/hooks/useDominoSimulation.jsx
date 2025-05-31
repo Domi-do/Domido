@@ -69,15 +69,15 @@ const useDominoSimulation = () => {
 
   const resetAllDominoes = () => {
     dominos.forEach((domino, index) => {
-      const ref = dominoRefs.current[index];
-      if (!ref) return;
+      const dominoRef = dominoRefs.current[index];
+      if (!dominoRef) return;
 
       const { position } = domino;
 
-      ref.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
-      ref.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
-      ref.setLinvel({ x: 0, y: 0, z: 0 }, true);
-      ref.setAngvel({ x: 0, y: 0, z: 0 }, true);
+      dominoRef.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
+      dominoRef.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
+      dominoRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
+      dominoRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
     });
   };
 
