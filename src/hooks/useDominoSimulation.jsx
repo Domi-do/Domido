@@ -36,10 +36,10 @@ const useDominoSimulation = (changeResetKey) => {
     setSimulationMode(mode);
   };
 
-  const readyDominoSimulation = (e, i) => {
-    e.stopPropagation();
+  const readyDominoSimulation = (event, index) => {
+    event.stopPropagation();
 
-    const normal = e.face?.normal;
+    const normal = event.face?.normal;
     const isReadyToStartGame = simulationMode === MODE.READY && normal;
 
     if (!isReadyToStartGame) return;
@@ -54,36 +54,36 @@ const useDominoSimulation = (changeResetKey) => {
         setCountdownNumber(0);
         setDominoesBackup(dominos);
         setSimulationMode(MODE.SIMULATING);
-        startDominoSimulation(e, i, normal);
+        startDominoSimulation(event, index, normal);
       } else {
         setCountdownNumber(current - 1);
       }
     }, 1000);
   };
 
-  const startDominoSimulation = (e, i) => {
+  const startDominoSimulation = (event, index) => {
     const FORCE = 4.5;
 
-    const dominoRef = dominoRefs.current[i];
+    const dominoRef = dominoRefs.current[index];
     if (!dominoRef) return;
 
-    const localNormal = e.face?.normal.clone().normalize();
-    if (!localNormal) return;
+    const clickedNormal = event.face?.normal.clone().normalize();
+    if (!clickedNormal) return;
 
-    const worldNormal = e.object
-      .localToWorld(localNormal.clone())
-      .sub(e.object.position)
+    const worldDirection = event.object
+      .localToWorld(clickedNormal.clone())
+      .sub(event.object.position)
       .normalize();
 
-    const pushDirection = worldNormal.clone().multiplyScalar(-1);
-    const { x: pushX, z: pushZ } = pushDirection;
+    const fallDirection = worldDirection.clone().multiplyScalar(-1);
+    const { x: pushX, z: pushZ } = fallDirection;
 
     const isFallDirectionX = Math.abs(pushX) > Math.abs(pushZ);
-    const rotationDirection = isFallDirectionX ? -Math.sign(pushX) : -Math.sign(pushZ);
+    const spinDirection = isFallDirectionX ? -Math.sign(pushX) : -Math.sign(pushZ);
     const angularForce = {
-      x: isFallDirectionX ? 0 : rotationDirection * FORCE,
+      x: isFallDirectionX ? 0 : spinDirection * FORCE,
       y: 0,
-      z: isFallDirectionX ? rotationDirection * FORCE : 0,
+      z: isFallDirectionX ? spinDirection * FORCE : 0,
     };
 
     dominoRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
