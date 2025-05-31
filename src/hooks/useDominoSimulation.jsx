@@ -61,12 +61,34 @@ const useDominoSimulation = (changeResetKey) => {
     }, 1000);
   };
 
-  const startDominoSimulation = (e, i, normal) => {
-    const worldNormal = new THREE.Vector3();
-    const force = normal.clone().negate().multiplyScalar(0.9);
+  const startDominoSimulation = (e, i) => {
+    const FORCE = 4.5;
 
-    e.object.localToWorld(worldNormal.copy(normal));
-    dominoRefs.current[i]?.applyImpulse(force, true);
+    const dominoRef = dominoRefs.current[i];
+    if (!dominoRef) return;
+
+    const localNormal = e.face?.normal.clone().normalize();
+    if (!localNormal) return;
+
+    const worldNormal = e.object
+      .localToWorld(localNormal.clone())
+      .sub(e.object.position)
+      .normalize();
+
+    const pushDirection = worldNormal.clone().multiplyScalar(-1);
+    const { x: pushX, z: pushZ } = pushDirection;
+
+    const isFallDirectionX = Math.abs(pushX) > Math.abs(pushZ);
+    const rotationDirection = isFallDirectionX ? -Math.sign(pushX) : -Math.sign(pushZ);
+    const angularForce = {
+      x: isFallDirectionX ? 0 : rotationDirection * FORCE,
+      y: 0,
+      z: isFallDirectionX ? rotationDirection * FORCE : 0,
+    };
+
+    dominoRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
+    dominoRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
+    dominoRef.setAngvel(angularForce, true);
   };
 
   useEffect(() => {

@@ -40,11 +40,10 @@ const DominoScene = () => {
           && dominos.map((domino, index) => (
             <RigidBody
               key={`${resetKey}-${domino.id}`}
-              restitution={0}
-              friction={1}
+              restitution={0.1}
+              friction={0.3}
               linearDamping={0.01}
-              angularDamping={0.01}
-              rotation={[0, 0, 0]}
+              angularDamping={0.05}
               ref={(ref) => (dominoRefs.current[index] = ref)}
             >
               <ObjectRenderer
