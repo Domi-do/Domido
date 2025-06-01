@@ -1,27 +1,36 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
 import useDominoStore from "@/store/useDominoStore";
+import AudioController from "@/utils/AudioController";
 
 const DOMINO_HEIGHT = 1;
 const HALF_DOMINO_HEIGHT = DOMINO_HEIGHT / 2;
 const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
+const DOMINO_PLACE_SOUND_PATH = "/sounds/domino_drop.mp3";
 
 const CursorFollowerObject = () => {
   const { dominos, setDominos, selectedDomino } = useDominoStore();
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
+  const audioRef = useRef(new AudioController());
+
+  useEffect(() => {
+    audioRef.current.init(camera, 2, false);
+  }, [camera]);
+
+  const playDominoDropSound = () => {
+    audioRef.current.play(selectedDomino.paths.sound);
+  };
 
   const handlePlaceDomino = (e) => {
     e.stopPropagation();
 
     const isBlockedClick = BLOCKED_MOUSE_BUTTONS.includes(e.button);
-    const cannotPlaceDomino = isBlockedClick || !selectedDomino || !meshRef.current;
-
-    if (cannotPlaceDomino) return;
+    if (isBlockedClick || !selectedDomino || !meshRef.current) return;
 
     const currentPosition = meshRef.current.position;
 
@@ -32,6 +41,8 @@ const CursorFollowerObject = () => {
       opacity: DEFAULT_OPACITY,
     };
     setDominos([...dominos, newDomino]);
+
+    playDominoDropSound();
   };
 
   useFrame(() => {
