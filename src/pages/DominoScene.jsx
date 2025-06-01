@@ -31,6 +31,7 @@ const DominoScene = () => {
         {dominos.length
           && dominos.map((domino, index) => (
             <RigidBody
+              name="domino"
               key={domino.id}
               restitution={0}
               friction={1}
