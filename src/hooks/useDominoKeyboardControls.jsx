@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
 
+import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
+import useSimulationStore from "@/store/useSimulationStore";
 
 const useDominoKeyboardControls = (onToggleGuideToast) => {
-  const { dominos, setDominos, setSelectedDominoKey } = useDominoStore();
+  const { dominos, setDominos, setSelectedDomino, setSelectedDominoKey } = useDominoStore();
   const historys = useRef([]);
   const prevLengthRef = useRef(dominos.length);
 
@@ -37,13 +39,20 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     setDominos(historys.current[historys.current.length - 1]);
   };
 
+  const closeCurrentMode = () => {
+    const { simulationMode, setSimulationMode } = useSimulationStore.getState();
+
+    if (simulationMode === MODE.EDIT) return setSelectedDomino(null);
+    if (simulationMode === MODE.READY) return setSimulationMode(MODE.EDIT);
+  };
+
   const keyMap = {
     x: deleteSelectedDomino,
     h: toggleSelectedDominoOpacity,
     u: undoLastDominoAction,
     q: () => console.log("q"),
     e: () => console.log("e"),
-    escape: () => console.log("Escape"),
+    escape: closeCurrentMode,
   };
 
   const handleKeydown = (event) => {
