@@ -1,9 +1,10 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
 import useDominoStore from "@/store/useDominoStore";
+import AudioController from "@/utils/AudioController";
 
 const DOMINO_HEIGHT = 1;
 const HALF_DOMINO_HEIGHT = DOMINO_HEIGHT / 2;
@@ -14,6 +15,15 @@ const CursorFollowerObject = () => {
   const { dominos, setDominos, selectedDomino } = useDominoStore();
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
+  const audioController = useRef(new AudioController());
+
+  useEffect(() => {
+    audioController.current.init(camera, 2, false);
+  }, [camera]);
+
+  const playDominoDropSound = () => {
+    audioController.current.play(selectedDomino.paths.sound);
+  };
 
   const handlePlaceDomino = (e) => {
     e.stopPropagation();
@@ -32,6 +42,8 @@ const CursorFollowerObject = () => {
       opacity: DEFAULT_OPACITY,
     };
     setDominos([...dominos, newDomino]);
+
+    playDominoDropSound();
   };
 
   useFrame(() => {
