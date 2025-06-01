@@ -2,6 +2,8 @@ import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
+const QUARTER_TURN = 4;
+
 export const deleteSelectedDomino = (historyRef, onToggleGuideToast) => {
   const { dominos, selectedDominoKey, setDominos, setSelectedDominoKey } =
     useDominoStore.getState();
@@ -26,7 +28,7 @@ export const toggleSelectedDominoOpacity = (historyRef, onToggleGuideToast) => {
   onToggleGuideToast(false);
 };
 
-export const undoLastDominoAction = (historyRef) => {
+export const undoDominoHistory = (historyRef) => {
   const { setDominos } = useDominoStore.getState();
   if (historyRef.current.length <= 1) return;
 
@@ -44,10 +46,10 @@ export const closeCurrentMode = () => {
 
 export const rotateDominoClockwise = () => {
   const { rotationY, setRotationY } = useDominoStore.getState();
-  setRotationY(rotationY + Math.PI / 4);
+  setRotationY(rotationY + Math.PI / QUARTER_TURN);
 };
 
 export const rotateDominoCounterClockwise = () => {
   const { rotationY, setRotationY } = useDominoStore.getState();
-  setRotationY(rotationY - Math.PI / 4);
+  setRotationY(rotationY - Math.PI / QUARTER_TURN);
 };

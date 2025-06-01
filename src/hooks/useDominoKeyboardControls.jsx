@@ -4,7 +4,7 @@ import useDominoStore from "@/store/useDominoStore";
 import {
   deleteSelectedDomino,
   toggleSelectedDominoOpacity,
-  undoLastDominoAction,
+  undoDominoHistory,
   closeCurrentMode,
   rotateDominoClockwise,
   rotateDominoCounterClockwise,
@@ -18,7 +18,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
   const keyMap = {
     x: () => deleteSelectedDomino(historyRef, onToggleGuideToast),
     h: () => toggleSelectedDominoOpacity(historyRef, onToggleGuideToast),
-    u: () => undoLastDominoAction(historyRef),
+    u: () => undoDominoHistory(historyRef),
     q: rotateDominoCounterClockwise,
     e: rotateDominoClockwise,
     escape: () => closeCurrentMode(),
