@@ -1,15 +1,21 @@
 import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import useSettingStore from "@/store/useSettingStore";
-import audioController from "@/utils/audioController";
+import AudioController from "@/utils/AudioController";
+
+const BGM_PATH = "/sounds/bgm.mp3";
 
 const GlobalAudio = () => {
   const { camera } = useThree();
   const volumeLevel = useSettingStore((state) => state.volumeLevel);
+  const audioController = useRef(new AudioController());
 
   useEffect(() => {
-    audioController.init(camera, volumeLevel);
+    const audioController = audioController.current;
+
+    audioController.init(camera, volumeLevel, true);
+    audioController.play(BGM_PATH);
 
     return () => {
       audioController.cleanup(camera);
@@ -17,7 +23,7 @@ const GlobalAudio = () => {
   }, []);
 
   useEffect(() => {
-    audioController.setVolume(volumeLevel);
+    audioController.current.setVolume(volumeLevel);
   }, [volumeLevel]);
 
   return null;
