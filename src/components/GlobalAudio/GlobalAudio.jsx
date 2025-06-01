@@ -4,16 +4,21 @@ import { useEffect, useRef } from "react";
 import useSettingStore from "@/store/useSettingStore";
 import AudioController from "@/utils/AudioController";
 
+const BGM_PATH = "/sounds/bgm.mp3";
+
 const GlobalAudio = () => {
   const { camera } = useThree();
   const volumeLevel = useSettingStore((state) => state.volumeLevel);
   const audioControllerRef = useRef(new AudioController());
 
   useEffect(() => {
-    audioControllerRef.current.init(camera, volumeLevel);
+    const audioController = audioControllerRef.current;
+
+    audioController.init(camera, volumeLevel, true);
+    audioController.play(BGM_PATH);
 
     return () => {
-      audioControllerRef.current.cleanup(camera);
+      audioController.cleanup(camera);
     };
   }, []);
 
