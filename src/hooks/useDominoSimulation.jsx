@@ -18,20 +18,6 @@ const useDominoSimulation = () => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
   };
 
-  const closeCurrentMode = (event) => {
-    if (event.key !== "Escape") return;
-
-    if (simulationMode === MODE.EDIT) {
-      setSelectedDomino(null);
-      return;
-    }
-
-    if (simulationMode === MODE.READY) {
-      setSimulationMode(MODE.EDIT);
-      return;
-    }
-  };
-
   const updateSimulationState = (mode) => {
     setSimulationMode(mode);
   };
@@ -115,12 +101,7 @@ const useDominoSimulation = () => {
       changePushCursor(true);
     }
 
-    window.addEventListener("keydown", closeCurrentMode);
-
-    return () => {
-      changePushCursor(false);
-      window.removeEventListener("keydown", closeCurrentMode);
-    };
+    return () => changePushCursor(false);
   }, [simulationMode]);
 
   return { rigidBodyRefs, updateSimulationState, readyDominoSimulation };

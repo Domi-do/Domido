@@ -4,7 +4,7 @@ import DominoCanvas from "@/components/DominoCanvas/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import Ground from "@/components/Ground/Ground";
 import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
-import useDominoControls from "@/hooks/useDominoControls";
+import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
 import useDominoStore from "@/store/useDominoStore";
@@ -19,7 +19,7 @@ const DominoScene = () => {
 
   const { rigidBodyRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
 
-  useDominoControls((visible) => setIsGuideToastVisible(visible));
+  useDominoKeyboardControls(setIsGuideToastVisible);
 
   return (
     <>
@@ -38,6 +38,7 @@ const DominoScene = () => {
               linearDamping={0.01}
               angularDamping={0.01}
               position={domino.position}
+              rotation={domino.rotation}
               ref={(ref) => (rigidBodyRefs.current[index] = ref)}
             >
               <ObjectRenderer
