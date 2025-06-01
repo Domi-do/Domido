@@ -2,7 +2,7 @@ import ModalOverlay from "@/components/ModalOverlay/ModalOverlay";
 import useDominoStore from "@/store/useDominoStore";
 
 const DominoClearConfirmModal = ({ closeModal }) => {
-  const clearDominos = useDominoStore((state) => state.clearDominos);
+  const clearDominos = useDominoStore((state) => state.setClearDominos);
 
   const handleConfirm = () => {
     clearDominos();
