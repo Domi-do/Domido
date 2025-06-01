@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import DominoColorPalette from "@/components/DominoHUD/SidePanel/DominoColorPalette";
 import ObjectCard from "@/components/DominoHUD/SidePanel/ObjectCard";
 import { OBJECT_PATHS } from "@/constants/objectPaths";
 
@@ -15,6 +16,7 @@ const SidePanel = () => {
       onMouseLeave={() => setIsOpen(false)}
     >
       <aside className="w-100 h-full bg-black/40 shadow-lg p-3 flex flex-col relative gap-6">
+        <DominoColorPalette />
         {Object.entries(OBJECT_PATHS).map(([groupName, groupObjects]) => (
           <section
             key={groupName}
