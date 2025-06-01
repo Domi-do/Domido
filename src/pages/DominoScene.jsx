@@ -46,6 +46,7 @@ const DominoScene = () => {
                 onPointerOut={closeGuideToast}
                 onClick={(event) => readyDominoSimulation(event, index)}
                 opacity={domino.opacity}
+                color={domino.color}
               />
             </RigidBody>
           ))}

@@ -8,7 +8,7 @@ import useSettingStore from "@/store/useSettingStore";
 
 const Ground = () => {
   const groundType = useSettingStore((state) => state.groundType);
-  const { dominos, setDominos, selectedDomino } = useDominoStore();
+  const { dominos, setDominos, selectedDomino, selectedColor } = useDominoStore();
 
   const floorTexture = useLoader(TextureLoader, `/images/tile/${groundType}.png`);
 
@@ -26,6 +26,7 @@ const Ground = () => {
       position: [pos.x, 0, pos.z],
       objectInfo: selectedDomino,
       opacity: 1,
+      color: selectedColor,
     };
     setDominos([...dominos, newDomino]);
   };

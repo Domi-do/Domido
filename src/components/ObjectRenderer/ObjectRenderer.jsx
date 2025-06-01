@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei";
 import { useMemo } from "react";
 
-const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity }) => {
+const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity, color }) => {
   return (
     <mesh
       castShadow
@@ -13,7 +13,7 @@ const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity
     >
       <boxGeometry args={[0.2, 1, 0.5]} />
       <meshStandardMaterial
-        color="orange"
+        color={color}
         transparent={true}
         opacity={opacity}
       />
@@ -47,6 +47,7 @@ const ObjectRenderer = ({
   onPointerOut,
   onClick,
   opacity,
+  color,
 }) => {
   const { objectName, paths } = dominoInfo;
   const isDefaultObject = objectName === "defaultObject";
@@ -58,6 +59,7 @@ const ObjectRenderer = ({
         onPointerOut={onPointerOut}
         onClick={onClick}
         opacity={opacity}
+        color={color}
       />
     : <PrimitiveObject
         paths={paths.model}

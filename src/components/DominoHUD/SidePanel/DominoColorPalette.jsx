@@ -1,4 +1,4 @@
-import { useState } from "react";
+import useDominoStore from "@/store/useDominoStore";
 
 const COLORS = [
   { type: "red", hex: "#EF4444" },
@@ -6,16 +6,16 @@ const COLORS = [
   { type: "yellow", hex: "#EAB308" },
   { type: "green", hex: "#22C55E" },
   { type: "blue", hex: "#3B82F6" },
-  { type: "indigo", hex: "#2563EB" },
+  { type: "indigo", hex: "#1E4ED8" },
   { type: "purple", hex: "#8B5CF6" },
 ];
 
-export default function DominoColorPalette({ onChange }) {
-  const [selectedColor, setSelectedColor] = useState(null);
+export default function DominoColorPalette() {
+  const selectedColor = useDominoStore((state) => state.selectedColor);
+  const setSelectedColor = useDominoStore((state) => state.setSelectedColor);
 
   const handleSelect = (color) => {
     setSelectedColor(color);
-    if (onChange) onChange(color);
   };
 
   return (
