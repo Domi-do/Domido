@@ -1,58 +1,25 @@
 import { useEffect, useRef } from "react";
 
-import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
-import useSimulationStore from "@/store/useSimulationStore";
+import {
+  deleteSelectedDomino,
+  toggleSelectedDominoOpacity,
+  undoLastDominoAction,
+  closeCurrentMode,
+} from "@/utils/keyHandlers";
 
 const useDominoKeyboardControls = (onToggleGuideToast) => {
-  const { dominos, setDominos, setSelectedDomino, setSelectedDominoKey } = useDominoStore();
-  const historys = useRef([]);
+  const dominos = useDominoStore((state) => state.dominos);
+  const historyRef = useRef([]);
   const prevLengthRef = useRef(dominos.length);
 
-  const deleteSelectedDomino = () => {
-    const { dominos, selectedDominoKey } = useDominoStore.getState();
-    if (!selectedDominoKey) return;
-
-    historys.current.push([...dominos]);
-    const updatedDominos = dominos.filter((domino) => domino.id !== selectedDominoKey);
-    setDominos(updatedDominos);
-    setSelectedDominoKey(null);
-    setTimeout(() => onToggleGuideToast(false), 100);
-  };
-
-  const toggleSelectedDominoOpacity = () => {
-    const { dominos, selectedDominoKey } = useDominoStore.getState();
-    if (!selectedDominoKey) return;
-
-    historys.current.push([...dominos]);
-    const updatedDominos = dominos.map((item) =>
-      item.id === selectedDominoKey ? { ...item, opacity: item.opacity === 1 ? 0.3 : 1 } : item,
-    );
-    setDominos(updatedDominos);
-    onToggleGuideToast(false);
-  };
-
-  const undoLastDominoAction = () => {
-    if (historys.current.length <= 1) return;
-
-    historys.current.pop();
-    setDominos(historys.current[historys.current.length - 1]);
-  };
-
-  const closeCurrentMode = () => {
-    const { simulationMode, setSimulationMode } = useSimulationStore.getState();
-
-    if (simulationMode === MODE.EDIT) return setSelectedDomino(null);
-    if (simulationMode === MODE.READY) return setSimulationMode(MODE.EDIT);
-  };
-
   const keyMap = {
-    x: deleteSelectedDomino,
-    h: toggleSelectedDominoOpacity,
-    u: undoLastDominoAction,
+    x: () => deleteSelectedDomino(historyRef, onToggleGuideToast),
+    h: () => toggleSelectedDominoOpacity(historyRef, onToggleGuideToast),
+    u: () => undoLastDominoAction(historyRef),
+    escape: () => closeCurrentMode(),
     q: () => console.log("q"),
     e: () => console.log("e"),
-    escape: closeCurrentMode,
   };
 
   const handleKeydown = (event) => {
@@ -60,6 +27,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
 
     const key = event.key.toLowerCase();
     const keyboardHandler = keyMap[key];
+
     if (typeof keyboardHandler === "function") {
       keyboardHandler(event);
     }
@@ -72,7 +40,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
 
   useEffect(() => {
     if (dominos.length > prevLengthRef.current) {
-      historys.current.push([...dominos]);
+      historyRef.current.push([...dominos]);
     }
     prevLengthRef.current = dominos.length;
   }, [dominos]);
