@@ -3,9 +3,9 @@ import { useEffect, useRef } from "react";
 import useDominoStore from "@/store/useDominoStore";
 
 const useDominoKeyboardControls = (onToggleGuideToast) => {
-  const { setDominos, setSelectedDominoKey } = useDominoStore();
+  const { dominos, setDominos, setSelectedDominoKey } = useDominoStore();
   const historys = useRef([]);
-  // const prevLengthRef = useRef(dominos.length);
+  const prevLengthRef = useRef(dominos.length);
 
   const deleteSelectedDomino = () => {
     const { dominos, selectedDominoKey } = useDominoStore.getState();
@@ -30,12 +30,19 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     onToggleGuideToast(false);
   };
 
+  const undoLastDominoAction = () => {
+    if (historys.current.length <= 1) return;
+
+    historys.current.pop();
+    setDominos(historys.current[historys.current.length - 1]);
+  };
+
   const keyMap = {
     x: deleteSelectedDomino,
     h: toggleSelectedDominoOpacity,
+    u: undoLastDominoAction,
     q: () => console.log("q"),
     e: () => console.log("e"),
-    u: () => console.log("u"),
     escape: () => console.log("Escape"),
   };
 
@@ -53,6 +60,13 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     window.addEventListener("keydown", handleKeydown);
     return () => window.removeEventListener("keydown", handleKeydown);
   }, []);
+
+  useEffect(() => {
+    if (dominos.length > prevLengthRef.current) {
+      historys.current.push([...dominos]);
+    }
+    prevLengthRef.current = dominos.length;
+  }, [dominos]);
 
   return;
 };
