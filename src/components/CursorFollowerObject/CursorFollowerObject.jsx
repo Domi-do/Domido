@@ -12,7 +12,7 @@ const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
 
 const CursorFollowerObject = () => {
-  const { dominos, setDominos, selectedDomino, rotationY } = useDominoStore();
+  const { dominos, setDominos, selectedDomino, rotationY, selectedColor } = useDominoStore();
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
   const audioController = useRef(new AudioController());
@@ -41,6 +41,7 @@ const CursorFollowerObject = () => {
       rotation: [0, rotationY, 0],
       objectInfo: selectedDomino,
       opacity: DEFAULT_OPACITY,
+      color: selectedColor,
     };
     setDominos([...dominos, newDomino]);
 
@@ -77,7 +78,10 @@ const CursorFollowerObject = () => {
         ref={meshRef}
         onPointerDown={handlePlaceDomino}
       >
-        <ObjectRenderer dominoInfo={selectedDomino} />
+        <ObjectRenderer
+          dominoInfo={selectedDomino}
+          color={selectedColor || "white"}
+        />
       </mesh>
     )
   );
