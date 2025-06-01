@@ -8,6 +8,8 @@ const COLORS = [
   { type: "blue", hex: "#3B82F6" },
   { type: "indigo", hex: "#1E4ED8" },
   { type: "purple", hex: "#8B5CF6" },
+  { type: "white", hex: "#FFFFFF" },
+  { type: "black", hex: "#000000" },
 ];
 
 export default function DominoColorPalette() {
@@ -19,7 +21,7 @@ export default function DominoColorPalette() {
   };
 
   return (
-    <div className="flex gap-2 p-3 rounded-xl bg-gray-100 shadow-inner w-fit ml-4 opacity-90">
+    <div className="flex gap-2 p-3 rounded-xl bg-gray-100 shadow-inner w-fit opacity-90">
       {COLORS.map((color) => (
         <button
           key={color.type}
