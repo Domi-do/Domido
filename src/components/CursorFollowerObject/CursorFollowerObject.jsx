@@ -17,8 +17,11 @@ const CursorFollowerObject = () => {
 
   const handlePlaceDomino = (e) => {
     e.stopPropagation();
+
     const isBlockedClick = BLOCKED_MOUSE_BUTTONS.includes(e.button);
-    if (isBlockedClick || !selectedDomino || !meshRef.current) return;
+    const cannotPlaceDomino = isBlockedClick || !selectedDomino || !meshRef.current;
+
+    if (cannotPlaceDomino) return;
 
     const currentPosition = meshRef.current.position;
 
