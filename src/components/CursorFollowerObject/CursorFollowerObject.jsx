@@ -10,7 +10,6 @@ const DOMINO_HEIGHT = 1;
 const HALF_DOMINO_HEIGHT = DOMINO_HEIGHT / 2;
 const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
-const DOMINO_PLACE_SOUND_PATH = "/sounds/domino_drop.mp3";
 
 const CursorFollowerObject = () => {
   const { dominos, setDominos, selectedDomino } = useDominoStore();
@@ -30,7 +29,9 @@ const CursorFollowerObject = () => {
     e.stopPropagation();
 
     const isBlockedClick = BLOCKED_MOUSE_BUTTONS.includes(e.button);
-    if (isBlockedClick || !selectedDomino || !meshRef.current) return;
+    const cannotPlaceDomino = isBlockedClick || !selectedDomino || !meshRef.current;
+
+    if (cannotPlaceDomino) return;
 
     const currentPosition = meshRef.current.position;
 
