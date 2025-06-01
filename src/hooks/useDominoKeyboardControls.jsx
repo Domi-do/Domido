@@ -18,8 +18,21 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     setTimeout(() => onToggleGuideToast(false), 100);
   };
 
+  const toggleSelectedDominoOpacity = () => {
+    const { dominos, selectedDominoKey } = useDominoStore.getState();
+    if (!selectedDominoKey) return;
+
+    historys.current.push([...dominos]);
+    const updatedDominos = dominos.map((item) =>
+      item.id === selectedDominoKey ? { ...item, opacity: item.opacity === 1 ? 0.3 : 1 } : item,
+    );
+    setDominos(updatedDominos);
+    onToggleGuideToast(false);
+  };
+
   const keyMap = {
     x: deleteSelectedDomino,
+    h: toggleSelectedDominoOpacity,
     q: () => console.log("q"),
     e: () => console.log("e"),
     u: () => console.log("u"),
