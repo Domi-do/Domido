@@ -18,6 +18,10 @@ class AudioController {
   play(src) {
     if (!this.#sound) return;
 
+    if (this.#sound.isPlaying) {
+      this.#sound.stop();
+    }
+
     const loader = new THREE.AudioLoader();
     loader.load(src, (buffer) => {
       this.#sound.setBuffer(buffer);
