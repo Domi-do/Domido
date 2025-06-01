@@ -7,6 +7,7 @@ import useDominoStore from "@/store/useDominoStore";
 
 const CursorFollowerObject = () => {
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
+  const selectedColor = useDominoStore((state) => state.selectedColor);
   const selectedDomino = useDominoStore((state) => state.selectedDomino);
   const { camera, pointer, scene } = useThree();
 
@@ -30,7 +31,10 @@ const CursorFollowerObject = () => {
   return (
     selectedDomino !== null && (
       <mesh position={[position.x, position.y, position.z]}>
-        <ObjectRenderer dominoInfo={selectedDomino} />
+        <ObjectRenderer
+          dominoInfo={selectedDomino}
+          color={selectedColor || "white"}
+        />
       </mesh>
     )
   );
