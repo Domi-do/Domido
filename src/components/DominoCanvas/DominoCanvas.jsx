@@ -19,10 +19,10 @@ const DominoCanvas = ({ rotationSensitivity, children }) => {
         intensity={1}
         position={[5, 10, 5]}
       />
-      {/* <Environment
+      <Environment
         preset="park"
         background
-      /> */}
+      />
       <CameraControls rotationSensitivity={rotationSensitivity} />
       <Physics>
         <>

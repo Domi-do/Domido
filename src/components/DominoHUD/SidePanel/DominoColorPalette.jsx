@@ -1,13 +1,13 @@
 import { useState } from "react";
 
 const COLORS = [
-  { color: "red", hex: "#EF4444" },
-  { color: "orange", hex: "#F97316" },
-  { color: "yellow", hex: "#EAB308" },
-  { color: "green", hex: "#22C55E" },
-  { color: "blue", hex: "#3B82F6" },
-  { color: "indigo", hex: "#2563EB" },
-  { color: "purple", hex: "#8B5CF6" },
+  { type: "red", hex: "#EF4444" },
+  { type: "orange", hex: "#F97316" },
+  { type: "yellow", hex: "#EAB308" },
+  { type: "green", hex: "#22C55E" },
+  { type: "blue", hex: "#3B82F6" },
+  { type: "indigo", hex: "#2563EB" },
+  { type: "purple", hex: "#8B5CF6" },
 ];
 
 export default function DominoColorPalette({ onChange }) {
@@ -22,7 +22,7 @@ export default function DominoColorPalette({ onChange }) {
     <div className="flex gap-2 p-3 rounded-xl bg-gray-100 shadow-inner w-fit ml-4 opacity-90">
       {COLORS.map((color) => (
         <button
-          key={color.name}
+          key={color.type}
           onClick={() => handleSelect(color.hex)}
           className={`w-8 h-8 rounded-full`}
           style={{
