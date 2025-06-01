@@ -11,7 +11,7 @@ const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
 
 const CursorFollowerObject = () => {
-  const { dominos, setDominos, selectedDomino } = useDominoStore();
+  const { dominos, setDominos, selectedDomino, rotationY } = useDominoStore();
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
 
@@ -28,6 +28,7 @@ const CursorFollowerObject = () => {
     const newDomino = {
       id: Date.now(),
       position: [currentPosition.x, currentPosition.y, currentPosition.z],
+      rotation: [0, rotationY, 0],
       objectInfo: selectedDomino,
       opacity: DEFAULT_OPACITY,
     };
@@ -55,6 +56,7 @@ const CursorFollowerObject = () => {
     const y = bbox.max.y + HALF_DOMINO_HEIGHT;
 
     meshRef.current.position.set(pos.x, y, pos.z);
+    meshRef.current.rotation.set(0, rotationY, 0);
   });
 
   return (

@@ -41,3 +41,13 @@ export const closeCurrentMode = () => {
   if (simulationMode === MODE.EDIT) return setSelectedDomino(null);
   if (simulationMode === MODE.READY) return setSimulationMode(MODE.EDIT);
 };
+
+export const rotateDominoClockwise = () => {
+  const { rotationY, setRotationY } = useDominoStore.getState();
+  setRotationY(rotationY + Math.PI / 4);
+};
+
+export const rotateDominoCounterClockwise = () => {
+  const { rotationY, setRotationY } = useDominoStore.getState();
+  setRotationY(rotationY - Math.PI / 4);
+};

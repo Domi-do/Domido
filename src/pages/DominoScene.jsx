@@ -38,6 +38,7 @@ const DominoScene = () => {
               linearDamping={0.01}
               angularDamping={0.01}
               position={domino.position}
+              rotation={domino.rotation}
               ref={(ref) => (rigidBodyRefs.current[index] = ref)}
             >
               <ObjectRenderer

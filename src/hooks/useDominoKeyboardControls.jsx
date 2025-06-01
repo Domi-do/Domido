@@ -6,6 +6,8 @@ import {
   toggleSelectedDominoOpacity,
   undoLastDominoAction,
   closeCurrentMode,
+  rotateDominoClockwise,
+  rotateDominoCounterClockwise,
 } from "@/utils/keyHandlers";
 
 const useDominoKeyboardControls = (onToggleGuideToast) => {
@@ -17,9 +19,9 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     x: () => deleteSelectedDomino(historyRef, onToggleGuideToast),
     h: () => toggleSelectedDominoOpacity(historyRef, onToggleGuideToast),
     u: () => undoLastDominoAction(historyRef),
+    q: rotateDominoCounterClockwise,
+    e: rotateDominoClockwise,
     escape: () => closeCurrentMode(),
-    q: () => console.log("q"),
-    e: () => console.log("e"),
   };
 
   const handleKeydown = (event) => {
@@ -29,7 +31,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     const keyboardHandler = keyMap[key];
 
     if (typeof keyboardHandler === "function") {
-      keyboardHandler(event);
+      keyboardHandler();
     }
   };
 
