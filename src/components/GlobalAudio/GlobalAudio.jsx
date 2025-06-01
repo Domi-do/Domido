@@ -9,10 +9,10 @@ const BGM_PATH = "/sounds/bgm.mp3";
 const GlobalAudio = () => {
   const { camera } = useThree();
   const volumeLevel = useSettingStore((state) => state.volumeLevel);
-  const audioControllerRef = useRef(new AudioController());
+  const audioController = useRef(new AudioController());
 
   useEffect(() => {
-    const audioController = audioControllerRef.current;
+    const audioController = audioController.current;
 
     audioController.init(camera, volumeLevel, true);
     audioController.play(BGM_PATH);
@@ -23,7 +23,7 @@ const GlobalAudio = () => {
   }, []);
 
   useEffect(() => {
-    audioControllerRef.current.setVolume(volumeLevel);
+    audioController.current.setVolume(volumeLevel);
   }, [volumeLevel]);
 
   return null;

@@ -15,14 +15,14 @@ const CursorFollowerObject = () => {
   const { dominos, setDominos, selectedDomino } = useDominoStore();
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
-  const audioRef = useRef(new AudioController());
+  const audioController = useRef(new AudioController());
 
   useEffect(() => {
-    audioRef.current.init(camera, 2, false);
+    audioController.current.init(camera, 2, false);
   }, [camera]);
 
   const playDominoDropSound = () => {
-    audioRef.current.play(selectedDomino.paths.sound);
+    audioController.current.play(selectedDomino.paths.sound);
   };
 
   const handlePlaceDomino = (e) => {
