@@ -10,16 +10,17 @@ import GuideToast from "@/components/DominoHUD/GuideToast/GuideToast";
 import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
 import SettingModal from "@/components/Setting/SettingModal";
 import MODE from "@/constants/mode";
+import useDominoReset from "@/hooks/useDominoReset";
 import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 
-const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
+const DominoHUD = ({ rigidBodyRefs, updateSimulationState, isOpenGuideToastVisible }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
+  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
-  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
-  const isSimulating = simulationMode === MODE.SIMULATING;
+  const { resetDominoSimulation } = useDominoReset(rigidBodyRefs);
 
   const getNextMode = () => {
     const order = [MODE.EDIT, MODE.READY, MODE.COUNTDOWN, MODE.SIMULATING];
@@ -50,31 +51,42 @@ const DominoHUD = ({ updateSimulationState, isOpenGuideToastVisible }) => {
           />
         </button>
 
-        {simulationMode !== "COUNTDOWN" && (
-          <button
-            onMouseOver={() => setSelectedDomino(null)}
-            onClick={() => updateSimulationState(getNextMode())}
-            className="w-[60px] h-[60px] cursor-pointer"
-          >
-            <img
-              src={isSimulating ? resetButton : playButton}
-              className="w-full h-full"
-              draggable="false"
-            />
-          </button>
-        )}
-        {simulationMode === "EDIT" && (
-          <button
-            onClick={() => setClearConfirmModalOpen(true)}
-            className="w-[60px] h-[60px] cursor-pointer"
-          >
-            <img
-              src={clearButton}
-              alt="클리어"
-              className="w-[85%] h-[85%] ml-[10%]"
-            />
-          </button>
-        )}
+        <button
+          onMouseOver={() => setSelectedDomino(null)}
+          onClick={resetDominoSimulation}
+          className="w-[60px] h-[60px] cursor-pointer"
+        >
+          <img
+            src={resetButton}
+            className="w-full h-full"
+            draggable="false"
+            alt="reset"
+          />
+        </button>
+
+        <button
+          onMouseOver={() => setSelectedDomino(null)}
+          onClick={() => updateSimulationState(getNextMode())}
+          className="w-[60px] h-[60px] cursor-pointer"
+        >
+          <img
+            src={playButton}
+            className="w-full h-full"
+            draggable="false"
+            alt="play"
+          />
+        </button>
+
+        <button
+          onClick={() => setClearConfirmModalOpen(true)}
+          className="w-[60px] h-[60px] cursor-pointer"
+        >
+          <img
+            src={clearButton}
+            alt="clear"
+            className="w-[85%] h-[85%] ml-[10%]"
+          />
+        </button>
       </div>
 
       {simulationMode === MODE.COUNTDOWN && (

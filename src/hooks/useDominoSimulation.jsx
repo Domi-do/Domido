@@ -9,7 +9,7 @@ import useSimulationStore from "@/store/useSimulationStore";
 const FORCE = 4.5;
 
 const useDominoSimulation = () => {
-  const { dominos, setSelectedDomino } = useDominoStore();
+  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
   const { simulationMode, setSimulationMode, setCountdownNumber } = useSimulationStore();
 
   const rigidBodyRefs = useRef([]);
@@ -74,28 +74,7 @@ const useDominoSimulation = () => {
     rigidBodyRef.setAngvel(angularForce, true);
   };
 
-  const resetAllDominoes = () => {
-    dominos.forEach((domino, index) => {
-      const rigidBodyRef = rigidBodyRefs.current[index];
-      if (!rigidBodyRef) return;
-
-      const { position } = domino;
-
-      rigidBodyRef.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
-      rigidBodyRef.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
-      rigidBodyRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
-      rigidBodyRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
-    });
-  };
-
   useEffect(() => {
-    const canResetDominoes = simulationMode === MODE.EDIT && rigidBodyRefs.current.length > 0;
-
-    if (canResetDominoes) {
-      setCountdownNumber(3);
-      resetAllDominoes();
-    }
-
     if (simulationMode === MODE.READY) {
       setSelectedDomino(null);
       changePushCursor(true);

@@ -26,6 +26,7 @@ const DominoScene = () => {
       <DominoHUD
         updateSimulationState={updateSimulationState}
         isOpenGuideToastVisible={isOpenGuideToastVisible}
+        rigidBodyRefs={rigidBodyRefs}
       />
       <DominoCanvas rotationSensitivity={rotationSensitivity}>
         {dominos.length
