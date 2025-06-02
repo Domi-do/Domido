@@ -3,10 +3,9 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { Suspense } from "react";
 
-import CameraControls from "@/components/CameraControls/CameraControls";
-import CursorFollowerObject from "@/components/CursorFollowerObject/CursorFollowerObject";
-import GlobalAudio from "@/components/GlobalAudio/GlobalAudio";
-import Loading from "@/components/Loading/Loading";
+import GlobalAudio from "@/components/Common/GlobalAudio";
+import Loading from "@/components/Common/Loading";
+import { CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
 
 const DominoCanvas = ({ rotationSensitivity, children }) => {
   return (

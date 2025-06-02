@@ -2,7 +2,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
-import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
+import { ObjectRenderer } from "@/components/DominoCanvas";
 import useDominoStore from "@/store/useDominoStore";
 import AudioController from "@/utils/AudioController";
 
