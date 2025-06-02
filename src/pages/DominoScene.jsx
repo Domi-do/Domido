@@ -32,6 +32,7 @@ const DominoScene = () => {
         {dominos.length
           && dominos.map((domino, index) => (
             <RigidBody
+              colliders={domino.objectInfo.paths.colliders}
               name="domino"
               key={domino.id}
               restitution={0}
