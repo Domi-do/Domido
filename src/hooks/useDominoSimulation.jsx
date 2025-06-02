@@ -18,8 +18,9 @@ const useDominoSimulation = () => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
   };
 
-  const updateSimulationState = (mode) => {
-    setSimulationMode(mode);
+  const switchToReadyMode = () => {
+    if (dominos.length < 1) return;
+    setSimulationMode(MODE.READY);
   };
 
   const readyDominoSimulation = (event, index) => {
@@ -31,6 +32,7 @@ const useDominoSimulation = () => {
     if (!isReadyToStartGame) return;
 
     setSimulationMode(MODE.COUNTDOWN);
+    setCountdownNumber(3);
 
     const timer = setInterval(() => {
       const current = useSimulationStore.getState().countdownNumber;
@@ -38,7 +40,7 @@ const useDominoSimulation = () => {
       if (current <= 1) {
         clearInterval(timer);
         setCountdownNumber(0);
-        setSimulationMode(MODE.SIMULATING);
+        setSimulationMode(MODE.EDIT);
         startDominoSimulation(event, index, normal);
       } else {
         setCountdownNumber(current - 1);
@@ -74,28 +76,7 @@ const useDominoSimulation = () => {
     rigidBodyRef.setAngvel(angularForce, true);
   };
 
-  const resetAllDominoes = () => {
-    dominos.forEach((domino, index) => {
-      const rigidBodyRef = rigidBodyRefs.current[index];
-      if (!rigidBodyRef) return;
-
-      const { position } = domino;
-
-      rigidBodyRef.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
-      rigidBodyRef.setRotation({ x: 0, y: 0, z: 0, w: 1 }, true);
-      rigidBodyRef.setLinvel({ x: 0, y: 0, z: 0 }, true);
-      rigidBodyRef.setAngvel({ x: 0, y: 0, z: 0 }, true);
-    });
-  };
-
   useEffect(() => {
-    const canResetDominoes = simulationMode === MODE.EDIT && rigidBodyRefs.current.length > 0;
-
-    if (canResetDominoes) {
-      setCountdownNumber(3);
-      resetAllDominoes();
-    }
-
     if (simulationMode === MODE.READY) {
       setSelectedDomino(null);
       changePushCursor(true);
@@ -104,7 +85,7 @@ const useDominoSimulation = () => {
     return () => changePushCursor(false);
   }, [simulationMode]);
 
-  return { rigidBodyRefs, updateSimulationState, readyDominoSimulation };
+  return { rigidBodyRefs, switchToReadyMode, readyDominoSimulation };
 };
 
 export default useDominoSimulation;
