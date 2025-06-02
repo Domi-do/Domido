@@ -2,7 +2,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
-import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
+import { ObjectRenderer } from "@/components/DominoCanvas";
 import useDominoStore from "@/store/useDominoStore";
 import AudioController from "@/utils/AudioController";
 
@@ -63,10 +63,9 @@ const CursorFollowerObject = () => {
     if (!firstHit) return;
 
     const pos = firstHit.point;
-    const objectHit = firstHit.object;
-
-    const bbox = new THREE.Box3().setFromObject(objectHit);
-    const y = bbox.max.y + HALF_DOMINO_HEIGHT;
+    const bbox = new THREE.Box3().setFromObject(meshRef.current);
+    const height = bbox.max.y - bbox.min.y;
+    const y = pos.y + height / 2;
 
     meshRef.current.position.set(pos.x, y, pos.z);
     meshRef.current.rotation.set(0, rotationY, 0);

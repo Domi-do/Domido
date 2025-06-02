@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import closeButton from "/images/close_button.png";
 
-import { PortalContext } from "@/GlobalPortal";
+import { PortalContext } from "@/components/Common/GlobalPortal";
 import useOnClickOutSide from "@/hooks/useOnClickOutSide";
 
 const ModalOverlay = ({ closeModal, children }) => {
