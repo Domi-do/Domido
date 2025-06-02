@@ -1,9 +1,3 @@
-const MODE = {
-  EDIT: "EDIT",
-  READY: "READY",
-  COUNTDOWN: "COUNTDOWN",
-  SIMULATING: "SIMULATING",
-  END: "END",
-};
+const MODE = { EDIT: "EDIT", READY: "READY", COUNTDOWN: "COUNTDOWN" };
 
 export default MODE;
