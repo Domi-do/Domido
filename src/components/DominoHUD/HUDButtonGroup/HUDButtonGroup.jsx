@@ -4,7 +4,7 @@ import resetButton from "/images/reset_button.png";
 import clearButton from "/images/clear_button.png";
 
 import useSimulationStore from "@/store/useSimulationStore";
-import HUDButton from "@/components/DominoHUD/HUDButton/HUDButton";
+import HUDButton from "@/components/DominoHUD/HUDButtonGroup/HUDButton";
 import MODE from "@/constants/mode";
 
 const HUDButtons = ({ onClickSetting, onClickReset, onClickPlay, onClickClear }) => {

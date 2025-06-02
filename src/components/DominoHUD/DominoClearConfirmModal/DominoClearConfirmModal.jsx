@@ -1,4 +1,4 @@
-import ModalOverlay from "@/components/ModalOverlay/ModalOverlay";
+import ModalOverlay from "@/components/Common/ModalOverlay";
 import useDominoStore from "@/store/useDominoStore";
 
 const DominoClearConfirmModal = ({ closeModal }) => {

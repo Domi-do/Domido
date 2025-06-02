@@ -1,9 +1,7 @@
 import { RigidBody } from "@react-three/rapier";
 
-import DominoCanvas from "@/components/DominoCanvas/DominoCanvas";
+import { Ground, ObjectRenderer, DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
-import Ground from "@/components/Ground/Ground";
-import ObjectRenderer from "@/components/ObjectRenderer/ObjectRenderer";
 import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
@@ -32,6 +30,7 @@ const DominoScene = () => {
         {dominos.length
           && dominos.map((domino, index) => (
             <RigidBody
+              colliders={domino.objectInfo.paths.colliders}
               name="domino"
               key={domino.id}
               restitution={0}

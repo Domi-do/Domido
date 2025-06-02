@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import DominoClearConfirmModal from "@/components/DominoClearConfirmModal/DominoClearConfirmModal";
-import GuideToast from "@/components/DominoHUD/GuideToast/GuideToast";
-import HUDButtons from "@/components/DominoHUD/HUDButtons/HUDButtons";
-import SidePanel from "@/components/DominoHUD/SidePanel/SidePanel";
-import SettingModal from "@/components/Setting/SettingModal";
+import {
+  GuideToast,
+  HUDButtonGroup,
+  SettingModal,
+  SidePanel,
+  DominoClearConfirmModal,
+} from "@/components/DominoHUD";
 import MODE from "@/constants/mode";
 import useDominoReset from "@/hooks/useDominoReset";
 import useSimulationStore from "@/store/useSimulationStore";
@@ -24,7 +26,7 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
 
   return (
     <>
-      <HUDButtons
+      <HUDButtonGroup
         onClickSetting={() => setIsSettingModalOpen(true)}
         onClickReset={resetDominoSimulation}
         onClickPlay={switchToReadyMode}

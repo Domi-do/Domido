@@ -3,9 +3,9 @@ import tileWoodDark from "/images/tile/wood_dark.png";
 import tileWoodLight from "/images/tile/wood_light.png";
 
 import useSettingStore from "@/store/useSettingStore";
-import SettingGroup from "@/components/Setting/SettingGroup";
-import GroundTypeButton from "@/components/GroundTypeButton/GroundTypeButton";
-import ModalOverlay from "@/components/ModalOverlay/ModalOverlay";
+import SettingGroup from "@/components/DominoHUD/SettingModal/SettingGroup";
+import GroundTypeButton from "@/components/DominoHUD/SettingModal/GroundTypeButton";
+import ModalOverlay from "@/components/Common/ModalOverlay";
 
 const groundOptions = [
   { type: "grass", image: tileGrass },
