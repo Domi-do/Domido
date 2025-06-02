@@ -17,16 +17,16 @@ const DominoScene = () => {
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
 
-  const { rigidBodyRefs, updateSimulationState, readyDominoSimulation } = useDominoSimulation();
+  const { rigidBodyRefs, readyDominoSimulation, switchToReadyMode } = useDominoSimulation();
 
   useDominoKeyboardControls(setIsGuideToastVisible);
 
   return (
     <>
       <DominoHUD
-        updateSimulationState={updateSimulationState}
         isOpenGuideToastVisible={isOpenGuideToastVisible}
         rigidBodyRefs={rigidBodyRefs}
+        switchToReadyMode={switchToReadyMode}
       />
       <DominoCanvas rotationSensitivity={rotationSensitivity}>
         {dominos.length

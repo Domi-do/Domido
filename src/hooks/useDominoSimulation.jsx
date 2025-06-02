@@ -9,7 +9,7 @@ import useSimulationStore from "@/store/useSimulationStore";
 const FORCE = 4.5;
 
 const useDominoSimulation = () => {
-  const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
+  const { dominos, setSelectedDomino } = useDominoStore();
   const { simulationMode, setSimulationMode, setCountdownNumber } = useSimulationStore();
 
   const rigidBodyRefs = useRef([]);
@@ -18,8 +18,9 @@ const useDominoSimulation = () => {
     document.body.style.cursor = isChange ? `url(${fingerCursor}), auto` : "auto";
   };
 
-  const updateSimulationState = (mode) => {
-    setSimulationMode(mode);
+  const switchToReadyMode = () => {
+    if (dominos.length < 1) return;
+    setSimulationMode(MODE.READY);
   };
 
   const readyDominoSimulation = (event, index) => {
@@ -31,6 +32,7 @@ const useDominoSimulation = () => {
     if (!isReadyToStartGame) return;
 
     setSimulationMode(MODE.COUNTDOWN);
+    setCountdownNumber(3);
 
     const timer = setInterval(() => {
       const current = useSimulationStore.getState().countdownNumber;
@@ -38,7 +40,7 @@ const useDominoSimulation = () => {
       if (current <= 1) {
         clearInterval(timer);
         setCountdownNumber(0);
-        setSimulationMode(MODE.SIMULATING);
+        setSimulationMode(MODE.EDIT);
         startDominoSimulation(event, index, normal);
       } else {
         setCountdownNumber(current - 1);
@@ -83,7 +85,7 @@ const useDominoSimulation = () => {
     return () => changePushCursor(false);
   }, [simulationMode]);
 
-  return { rigidBodyRefs, updateSimulationState, readyDominoSimulation };
+  return { rigidBodyRefs, switchToReadyMode, readyDominoSimulation };
 };
 
 export default useDominoSimulation;
