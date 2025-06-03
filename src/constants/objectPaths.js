@@ -48,6 +48,12 @@ export const OBJECT_PATHS = {
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
     },
+    bumper: {
+      thumbnail: "/images/bumper.png",
+      model: "/objects/bumper.glb",
+      sound: "/sounds/domino_drop.mp3",
+      colliders: "trimesh",
+    },
   },
   DYNAMIC_OBJECTS: {
     beachBall: {
