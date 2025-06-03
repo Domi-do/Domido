@@ -63,7 +63,7 @@ export const OBJECT_PATHS = {
       model: "/objects/cannon.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: false,
-      type: "dynamic",
+      type: "fixed",
     },
     pokeball: {
       thumbnail: "/images/pokeball.png",
