@@ -1,6 +1,7 @@
 import { RigidBody } from "@react-three/rapier";
 import { CuboidCollider } from "@react-three/rapier";
 import { useState } from "react";
+import * as THREE from "three";
 
 import { Ground, ObjectRenderer, DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
@@ -75,6 +76,27 @@ const DominoScene = () => {
                         />
                       )}
                     </mesh>
+                  </>
+                )}
+                {domino.objectInfo?.objectName === "bumper" && (
+                  <>
+                    <CuboidCollider
+                      args={[0.5, 0.3, 0.5]}
+                      position={[0, 0.1, 0.2]}
+                      sensor
+                      onIntersectionEnter={({ other }) => {
+                        const otherObject = other.rigidBody;
+                        if (!otherObject) return;
+
+                        const dir = new THREE.Vector3()
+                          .subVectors(otherObject.translation(), new THREE.Vector3(...position))
+                          .setY(0)
+                          .normalize()
+                          .multiplyScalar(5);
+
+                        otherObject.applyImpulse({ x: dir.x, y: 0, z: dir.z }, true);
+                      }}
+                    />
                   </>
                 )}
                 <ObjectRenderer
