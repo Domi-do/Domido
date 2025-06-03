@@ -9,19 +9,14 @@ import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
 import useDominoStore from "@/store/useDominoStore";
 import useSettingStore from "@/store/useSettingStore";
-
 const DominoScene = () => {
   const dominos = useDominoStore((state) => state.dominos);
   const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
-  const [isLightOn, setLightOn] = useState(false);
-
+  const [lightOnMap, setlightOnMap] = useState({});
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
-
   const { rigidBodyRefs, readyDominoSimulation, switchToReadyMode } = useDominoSimulation();
-
   useDominoKeyboardControls(setIsGuideToastVisible);
-
   return (
     <>
       <DominoHUD
@@ -33,11 +28,10 @@ const DominoScene = () => {
         {dominos.length
           && dominos.map((domino, index) => {
             const { position, rotation, color, opacity, id } = domino;
-            const { colliders, name } = domino.objectInfo.paths;
+            const { colliders } = domino.objectInfo.paths;
             return (
               <RigidBody
                 colliders={colliders}
-                name={name}
                 key={id}
                 restitution={0}
                 friction={1}
@@ -46,9 +40,9 @@ const DominoScene = () => {
                 position={position}
                 rotation={rotation}
                 ref={(ref) => (rigidBodyRefs.current[index] = ref)}
-                type={name === "lightbulb" ? "fixed" : "dynamic"}
+                type={domino.objectInfo?.objectName === "lightbulb" ? "fixed" : "dynamic"}
               >
-                {name === "lightbulb" && (
+                {domino.objectInfo?.objectName === "lightbulb" && (
                   <>
                     <CuboidCollider
                       args={[0.3, 0.4, 0.4]}
@@ -56,22 +50,22 @@ const DominoScene = () => {
                       sensor
                       onIntersectionEnter={() => {
                         setTimeout(() => {
-                          setLightOn(true);
+                          setlightOnMap((prev) => ({ ...prev, [id]: true }));
                         }, 300);
                       }}
                     />
                     <mesh position={[0, 0.1, -0.2]}>
                       <boxGeometry args={[1, 0.5, 0.4]} />
                       <meshStandardMaterial
-                        color={isLightOn ? "white" : "gray"}
-                        emissive={isLightOn ? "rgb(255,255,150)" : "black"}
+                        color="white"
+                        emissive={lightOnMap[id] ? "rgb(255,255,150)" : "black"}
                         emissiveIntensity={50}
                         metalness={0.1}
                         roughness={0.3}
                         transparent
                         opacity={0}
                       />
-                      {isLightOn && (
+                      {lightOnMap[id] && (
                         <pointLight
                           position={[0, -0.5, 0]}
                           color="yellow"
@@ -83,7 +77,6 @@ const DominoScene = () => {
                     </mesh>
                   </>
                 )}
-
                 <ObjectRenderer
                   dominoInfo={domino.objectInfo}
                   key={id}
@@ -101,5 +94,4 @@ const DominoScene = () => {
     </>
   );
 };
-
 export default DominoScene;
