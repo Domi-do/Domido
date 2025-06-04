@@ -16,8 +16,9 @@ const DominoEntity = ({
     <>
       {dominos.length
         && dominos.map((domino, index) => {
-          const { type, position, rotation, color, opacity, id, objectInfo } = domino;
-          const { colliders } = domino.objectInfo.paths;
+          const { position, rotation, color, opacity, id, objectInfo } = domino;
+          const { colliders, type } = domino.objectInfo.paths;
+
           return (
             <RigidBody
               type={type}
