@@ -3,11 +3,23 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { Suspense } from "react";
 
+import DominoEntity from "./DominoEntity/DominoEntity";
+
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
-import { CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
+import {
+  Ground,
+  CarController,
+  CameraControls,
+  CursorFollowerObject,
+} from "@/components/DominoCanvas";
 
-const DominoCanvas = ({ children }) => {
+const DominoCanvas = ({
+  openGuideToast,
+  closeGuideToast,
+  readyDominoSimulation,
+  rigidBodyRefs,
+}) => {
   return (
     <>
       <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
@@ -29,7 +41,14 @@ const DominoCanvas = ({ children }) => {
           <CameraControls />
           <Physics>
             <CursorFollowerObject />
-            {children}
+            <DominoEntity
+              openGuideToast={openGuideToast}
+              closeGuideToast={closeGuideToast}
+              readyDominoSimulation={readyDominoSimulation}
+              rigidBodyRefs={rigidBodyRefs}
+            />
+            <CarController rigidBodyRefs={rigidBodyRefs} />
+            <Ground />
           </Physics>
         </Suspense>
       </Canvas>
