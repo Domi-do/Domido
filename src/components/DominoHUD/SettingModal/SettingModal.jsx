@@ -21,6 +21,8 @@ const SettingModal = ({ closeModal }) => {
     setGroundType,
     volumeLevel,
     setVolumeLevel,
+    objectVolume,
+    setObjectVolume,
   } = useSettingStore();
 
   return (
@@ -38,7 +40,7 @@ const SettingModal = ({ closeModal }) => {
             className="w-full mb-[16px] appearance-none h-[8px] rounded bg-gray-200 custom-slider"
           />
         </SettingGroup>
-        <SettingGroup title="음량">
+        <SettingGroup title="배경 음악 음량">
           <input
             id="volume"
             type="range"
@@ -46,6 +48,17 @@ const SettingModal = ({ closeModal }) => {
             step={0.01}
             value={volumeLevel}
             onChange={(e) => setVolumeLevel(parseFloat(e.target.value))}
+            className="w-full mb-[16px] appearance-none h-[8px] rounded bg-gray-100 custom-slider"
+          />
+        </SettingGroup>
+        <SettingGroup title="효과음 음량">
+          <input
+            id="object-volume"
+            type="range"
+            max={4}
+            step={0.01}
+            value={objectVolume}
+            onChange={(e) => setObjectVolume(parseFloat(e.target.value))}
             className="w-full mb-[16px] appearance-none h-[8px] rounded bg-gray-100 custom-slider"
           />
         </SettingGroup>

@@ -14,8 +14,16 @@ const GlobalAudio = () => {
   useEffect(() => {
     const audioController = audioControllerRef.current;
     audioController.init(camera, volumeLevel, true);
-    audioController.play(BGM_PATH);
+
+    const handleFirstClick = () => {
+      audioController.play(BGM_PATH);
+      window.removeEventListener("click", handleFirstClick);
+    };
+
+    window.addEventListener("click", handleFirstClick);
+
     return () => {
+      window.removeEventListener("click", handleFirstClick);
       audioController.cleanup(camera);
     };
   }, []);
