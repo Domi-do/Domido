@@ -49,6 +49,12 @@ export const OBJECT_PATHS = {
       colliders: "trimesh",
       type: "dynamic",
     },
+    lightbulb: {
+      thumbnail: "/images/lightbulb.png",
+      model: "/objects/lightbulb.glb",
+      sound: "/sounds/domino_drop.mp3",
+      colliders: "trimesh",
+    },
   },
   DYNAMIC_OBJECTS: {
     beachBall: {
