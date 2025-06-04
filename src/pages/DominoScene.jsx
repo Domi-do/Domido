@@ -1,9 +1,9 @@
-import { RigidBody } from "@react-three/rapier";
-import { CuboidCollider } from "@react-three/rapier";
+import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import { useState } from "react";
 
-import { Ground, ObjectRenderer, DominoCanvas } from "@/components/DominoCanvas";
+import { Ground, ObjectRenderer, DominoCanvas, CarController } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
+import useCannonControls from "@/hooks/useCannonControls";
 import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
@@ -19,6 +19,7 @@ const DominoScene = () => {
     useToastControls();
 
   const { rigidBodyRefs, readyDominoSimulation, switchToReadyMode } = useDominoSimulation();
+  const { handleCannonTrigger } = useCannonControls();
 
   useDominoKeyboardControls(setIsGuideToastVisible);
 
@@ -32,12 +33,13 @@ const DominoScene = () => {
       <DominoCanvas rotationSensitivity={rotationSensitivity}>
         {dominos.length
           && dominos.map((domino, index) => {
-            const { position, rotation, color, opacity, id } = domino;
-            const { colliders, name } = domino.objectInfo.paths;
+            const { type, position, rotation, color, opacity, id, objectInfo } = domino;
+            const { colliders } = domino.objectInfo.paths;
             return (
               <RigidBody
+                type={type}
                 colliders={colliders}
-                name={name}
+                name={domino.objectInfo.objectName}
                 key={id}
                 restitution={0}
                 friction={1}
@@ -46,9 +48,21 @@ const DominoScene = () => {
                 position={position}
                 rotation={rotation}
                 ref={(ref) => (rigidBodyRefs.current[index] = ref)}
-                type={name === "lightbulb" ? "fixed" : "dynamic"}
               >
-                {name === "lightbulb" && (
+                {objectInfo?.objectName === "cannon" && (
+                  <>
+                    <CuboidCollider
+                      args={[0.2, 0.7, 0.2]}
+                      position={[0, 0, -1]}
+                      sensor
+                      onIntersectionEnter={({ other, target }) => {
+                        handleCannonTrigger(other, target);
+                      }}
+                    />
+                  </>
+                )}
+
+                {objectInfo?.objectName === "lightbulb" && (
                   <>
                     <CuboidCollider
                       args={[0.3, 0.4, 0.4]}
@@ -85,8 +99,7 @@ const DominoScene = () => {
                 )}
 
                 <ObjectRenderer
-                  dominoInfo={domino.objectInfo}
-                  key={id}
+                  dominoInfo={objectInfo}
                   onPointerOver={(event) => openGuideToast(event, id)}
                   onPointerOut={closeGuideToast}
                   onClick={(event) => readyDominoSimulation(event, index)}
@@ -96,6 +109,7 @@ const DominoScene = () => {
               </RigidBody>
             );
           })}
+        <CarController rigidBodyRefs={rigidBodyRefs} />
         <Ground />
       </DominoCanvas>
     </>
