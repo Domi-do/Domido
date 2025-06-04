@@ -9,20 +9,16 @@ import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
 import useDominoStore from "@/store/useDominoStore";
 import useSettingStore from "@/store/useSettingStore";
-
 const DominoScene = () => {
   const dominos = useDominoStore((state) => state.dominos);
   const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
-  const [isLightOn, setLightOn] = useState(false);
-
+  const [lightOnMap, setlightOnMap] = useState({});
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
-
   const { rigidBodyRefs, readyDominoSimulation, switchToReadyMode } = useDominoSimulation();
   const { handleCannonTrigger } = useCannonControls();
 
   useDominoKeyboardControls(setIsGuideToastVisible);
-
   return (
     <>
       <DominoHUD
@@ -70,22 +66,22 @@ const DominoScene = () => {
                       sensor
                       onIntersectionEnter={() => {
                         setTimeout(() => {
-                          setLightOn(true);
+                          setlightOnMap((prev) => ({ ...prev, [id]: true }));
                         }, 300);
                       }}
                     />
                     <mesh position={[0, 0.1, -0.2]}>
                       <boxGeometry args={[1, 0.5, 0.4]} />
                       <meshStandardMaterial
-                        color={isLightOn ? "white" : "gray"}
-                        emissive={isLightOn ? "rgb(255,255,150)" : "black"}
+                        color={lightOnMap[id] ? "white" : "gray"}
+                        emissive={lightOnMap[id] ? "rgb(255,255,150)" : "black"}
                         emissiveIntensity={50}
                         metalness={0.1}
                         roughness={0.3}
                         transparent
                         opacity={0}
                       />
-                      {isLightOn && (
+                      {lightOnMap[id] && (
                         <pointLight
                           position={[0, -0.5, 0]}
                           color="yellow"
@@ -115,5 +111,4 @@ const DominoScene = () => {
     </>
   );
 };
-
 export default DominoScene;
