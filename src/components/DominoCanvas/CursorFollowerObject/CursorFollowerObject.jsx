@@ -4,22 +4,34 @@ import * as THREE from "three";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import useDominoStore from "@/store/useDominoStore";
+import useSettingStore from "@/store/useSettingStore";
 import AudioController from "@/utils/AudioController";
 
-const DOMINO_HEIGHT = 1;
-const HALF_DOMINO_HEIGHT = DOMINO_HEIGHT / 2;
 const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
+const OBJECT_NAMES = [
+  "defaultObject",
+  "slide",
+  "spiralStairs",
+  "staircase",
+  "stairsClosedShort",
+  "stairsClosed",
+  "stairs",
+  "lightbulb",
+  "beachBall",
+  "cannon",
+  "pokeball",
+  "soccerFootball",
+  "car",
+  "bumper",
+];
 
 const CursorFollowerObject = () => {
   const { dominos, setDominos, selectedDomino, rotationY, selectedColor } = useDominoStore();
+  const objectVolume = useSettingStore((state) => state.objectVolume);
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
   const audioController = useRef(new AudioController());
-
-  useEffect(() => {
-    audioController.current.init(camera, 2, false);
-  }, [camera]);
 
   const playDominoDropSound = () => {
     audioController.current.play(selectedDomino.paths.sound);
@@ -53,7 +65,7 @@ const CursorFollowerObject = () => {
     raycaster.setFromCamera(pointer, camera);
 
     const ground = scene.getObjectByName("ground");
-    const allDominoes = scene.children.filter((child) => child.name === "domino");
+    const allDominoes = scene.children.filter((child) => OBJECT_NAMES.includes(child.name));
 
     if (!ground || !meshRef.current) return;
 
@@ -70,6 +82,14 @@ const CursorFollowerObject = () => {
     meshRef.current.position.set(pos.x, y, pos.z);
     meshRef.current.rotation.set(0, rotationY, 0);
   });
+
+  useEffect(() => {
+    audioController.current.init(camera, objectVolume, false);
+
+    if (audioController.current) {
+      audioController.current.setVolume(objectVolume);
+    }
+  }, [camera, objectVolume]);
 
   return (
     selectedDomino !== null && (
