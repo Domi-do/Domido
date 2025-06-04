@@ -16,14 +16,14 @@ const DominoEntity = ({
     <>
       {dominos.length
         && dominos.map((domino, index) => {
-          const { position, rotation, color, opacity, id, objectInfo } = domino;
-          const { colliders, type } = domino.objectInfo.paths;
+          const { position, rotation, color, opacity, id, objectMetaData } = domino;
+          const { colliders, type } = domino.objectMetaData.objectInfo;
 
           return (
             <RigidBody
               type={type}
               colliders={colliders}
-              name={objectInfo.objectName}
+              name={objectMetaData.objectName}
               key={id}
               restitution={0}
               friction={1}
@@ -34,13 +34,13 @@ const DominoEntity = ({
               ref={(ref) => (rigidBodyRefs.current[index] = ref)}
             >
               <DominoVisualUnit
-                objectName={objectInfo?.objectName}
+                objectName={objectMetaData?.objectName}
                 id={id}
                 position={position}
                 rigidBodyRefs={rigidBodyRefs}
               />
               <ObjectRenderer
-                dominoInfo={objectInfo}
+                dominoInfo={objectMetaData}
                 onPointerOver={(event) => openGuideToast(event, id)}
                 onPointerOut={closeGuideToast}
                 onClick={(event) => readyDominoSimulation(event, index)}

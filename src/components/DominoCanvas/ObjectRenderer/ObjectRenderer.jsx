@@ -21,8 +21,8 @@ const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity
   );
 };
 
-const PrimitiveObject = ({ paths, position, onPointerOver, onPointerOut, onClick }) => {
-  const { scene } = useGLTF(paths);
+const PrimitiveObject = ({ path, position, onPointerOver, onPointerOut, onClick }) => {
+  const { scene } = useGLTF(path);
 
   const clonedScene = useMemo(() => scene.clone(true), [scene]);
 
@@ -49,7 +49,7 @@ const ObjectRenderer = ({
   opacity,
   color,
 }) => {
-  const { objectName, paths } = dominoInfo;
+  const { objectName, objectInfo } = dominoInfo;
   const isDefaultObject = objectName === "defaultObject";
 
   return isDefaultObject ?
@@ -62,7 +62,7 @@ const ObjectRenderer = ({
         color={color}
       />
     : <PrimitiveObject
-        paths={paths.model}
+        path={objectInfo.model}
         position={position}
         onPointerOver={onPointerOver}
         onPointerOut={onPointerOut}
