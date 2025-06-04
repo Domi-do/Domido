@@ -7,12 +7,7 @@ import DominoEntity from "./DominoEntity/DominoEntity";
 
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
-import {
-  Ground,
-  CarController,
-  CameraControls,
-  CursorFollowerObject,
-} from "@/components/DominoCanvas";
+import { Ground, CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
 
 const DominoCanvas = ({
   openGuideToast,
@@ -47,7 +42,6 @@ const DominoCanvas = ({
               readyDominoSimulation={readyDominoSimulation}
               rigidBodyRefs={rigidBodyRefs}
             />
-            <CarController rigidBodyRefs={rigidBodyRefs} />
             <Ground />
           </Physics>
         </Suspense>

@@ -1,4 +1,4 @@
-import { Ground, DominoCanvas, CarController } from "@/components/DominoCanvas";
+import { DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
