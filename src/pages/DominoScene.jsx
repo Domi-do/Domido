@@ -23,6 +23,7 @@ const DominoScene = () => {
         closeGuideToast={closeGuideToast}
         readyDominoSimulation={readyDominoSimulation}
         rigidBodyRefs={rigidBodyRefs}
+        isOpenGuideToastVisible={isOpenGuideToastVisible}
       />
     </>
   );
