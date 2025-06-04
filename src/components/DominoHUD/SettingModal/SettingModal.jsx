@@ -7,7 +7,7 @@ import SettingGroup from "@/components/DominoHUD/SettingModal/SettingGroup";
 import GroundTypeButton from "@/components/DominoHUD/SettingModal/GroundTypeButton";
 import ModalOverlay from "@/components/Common/ModalOverlay";
 
-const groundOptions = [
+const GROUND_OPTIONS = [
   { type: "grass", image: tileGrass },
   { type: "wood_dark", image: tileWoodDark },
   { type: "wood_light", image: tileWoodLight },
@@ -65,7 +65,7 @@ const SettingModal = ({ closeModal }) => {
 
         <SettingGroup title="배경">
           <ul className="flex gap-[10px]">
-            {groundOptions.map(({ type, image }) => (
+            {GROUND_OPTIONS.map(({ type, image }) => (
               <li key={type}>
                 <GroundTypeButton
                   type={type}

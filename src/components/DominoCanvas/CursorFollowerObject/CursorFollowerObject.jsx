@@ -75,11 +75,11 @@ const CursorFollowerObject = () => {
     if (!firstHit) return;
 
     const pos = firstHit.point;
-    const bbox = new THREE.Box3().setFromObject(meshRef.current);
-    const height = bbox.max.y - bbox.min.y;
-    const y = pos.y + height / 2;
+    const boundingBox = new THREE.Box3().setFromObject(meshRef.current);
+    const height = boundingBox.max.y - boundingBox.min.y;
+    const centerY = pos.y + height / 2;
 
-    meshRef.current.position.set(pos.x, y, pos.z);
+    meshRef.current.position.set(pos.x, centerY, pos.z);
     meshRef.current.rotation.set(0, rotationY, 0);
   });
 
