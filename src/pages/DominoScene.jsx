@@ -1,6 +1,6 @@
 import { RigidBody, CuboidCollider } from "@react-three/rapier";
 
-import { Ground, ObjectRenderer, DominoCanvas } from "@/components/DominoCanvas";
+import { Ground, ObjectRenderer, DominoCanvas, CarController } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import useCannonControls from "@/hooks/useCannonControls";
 import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
@@ -69,6 +69,7 @@ const DominoScene = () => {
               </RigidBody>
             );
           })}
+        <CarController rigidBodyRefs={rigidBodyRefs} />
         <Ground />
       </DominoCanvas>
     </>

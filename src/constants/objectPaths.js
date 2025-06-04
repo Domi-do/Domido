@@ -79,5 +79,11 @@ export const OBJECT_PATHS = {
       colliders: "ball",
       type: "dynamic",
     },
+    car: {
+      thumbnail: "/images/car.png",
+      model: "/objects/car.glb",
+      sound: "/sounds/domino_drop.mp3",
+      colliders: "trimesh",
+    },
   },
 };
