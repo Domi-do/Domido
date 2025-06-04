@@ -9,6 +9,22 @@ import AudioController from "@/utils/AudioController";
 
 const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
+const OBJECT_NAMES = [
+  "defaultObject",
+  "slide",
+  "spiralStairs",
+  "staircase",
+  "stairsClosedShort",
+  "stairsClosed",
+  "stairs",
+  "lightbulb",
+  "beachBall",
+  "cannon",
+  "pokeball",
+  "soccerFootball",
+  "car",
+  "bumper",
+];
 
 const CursorFollowerObject = () => {
   const { dominos, setDominos, selectedDomino, rotationY, selectedColor } = useDominoStore();
@@ -49,7 +65,7 @@ const CursorFollowerObject = () => {
     raycaster.setFromCamera(pointer, camera);
 
     const ground = scene.getObjectByName("ground");
-    const allDominoes = scene.children.filter((child) => child.name === "domino");
+    const allDominoes = scene.children.filter((child) => OBJECT_NAMES.includes(child.name));
 
     if (!ground || !meshRef.current) return;
 

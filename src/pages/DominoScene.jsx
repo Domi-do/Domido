@@ -1,5 +1,6 @@
 import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import { useState } from "react";
+import * as THREE from "three";
 
 import { Ground, ObjectRenderer, DominoCanvas, CarController } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
@@ -35,7 +36,7 @@ const DominoScene = () => {
               <RigidBody
                 type={type}
                 colliders={colliders}
-                name={domino.objectInfo.objectName}
+                name={objectInfo.objectName}
                 key={id}
                 restitution={0}
                 friction={1}
@@ -64,10 +65,12 @@ const DominoScene = () => {
                       args={[0.3, 0.4, 0.4]}
                       position={[1.65, -0.5, 1.25]}
                       sensor
-                      onIntersectionEnter={() => {
-                        setTimeout(() => {
-                          setlightOnMap((prev) => ({ ...prev, [id]: true }));
-                        }, 300);
+                      onIntersectionEnter={(other) => {
+                        if (other.rigidBodyObject.name === "defaultObject") {
+                          setTimeout(() => {
+                            setlightOnMap((prev) => ({ ...prev, [id]: true }));
+                          }, 300);
+                        }
                       }}
                     />
                     <mesh position={[0, 0.1, -0.2]}>
@@ -91,6 +94,27 @@ const DominoScene = () => {
                         />
                       )}
                     </mesh>
+                  </>
+                )}
+                {objectInfo?.objectName === "bumper" && (
+                  <>
+                    <CuboidCollider
+                      args={[0.5, 0.3, 0.5]}
+                      position={[0, 0.1, 0.2]}
+                      sensor
+                      onIntersectionEnter={({ other }) => {
+                        const otherObject = other.rigidBody;
+                        if (!otherObject) return;
+
+                        const dir = new THREE.Vector3()
+                          .subVectors(otherObject.translation(), new THREE.Vector3(...position))
+                          .setY(0)
+                          .normalize()
+                          .multiplyScalar(5);
+
+                        otherObject.applyImpulse({ x: dir.x, y: 0, z: dir.z }, true);
+                      }}
+                    />
                   </>
                 )}
 
