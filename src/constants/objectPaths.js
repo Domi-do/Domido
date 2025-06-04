@@ -54,6 +54,7 @@ export const OBJECT_PATHS = {
       model: "/objects/lightbulb.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
+      type: "fixed",
     },
   },
   DYNAMIC_OBJECTS: {
