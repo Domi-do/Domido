@@ -9,10 +9,9 @@ import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
 import useDominoStore from "@/store/useDominoStore";
-import useSettingStore from "@/store/useSettingStore";
+
 const DominoScene = () => {
   const dominos = useDominoStore((state) => state.dominos);
-  const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
   const [lightOnMap, setlightOnMap] = useState({});
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
@@ -27,7 +26,7 @@ const DominoScene = () => {
         rigidBodyRefs={rigidBodyRefs}
         switchToReadyMode={switchToReadyMode}
       />
-      <DominoCanvas rotationSensitivity={rotationSensitivity}>
+      <DominoCanvas>
         {dominos.length
           && dominos.map((domino, index) => {
             const { type, position, rotation, color, opacity, id, objectInfo } = domino;

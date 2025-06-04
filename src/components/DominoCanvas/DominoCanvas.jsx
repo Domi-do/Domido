@@ -7,7 +7,7 @@ import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
 import { CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
 
-const DominoCanvas = ({ rotationSensitivity, children }) => {
+const DominoCanvas = ({ children }) => {
   return (
     <>
       <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
@@ -26,7 +26,7 @@ const DominoCanvas = ({ rotationSensitivity, children }) => {
             preset="park"
             background
           />
-          <CameraControls rotationSensitivity={rotationSensitivity} />
+          <CameraControls />
           <Physics>
             <CursorFollowerObject />
             {children}
