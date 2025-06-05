@@ -5,29 +5,43 @@ const OAuthCallback = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const code = new URL(window.location.href).searchParams.get("code");
+    const fetchAccessToken = async () => {
+      const code = new URL(window.location.href).searchParams.get("code");
+      if (!code) {
+        console.error("인가 코드 없음");
+        navigate("/");
+        return;
+      }
 
-    if (code) {
-      fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("서버 응답 실패");
-          return res.json();
-        })
-        .then((data) => {
-          console.log("로그인 성공", data);
-          navigate("/game");
-        })
-        .catch((err) => {
-          console.error("로그인 실패", err);
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "credentials": "include" },
+          body: JSON.stringify({ code }),
         });
-    } else {
-      console.error("인가 코드 없음!");
-      navigate("/");
-    }
+
+        if (!response.ok) {
+          const errorData = await response.json();
+
+          if (errorData.message?.includes("KOE320")) {
+            console.warn("만료된 인가 코드, 카카오 로그인 다시 시도");
+
+            window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${
+              import.meta.env.VITE_KAKAO_REST_API_KEY
+            }&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}&response_type=code`;
+
+            return;
+          }
+          throw new Error("서버 응답 실패!!!");
+        }
+
+        navigate("/game");
+      } catch (err) {
+        console.error("로그인 실패", err);
+      }
+    };
+
+    fetchAccessToken();
   }, [navigate]);
 
   return <p>로그인 처리 중...</p>;
