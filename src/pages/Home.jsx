@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import KakaoLogin from "@/components/KakaoLogin";
+
 import logo from "/images/logo.png";
 import startButton from "/images/start_button.png";
 
@@ -23,6 +25,7 @@ const Home = () => {
           draggable="false"
         />
       </Link>
+      <KakaoLogin />
     </section>
   );
 };
