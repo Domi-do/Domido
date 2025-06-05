@@ -34,7 +34,7 @@ const CursorFollowerObject = () => {
   const audioController = useRef(new AudioController());
 
   const playDominoDropSound = () => {
-    audioController.current.play(selectedDomino.objectInfo.sound);
+    audioController.current.play(selectedDomino.sound);
   };
 
   const handlePlaceDomino = (e) => {
@@ -51,7 +51,7 @@ const CursorFollowerObject = () => {
       id: Date.now(),
       position: [currentPosition.x, currentPosition.y, currentPosition.z],
       rotation: [0, rotationY, 0],
-      objectMetaData: selectedDomino,
+      objectInfo: { ...selectedDomino },
       opacity: DEFAULT_OPACITY,
       color: selectedColor,
     };

@@ -49,7 +49,7 @@ const ObjectRenderer = ({
   opacity,
   color,
 }) => {
-  const { objectName, objectInfo } = dominoInfo;
+  const { objectName, model } = dominoInfo;
   const isDefaultObject = objectName === "defaultObject";
 
   return isDefaultObject ?
@@ -62,7 +62,7 @@ const ObjectRenderer = ({
         color={color}
       />
     : <PrimitiveObject
-        path={objectInfo.model}
+        path={model}
         position={position}
         onPointerOver={onPointerOver}
         onPointerOut={onPointerOut}

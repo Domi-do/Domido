@@ -11,7 +11,7 @@ const Car = ({ rigidBodyRefs }) => {
   useFrame(() => {
     dominos.forEach((domino, index) => {
       const rigidBody = rigidBodyRefs.current[index];
-      const isCar = domino.objectMetaData.objectName === "car";
+      const isCar = domino.objectInfo.objectName === "car";
       const isValidRef = rigidBody && typeof rigidBody.mass === "function" && rigidBody.mass() > 0;
       const isNotApplied = !appliedImpulseIds.current.has(domino.id);
 
