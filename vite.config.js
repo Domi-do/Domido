@@ -12,4 +12,14 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { "@": path.resolve(__dirname, "src") } },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./src/__test__/setupTests.js"],
+    include: ["src/__test__/**/*.test.{js,jsx,ts,tsx}"],
+    coverage: {
+      reporter: ["text", "json", "html"],
+      include: ["src/store/**/*.{js,jsx,ts,tsx}", "src/components/DominoHUD/**/*.{js,jsx,ts,tsx}"],
+    },
+  },
 });
