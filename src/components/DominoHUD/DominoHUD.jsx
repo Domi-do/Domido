@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import ModalLayer from "@/Common/ModalLayer";
 import {
   GuideToast,
   HUDButtonGroup,
@@ -24,6 +25,21 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
     setClearConfirmModalOpen(false);
   };
 
+  const modals = [
+    { key: "guideToast", Component: GuideToast, isOpen: isOpenGuideToastVisible, props: {} },
+    {
+      key: "settingModal",
+      Component: SettingModal,
+      isOpen: isSettingModalOpen,
+      props: { closeModal: handleCloseModal },
+    },
+    {
+      key: "clearConfirmModal",
+      Component: DominoClearConfirmModal,
+      isOpen: isClearConfirmModalOpen,
+      props: { closeModal: handleCloseModal },
+    },
+  ];
   return (
     <>
       <HUDButtonGroup
@@ -40,10 +56,7 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
       )}
 
       <SidePanel />
-      {isOpenGuideToastVisible && <GuideToast />}
-
-      {isSettingModalOpen && <SettingModal closeModal={handleCloseModal} />}
-      {isClearConfirmModalOpen && <DominoClearConfirmModal closeModal={handleCloseModal} />}
+      <ModalLayer modals={modals} />
     </>
   );
 };

@@ -4,7 +4,7 @@ import { Quaternion, Vector3 } from "three";
 
 import useDominoStore from "@/store/useDominoStore";
 
-const CarController = ({ rigidBodyRefs }) => {
+const Car = ({ rigidBodyRefs }) => {
   const dominos = useDominoStore((state) => state.dominos);
   const appliedImpulseIds = useRef(new Set());
 
@@ -42,4 +42,4 @@ const CarController = ({ rigidBodyRefs }) => {
   return null;
 };
 
-export default CarController;
+export default Car;
