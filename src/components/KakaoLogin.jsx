@@ -1,5 +1,5 @@
 const SocialKakao = () => {
-  const redirect_uri = "http://localhost:5173/game";
+  const redirect_uri = "http://localhost:5173/oauth/callback";
 
   const VITE_KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
 

@@ -25,7 +25,9 @@ const Home = () => {
           draggable="false"
         />
       </Link>
-      <KakaoLogin />
+      <Link to="/oauth/login">
+        <KakaoLogin />
+      </Link>
     </section>
   );
 };
