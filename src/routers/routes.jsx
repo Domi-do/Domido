@@ -11,7 +11,6 @@ const routes = createBrowserRouter([
   { path: "game", element: <DominoScene /> },
   { path: "projects/:projectId", element: <DominoScene /> },
   { path: "*", element: <NotFound /> },
-  { path: "/oauth/login", element: <KakaoLogin /> },
   { path: "/oauth/callback", element: <OAuthCallback /> },
 ]);
 
