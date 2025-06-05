@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import DominoColorPalette from "@/components/DominoHUD/SidePanel/DominoColorPalette";
 import ObjectCard from "@/components/DominoHUD/SidePanel/ObjectCard";
-import { OBJECT_PATHS } from "@/constants/objectPaths";
+import { OBJECT_METADATA } from "@/constants/objectMetaData";
 import useDominoStore from "@/store/useDominoStore";
 
 const SidePanel = () => {
@@ -18,19 +18,19 @@ const SidePanel = () => {
       onMouseLeave={() => setIsOpen(false)}
     >
       <aside className="w-100 h-full bg-black/40 shadow-lg p-3 flex flex-col relative gap-6">
-        {selectedDomino && <DominoColorPalette />}
-        {Object.entries(OBJECT_PATHS).map(([groupName, groupObjects]) => (
+        {selectedDomino?.objectName === "defaultObject" && <DominoColorPalette />}
+        {Object.entries(OBJECT_METADATA).map(([groupName, groupObjects]) => (
           <section
             key={groupName}
             className="flex flex-col gap-2 overflow-y-auto"
           >
             <h2 className="font-bold text-white">{groupName.toLowerCase()}</h2>
             <div className="grid grid-cols-3 gap-4">
-              {Object.entries(groupObjects).map(([objectName, paths]) => (
+              {Object.entries(groupObjects).map(([objectName, objectInfo]) => (
                 <ObjectCard
                   key={objectName}
                   objectName={objectName}
-                  paths={paths}
+                  objectInfo={objectInfo}
                   groupName={groupName}
                 />
               ))}

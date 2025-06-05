@@ -3,11 +3,18 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { Suspense } from "react";
 
+import DominoEntity from "./DominoEntity/DominoEntity";
+
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
-import { CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
+import { Ground, CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
 
-const DominoCanvas = ({ rotationSensitivity, children }) => {
+const DominoCanvas = ({
+  openGuideToast,
+  closeGuideToast,
+  readyDominoSimulation,
+  rigidBodyRefs,
+}) => {
   return (
     <>
       <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
@@ -26,10 +33,16 @@ const DominoCanvas = ({ rotationSensitivity, children }) => {
             preset="park"
             background
           />
-          <CameraControls rotationSensitivity={rotationSensitivity} />
+          <CameraControls />
           <Physics>
             <CursorFollowerObject />
-            {children}
+            <DominoEntity
+              openGuideToast={openGuideToast}
+              closeGuideToast={closeGuideToast}
+              readyDominoSimulation={readyDominoSimulation}
+              rigidBodyRefs={rigidBodyRefs}
+            />
+            <Ground />
           </Physics>
         </Suspense>
       </Canvas>

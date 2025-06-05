@@ -1,4 +1,4 @@
-export const OBJECT_PATHS = {
+export const OBJECT_METADATA = {
   STATIC_OBJECTS: {
     defaultObject: {
       thumbnail: "/images/domino.png",

@@ -26,7 +26,7 @@ export default function DominoColorPalette() {
         <button
           key={color.type}
           onClick={() => handleSelect(color.hex)}
-          className={`w-8 h-8 rounded-full`}
+          className={`w-8 h-8 rounded-full cursor-pointer`}
           style={{
             backgroundColor: color.hex,
             border: selectedColor === color.hex ? "3px solid white" : "none",

@@ -3,4 +3,3 @@ export { default as CameraControls } from "@/components/DominoCanvas/CameraContr
 export { default as CursorFollowerObject } from "@/components/DominoCanvas/CursorFollowerObject/CursorFollowerObject";
 export { default as ObjectRenderer } from "@/components/DominoCanvas/ObjectRenderer/ObjectRenderer";
 export { default as DominoCanvas } from "@/components/DominoCanvas/DominoCanvas";
-export { default as CarController } from "@/components/DominoCanvas/CarController/CarController";
