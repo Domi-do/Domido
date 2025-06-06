@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import ModalLayer from "@/Common/ModalLayer";
+import ModalLayer from "@/components/Common/ModalLayer";
 import {
   GuideToast,
   HUDButtonGroup,
