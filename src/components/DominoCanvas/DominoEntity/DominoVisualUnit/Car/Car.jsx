@@ -6,37 +6,35 @@ import useDominoStore from "@/store/useDominoStore";
 
 const Car = ({ rigidBodyRefs }) => {
   const dominos = useDominoStore((state) => state.dominos);
-  const appliedImpulseIds = useRef(new Set());
+  const applied = useRef(false);
 
   useFrame(() => {
-    dominos.forEach((domino, index) => {
-      const rigidBody = rigidBodyRefs.current[index];
-      const isCar = domino.objectInfo.objectName === "car";
-      const isValidRef = rigidBody && typeof rigidBody.mass === "function" && rigidBody.mass() > 0;
-      const isNotApplied = !appliedImpulseIds.current.has(domino.id);
+    if (applied.current || dominos.length === 0) return;
 
-      const isCarReady = isValidRef && isCar && isNotApplied;
+    const lastDomino = dominos[dominos.length - 1];
+    const isCar = lastDomino.objectInfo.objectName === "car";
+    const rigidBody = rigidBodyRefs.current[dominos.length - 1];
 
-      if (isCarReady) {
-        const localDirection = new Vector3(1, 0, 0);
+    if (!isCar || !rigidBody || typeof rigidBody.mass !== "function" || rigidBody.mass() <= 0)
+      return;
 
-        const carRotation = new Quaternion(
-          rigidBody.rotation().x,
-          rigidBody.rotation().y,
-          rigidBody.rotation().z,
-          rigidBody.rotation().w,
-        );
+    const localDirection = new Vector3(1, 0, 0);
 
-        const worldDirection = localDirection.applyQuaternion(carRotation).normalize();
+    const carRotation = new Quaternion(
+      rigidBody.rotation().x,
+      rigidBody.rotation().y,
+      rigidBody.rotation().z,
+      rigidBody.rotation().w,
+    );
 
-        rigidBody.applyImpulse(
-          { x: worldDirection.x * 5, y: worldDirection.y * 5, z: worldDirection.z * 5 },
-          true,
-        );
+    const worldDirection = localDirection.applyQuaternion(carRotation).normalize();
 
-        appliedImpulseIds.current.add(domino.id);
-      }
-    });
+    rigidBody.applyImpulse(
+      { x: worldDirection.x * 5, y: worldDirection.y * 5, z: worldDirection.z * 5 },
+      true,
+    );
+
+    applied.current = true;
   });
 
   return null;
