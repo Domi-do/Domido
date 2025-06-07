@@ -21,11 +21,15 @@ export default function DominoColorPalette() {
   };
 
   return (
-    <div className="flex gap-2 p-3 rounded-xl bg-gray-100 shadow-inner w-fit opacity-90">
+    <div
+      data-testid="domino-color-palette"
+      className="flex gap-2 p-3 rounded-xl bg-gray-100 shadow-inner w-fit opacity-90"
+    >
       {COLORS.map((color) => (
         <button
           key={color.type}
           onClick={() => handleSelect(color.hex)}
+          data-testid={`color-button-${color.type}`}
           className={`w-8 h-8 rounded-full cursor-pointer`}
           style={{
             backgroundColor: color.hex,
