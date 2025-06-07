@@ -14,7 +14,7 @@ const OAuthCallback = () => {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/auth/login`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -22,6 +22,7 @@ const OAuthCallback = () => {
         });
         const data = await response.json();
         localStorage.setItem("dominoAccessToken", data.token);
+        localStorage.setItem("dominoRefreshToken", data.refreshToken);
 
         if (!response.ok) {
           const errorData = await response.json();
