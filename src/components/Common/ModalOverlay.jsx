@@ -27,7 +27,7 @@ const ModalOverlay = ({ closeModal, children }) => {
             <img
               src={closeButton}
               className="w-[30px] h-[30px]"
-              alt=""
+              alt="close_button"
             />
           </button>
           {children}

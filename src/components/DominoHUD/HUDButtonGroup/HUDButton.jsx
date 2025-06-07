@@ -1,6 +1,6 @@
 import useDominoStore from "@/store/useDominoStore";
 
-const HUDButton = ({ onClick, buttonImage }) => {
+const HUDButton = ({ onClick, buttonImage, alt }) => {
   const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
   return (
@@ -14,6 +14,7 @@ const HUDButton = ({ onClick, buttonImage }) => {
           src={buttonImage}
           draggable="false"
           className="w-full h-full"
+          alt={alt}
         />
       </button>
     </>

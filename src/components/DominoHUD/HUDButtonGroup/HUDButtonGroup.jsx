@@ -15,11 +15,13 @@ const HUDButtons = ({ onClickSetting, onClickReset, onClickPlay, onClickClear })
       <HUDButton
         onClick={onClickSetting}
         buttonImage={settingButton}
+        alt="setting"
       />
       {simulationMode === MODE.EDIT && (
         <HUDButton
           onClick={onClickPlay}
           buttonImage={playButton}
+          alt="play"
         />
       )}
       {simulationMode !== MODE.COUNTDOWN && (
@@ -27,10 +29,12 @@ const HUDButtons = ({ onClickSetting, onClickReset, onClickPlay, onClickClear })
           <HUDButton
             onClick={onClickReset}
             buttonImage={resetButton}
+            alt="reset"
           />
           <HUDButton
             onClick={onClickClear}
             buttonImage={clearButton}
+            alt="clear"
           />
         </>
       )}

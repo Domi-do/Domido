@@ -7,6 +7,7 @@ const ObjectCard = ({ objectName, objectInfo, groupName }) => {
   return (
     <div
       key={objectName}
+      data-testid={`object-button-${objectName}`}
       className="group flex flex-col items-center gap-1 text-white text-xs cursor-pointer"
       onClick={() => setSelectedDomino({ ...objectInfo, objectName, groupName })}
     >
