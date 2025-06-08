@@ -19,6 +19,22 @@ const ProjectListModal = ({ closeModal }) => {
 
   const navigate = useNavigate();
 
+  const getStatus = () => {
+    if (isLoading) {
+      return { text: "로딩 중...", color: "text-gray-400" };
+    }
+
+    if (isError) {
+      return { text: "프로젝트 목록을 불러오지 못했어요", color: "text-red-500" };
+    }
+
+    if (projects.length === 0) {
+      return { text: "저장된 프로젝트가 없습니다", color: "text-gray-400" };
+    }
+  };
+
+  const status = getStatus();
+
   return (
     <ModalOverlay closeModal={closeModal}>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-sm">
@@ -37,16 +53,8 @@ const ProjectListModal = ({ closeModal }) => {
           </div>
 
           <div className="space-y-[12px] max-h-[250px] overflow-y-auto">
-            {isLoading ?
-              <p className="text-center text-gray-400 text-base py-[40px]">로딩 중...</p>
-            : isError ?
-              <p className="text-center text-red-500 text-base py-[40px]">
-                프로젝트 목록을 불러오지 못했어요
-              </p>
-            : projects.length === 0 ?
-              <p className="text-center text-gray-400 text-base py-[40px]">
-                저장된 프로젝트가 없습니다
-              </p>
+            {status ?
+              <p className={`text-center text-base py-[40px] ${status.color}`}>{status.text}</p>
             : projects.map((project) => (
                 <div
                   key={project._id}
