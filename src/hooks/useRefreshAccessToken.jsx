@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Game = () => {
+const useRefreshAccessToken = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,4 +27,4 @@ const Game = () => {
   }, [navigate]);
 };
 
-export default Game;
+export default useRefreshAccessToken;

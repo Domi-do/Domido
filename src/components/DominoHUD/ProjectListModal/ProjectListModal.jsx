@@ -56,7 +56,7 @@ const ProjectListModal = ({ closeModal }) => {
                     <button
                       onClick={() => {
                         closeModal();
-                        navigate(`/game/projects/${project._id}`);
+                        navigate(`/projects/${project._id}`);
                       }}
                       className="w-full text-left"
                     >
