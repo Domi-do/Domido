@@ -11,10 +11,8 @@ const DominoEntity = ({
   readyDominoSimulation,
   rigidBodyRefs,
 }) => {
-  const { isLoading, isError } = useDominos();
+  useDominos();
   const dominos = useDominoStore((state) => state.dominos);
-
-  if (isLoading || isError) return null;
 
   return (
     <>

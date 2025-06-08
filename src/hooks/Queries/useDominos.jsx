@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -9,17 +9,13 @@ export const useDominos = () => {
   const { projectId } = useParams();
   const setDominos = useDominoStore((state) => state.setDominos);
 
-  const { data, isSuccess, isLoading, isError } = useQuery({
+  const { data: dominos } = useSuspenseQuery({
     queryKey: ["dominos", projectId],
     queryFn: () => fetcher(`/dominos/${projectId}`),
     enabled: !!projectId,
   });
 
   useEffect(() => {
-    if (isSuccess && data) {
-      setDominos(data);
-    }
-  }, [isSuccess, data]);
-
-  return { isLoading, isError };
+    setDominos(dominos);
+  }, [dominos]);
 };
