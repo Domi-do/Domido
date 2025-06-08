@@ -1,17 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 import fetcher from "@/services/fetcher";
+import useDominoStore from "@/store/useDominoStore";
 
 export const useDominoMutations = () => {
-  const queryClient = useQueryClient();
   const { projectId } = useParams();
+  const setDominos = useDominoStore((state) => state.setDominos);
 
   return useMutation({
-    mutationFn: ({ dominos, deleteDominoId }) =>
-      fetcher(`/dominos/${projectId}`, { method: "POST", body: { dominos, deleteDominoId } }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
+    mutationFn: ({ dominos }) =>
+      fetcher(`/dominos/${projectId}`, { method: "POST", body: { dominos } }),
+    onSuccess: (newDominos) => {
+      setDominos(newDominos);
     },
   });
 };

@@ -17,18 +17,23 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
   const prevLengthRef = useRef(dominos.length);
   const { mutate } = useDominoMutations();
 
-  const handleDeleteDomino = () => {
-    const deleteDominoId = deleteSelectedDomino(historyRef, onToggleGuideToast);
+  const handleDominoUpdate = (updateFn, isShowToast = true) => {
+    const updatedDominos =
+      isShowToast ? updateFn(historyRef, onToggleGuideToast) : updateFn(historyRef);
 
-    if (deleteDominoId) {
-      mutate({ deleteDominoId });
+    if (updatedDominos?.length) {
+      mutate({ dominos: updatedDominos });
     }
   };
 
+  const handleDeleteObject = () => handleDominoUpdate(deleteSelectedDomino);
+  const handleOpacityObject = () => handleDominoUpdate(toggleSelectedDominoOpacity);
+  const handleUndo = () => handleDominoUpdate(undoDominoHistory, false);
+
   const keyMap = {
-    x: handleDeleteDomino,
-    h: () => toggleSelectedDominoOpacity(historyRef, onToggleGuideToast),
-    u: () => undoDominoHistory(historyRef),
+    x: handleDeleteObject,
+    h: handleOpacityObject,
+    u: handleUndo,
     q: rotateDominoCounterClockwise,
     e: rotateDominoClockwise,
     escape: () => closeCurrentMode(),

@@ -1,5 +1,4 @@
 import { RigidBody } from "@react-three/rapier";
-import { useEffect } from "react";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/DominoVisualUnit";
@@ -12,14 +11,10 @@ const DominoEntity = ({
   readyDominoSimulation,
   rigidBodyRefs,
 }) => {
-  const { data: fetchedDominos, isLoading } = useDominos("6840f38a5749f010ab072eeb");
-  const { dominos, setDominos } = useDominoStore();
+  const { isLoading, isError } = useDominos();
+  const dominos = useDominoStore((state) => state.dominos);
 
-  useEffect(() => {
-    if (!isLoading) {
-      setDominos(fetchedDominos);
-    }
-  }, [fetchedDominos, isLoading]);
+  if (isLoading || isError) return null;
 
   return (
     <>

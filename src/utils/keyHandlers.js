@@ -9,31 +9,37 @@ export const deleteSelectedDomino = (historyRef, onToggleGuideToast) => {
 
   if (!selectedDominoKey) return;
 
+  const updatedDominos = dominos.filter((domino) => domino._id !== selectedDominoKey);
+
   historyRef.current.push([...dominos]);
   setSelectedDominoKey(null);
   setTimeout(() => onToggleGuideToast(false), 100);
 
-  return selectedDominoKey;
+  return updatedDominos;
 };
 
 export const toggleSelectedDominoOpacity = (historyRef, onToggleGuideToast) => {
-  const { dominos, selectedDominoKey, setDominos } = useDominoStore.getState();
+  const { dominos, selectedDominoKey } = useDominoStore.getState();
+
   if (!selectedDominoKey) return;
 
-  historyRef.current.push([...dominos]);
   const updatedDominos = dominos.map((item) =>
-    item.id === selectedDominoKey ? { ...item, opacity: item.opacity === 1 ? 0.3 : 1 } : item,
+    item._id === selectedDominoKey ? { ...item, opacity: item.opacity === 1 ? 0.3 : 1 } : item,
   );
-  setDominos(updatedDominos);
+
+  historyRef.current.push([...dominos]);
   onToggleGuideToast(false);
+
+  return updatedDominos;
 };
 
 export const undoDominoHistory = (historyRef) => {
-  const { setDominos } = useDominoStore.getState();
   if (historyRef.current.length <= 1) return;
-
   historyRef.current.pop();
-  setDominos(historyRef.current[historyRef.current.length - 1]);
+
+  const updatedDominos = historyRef.current[historyRef.current.length - 1];
+
+  return updatedDominos;
 };
 
 export const closeCurrentMode = () => {
