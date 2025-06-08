@@ -5,15 +5,15 @@ import useSimulationStore from "@/store/useSimulationStore";
 const QUARTER_TURN = 4;
 
 export const deleteSelectedDomino = (historyRef, onToggleGuideToast) => {
-  const { dominos, selectedDominoKey, setDominos, setSelectedDominoKey } =
-    useDominoStore.getState();
+  const { dominos, selectedDominoKey, setSelectedDominoKey } = useDominoStore.getState();
+
   if (!selectedDominoKey) return;
 
   historyRef.current.push([...dominos]);
-  const updatedDominos = dominos.filter((domino) => domino.id !== selectedDominoKey);
-  setDominos(updatedDominos);
   setSelectedDominoKey(null);
   setTimeout(() => onToggleGuideToast(false), 100);
+
+  return selectedDominoKey;
 };
 
 export const toggleSelectedDominoOpacity = (historyRef, onToggleGuideToast) => {
