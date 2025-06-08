@@ -21,7 +21,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     const updatedDominos =
       isShowToast ? updateFn(historyRef, onToggleGuideToast) : updateFn(historyRef);
 
-    if (updatedDominos?.length) {
+    if (Array.isArray(updatedDominos)) {
       mutate({ dominos: updatedDominos });
     }
   };
