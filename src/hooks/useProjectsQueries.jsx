@@ -3,13 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import fetcher from "@/services/fetcher";
 
 const useProjectsQueries = () => {
-  const {
-    data: projects = [],
-    isLoading,
-    isError,
-  } = useQuery({ queryKey: ["projects"], queryFn: () => fetcher("/projects") });
-
-  return { projects, isLoading, isError };
+  return useQuery({ queryKey: ["projects"], queryFn: () => fetcher("/projects") });
 };
 
 export default useProjectsQueries;

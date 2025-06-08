@@ -1,14 +1,12 @@
 import { useState } from "react";
-
-import ModalOverlay from "@/components/Common/ModalOverlay";
+import { useId } from "react";
 
 const ProjectNameInputModal = ({ closeModal, onSubmit }) => {
   const [projectName, setProjectName] = useState("");
+  const inputId = useId();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!projectName.trim()) return alert("프로젝트 이름을 입력해주세요");
-
     onSubmit(projectName);
     closeModal();
   };
@@ -33,11 +31,18 @@ const ProjectNameInputModal = ({ closeModal, onSubmit }) => {
           onSubmit={handleSubmit}
           className="space-y-[8px]"
         >
-          <label className="text-[14px] font-medium text-gray-700">프로젝트 이름</label>
+          <label
+            htmlFor={inputId}
+            className="text-[14px] font-medium text-gray-700"
+          >
+            프로젝트 이름
+          </label>
           <input
+            id={inputId}
             type="text"
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
+            required
             className="w-full px-[16px] py-[12px] border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-yellow-300 transition"
             placeholder="예: 도미노 시뮬레이터"
           />

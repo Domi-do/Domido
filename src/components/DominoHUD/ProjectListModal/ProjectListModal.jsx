@@ -9,7 +9,7 @@ import useProjectsQueries from "@/hooks/useProjectsQueries";
 import useUpdateProjectQueries from "@/hooks/useUpdateProjectQueries";
 
 const ProjectListModal = ({ closeModal }) => {
-  const { projects, isLoading, isError } = useProjectsQueries();
+  const { data: projects, isLoading, isError } = useProjectsQueries();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
 

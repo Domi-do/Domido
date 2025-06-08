@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { HTTPError } from "@/utils/HTTPError";
+
 const OAuthCallback = () => {
   const navigate = useNavigate();
 
@@ -25,10 +27,8 @@ const OAuthCallback = () => {
         if (!response.ok) {
           const errorMessage = data.message;
           console.warn("로그인 실패:", errorMessage);
-          alert(errorMessage);
           navigate("/");
-
-          return;
+          throw new HTTPError(401, data.message);
         }
 
         localStorage.setItem("dominoAccessToken", data.token);
@@ -36,7 +36,7 @@ const OAuthCallback = () => {
 
         navigate("/projects");
       } catch (err) {
-        console.error("로그인 실패", err);
+        throw new HTTPError(err.response.status, err.message);
       }
     };
 
