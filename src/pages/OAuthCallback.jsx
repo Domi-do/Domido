@@ -21,23 +21,20 @@ const OAuthCallback = () => {
           body: JSON.stringify({ code }),
         });
         const data = await response.json();
+
+        if (!response.ok) {
+          const errorMessage = data.message;
+          console.warn("로그인 실패:", errorMessage);
+          alert(errorMessage);
+          navigate("/");
+
+          return;
+        }
+
         localStorage.setItem("dominoAccessToken", data.token);
         localStorage.setItem("dominoRefreshToken", data.refreshToken);
 
-        if (!response.ok) {
-          const errorData = await response.json();
-
-          if (errorData.message?.includes("KOE320")) {
-            console.warn("만료된 인가 코드, 카카오 로그인 다시 시도");
-            window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${
-              import.meta.env.VITE_KAKAO_REST_API_KEY
-            }&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}&response_type=code`;
-            return;
-          }
-          throw new Error("서버 응답 실패!!!");
-        }
-
-        navigate("/game");
+        navigate("/projects");
       } catch (err) {
         console.error("로그인 실패", err);
       }
