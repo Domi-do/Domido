@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { useToast } from "./ToastContext";
+
 import socket from "@/services/socket";
 import useDominoStore from "@/store/useDominoStore";
 
@@ -10,6 +12,7 @@ export const SocketProvider = ({ children }) => {
   const { projectId } = useParams();
   const { setDominos } = useDominoStore();
   const [otherCursors, setOtherCursors] = useState({});
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (!projectId) return;
@@ -17,7 +20,7 @@ export const SocketProvider = ({ children }) => {
     socket.emit("join project room", { projectId });
 
     socket.on("user joined", ({ message }) => {
-      console.log(message);
+      showToast({ message });
     });
 
     socket.on("cursor position update", ({ userID, userNickname, objectInfo, position }) => {
@@ -29,7 +32,7 @@ export const SocketProvider = ({ children }) => {
     });
 
     socket.on("user left", ({ message }) => {
-      console.log(message);
+      showToast({ message });
     });
 
     return () => {
