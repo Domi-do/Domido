@@ -33,6 +33,7 @@ const OAuthCallback = () => {
         localStorage.setItem("dominoAccessToken", data.token);
         localStorage.setItem("dominoRefreshToken", data.refreshToken);
         localStorage.setItem("userNickname", data.userNickname);
+        localStorage.setItem("userID", data.userID);
 
         navigate("/projects");
       } catch (err) {
