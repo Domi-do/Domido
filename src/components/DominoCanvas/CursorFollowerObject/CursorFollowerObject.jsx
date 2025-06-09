@@ -90,6 +90,7 @@ const CursorFollowerObject = () => {
       projectId,
       objectInfo: selectedDomino,
       position: [pos.x, centerY, pos.z],
+      selectedColor,
     });
   });
 

@@ -23,9 +23,15 @@ export const SocketProvider = ({ children }) => {
       showToast({ message });
     });
 
-    socket.on("cursor position update", ({ userID, userNickname, objectInfo, position }) => {
-      setOtherCursors((prev) => ({ ...prev, [userID]: { userNickname, objectInfo, position } }));
-    });
+    socket.on(
+      "cursor position update",
+      ({ userID, userNickname, objectInfo, position, selectedColor }) => {
+        setOtherCursors((prev) => ({
+          ...prev,
+          [userID]: { userNickname, objectInfo, position, selectedColor },
+        }));
+      },
+    );
 
     socket.on("domino update", ({ dominos }) => {
       setDominos(dominos);
