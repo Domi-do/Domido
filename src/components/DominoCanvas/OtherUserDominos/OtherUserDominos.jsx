@@ -15,6 +15,7 @@ const OtherUserDominos = () => {
     return Object.entries(otherCursors).map(
       ([userId, { userNickname, position, objectInfo, selectedColor, rotationY }]) => {
         const [x, y, z] = position;
+
         return (
           <group key={userId}>
             <group

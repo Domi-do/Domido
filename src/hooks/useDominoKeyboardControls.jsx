@@ -39,7 +39,12 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     u: handleUndo,
     q: rotateDominoCounterClockwise,
     e: rotateDominoClockwise,
-    escape: () => closeCurrentMode(),
+    escape: () => {
+      closeCurrentMode();
+      setTimeout(() => {
+        socket.emit("clear cursor", { projectId });
+      });
+    },
   };
 
   const handleKeydown = (event) => {

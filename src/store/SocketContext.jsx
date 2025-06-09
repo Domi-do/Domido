@@ -13,6 +13,15 @@ export const SocketProvider = ({ children }) => {
   const { setDominos } = useDominoStore();
   const [otherCursors, setOtherCursors] = useState({});
   const { showToast } = useToast();
+  const myUserID = localStorage.getItem("userID");
+
+  const removeCursor = (userID) => {
+    setOtherCursors((prev) => {
+      const updatedOtherCursors = { ...prev };
+      delete updatedOtherCursors[userID];
+      return updatedOtherCursors;
+    });
+  };
 
   useEffect(() => {
     if (!projectId) return;
@@ -26,6 +35,7 @@ export const SocketProvider = ({ children }) => {
     socket.on(
       "cursor position update",
       ({ userID, userNickname, objectInfo, position, selectedColor, rotationY }) => {
+        if (userID === myUserID) return;
         setOtherCursors((prev) => ({
           ...prev,
           [userID]: { userNickname, objectInfo, position, selectedColor, rotationY },
@@ -37,8 +47,13 @@ export const SocketProvider = ({ children }) => {
       setDominos(dominos);
     });
 
-    socket.on("user left", ({ message }) => {
+    socket.on("user left", ({ message, userID }) => {
       showToast({ message });
+      removeCursor(userID);
+    });
+
+    socket.on("other cursor clear", ({ userID }) => {
+      removeCursor(userID);
     });
 
     return () => {
@@ -46,11 +61,12 @@ export const SocketProvider = ({ children }) => {
       socket.off("cursor position update");
       socket.off("domino update");
       socket.off("user left");
+      socket.off("other cursor clear");
     };
   }, [projectId, setDominos]);
 
   return (
-    <SocketContext.Provider value={{ otherCursors, projectId, socket }}>
+    <SocketContext.Provider value={{ otherCursors, projectId, socket, myUserID }}>
       {children}
     </SocketContext.Provider>
   );
