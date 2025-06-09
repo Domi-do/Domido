@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 import KakaoLogin from "@/components/KakaoLogin";
 
 import logo from "/images/logo.png";

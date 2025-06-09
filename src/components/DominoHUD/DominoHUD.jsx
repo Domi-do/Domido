@@ -10,7 +10,9 @@ import {
 } from "@/components/DominoHUD";
 import MODE from "@/constants/mode";
 import useDominoReset from "@/hooks/useDominoReset";
+import fetcher from "@/services/fetcher";
 import useSimulationStore from "@/store/useSimulationStore";
+import { HTTPError } from "@/utils/HTTPError";
 
 const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
@@ -23,6 +25,22 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
   const handleCloseModal = () => {
     setIsSettingModalOpen(false);
     setClearConfirmModalOpen(false);
+  };
+
+  const handleLogout = async () => {
+    const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
+
+    try {
+      await fetcher("/auth/logout", { method: "POST", body: { accessToken: kakaoAccessToken } });
+    } catch (err) {
+      throw new HTTPError(err.status, err.message);
+    }
+
+    const logoutURL = `https://kauth.kakao.com/oauth/logout?client_id=${
+      import.meta.env.VITE_KAKAO_REST_API_KEY
+    }&logout_redirect_uri=${import.meta.env.VITE_KAKAO_LOGOUT_REDIRECT_URI}`;
+
+    window.location.href = logoutURL;
   };
 
   const modals = [
@@ -47,8 +65,8 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
         onClickReset={resetDominoSimulation}
         onClickPlay={switchToReadyMode}
         onClickClear={() => setClearConfirmModalOpen(true)}
+        onLogout={handleLogout}
       />
-
       {simulationMode === MODE.COUNTDOWN && (
         <span className="fixed z-50 text-[200px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold">
           {countdownNumber}

@@ -1,6 +1,6 @@
 import useDominoStore from "@/store/useDominoStore";
 
-const HUDButton = ({ onClick, buttonImage, alt }) => {
+const HUDButton = ({ onClick, className, children }) => {
   const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
   return (
@@ -8,14 +8,9 @@ const HUDButton = ({ onClick, buttonImage, alt }) => {
       <button
         onMouseOver={() => setSelectedDomino(null)}
         onClick={onClick}
-        className="w-[60px] h-[60px] cursor-pointer"
+        className={className}
       >
-        <img
-          src={buttonImage}
-          draggable="false"
-          className="w-full h-full"
-          alt={alt}
-        />
+        {children}
       </button>
     </>
   );
