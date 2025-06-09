@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useToast } from "./ToastContext";
 
@@ -14,6 +14,7 @@ export const SocketProvider = ({ children }) => {
   const [otherCursors, setOtherCursors] = useState({});
   const { showToast } = useToast();
   const myUserID = localStorage.getItem("userID");
+  const navigate = useNavigate();
 
   const removeCursor = (userID) => {
     setOtherCursors((prev) => {
@@ -27,6 +28,11 @@ export const SocketProvider = ({ children }) => {
     if (!projectId) return;
 
     socket.emit("join project room", { projectId });
+
+    socket.on("room full", ({ message }) => {
+      showToast({ message });
+      navigate("/projects");
+    });
 
     socket.on("user joined", ({ message }) => {
       showToast({ message });
@@ -62,6 +68,7 @@ export const SocketProvider = ({ children }) => {
       socket.off("domino update");
       socket.off("user left");
       socket.off("other cursor clear");
+      socket.off("room full");
     };
   }, [projectId, setDominos]);
 
