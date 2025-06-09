@@ -1,7 +1,6 @@
 import { useContext, useRef } from "react";
 import { createPortal } from "react-dom";
-
-import closeButton from "/images/close_button.png";
+import { IoIosCloseCircle } from "react-icons/io";
 
 import { PortalContext } from "@/components/Common/GlobalPortal";
 import useOnClickOutSide from "@/hooks/useOnClickOutSide";
@@ -24,11 +23,7 @@ const ModalOverlay = ({ closeModal, children }) => {
             onClick={closeModal}
             className="ml-auto block absolute right-[20px] top-[20px] cursor-pointer"
           >
-            <img
-              src={closeButton}
-              className="w-[30px] h-[30px]"
-              alt="close_button"
-            />
+            <IoIosCloseCircle className="text-3xl text-gray-500" />
           </button>
           {children}
         </div>
