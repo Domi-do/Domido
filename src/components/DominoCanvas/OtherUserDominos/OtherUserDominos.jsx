@@ -23,7 +23,7 @@ const OtherUserDominos = () => {
               />
             </group>
             <Text
-              position={[x, y + 1.2, z]} // 월드 좌표 기준으로 텍스트 위치 지정
+              position={[x, y + 1.2, z]}
               fontSize={0.3}
               color="white"
               anchorX="center"
