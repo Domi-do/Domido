@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
+import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 import {
   deleteSelectedDomino,
@@ -16,6 +17,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
   const historyRef = useRef([]);
   const prevLengthRef = useRef(dominos.length);
   const { mutate } = useDominoMutations();
+  const { projectId, socket } = useSocket();
 
   const handleDominoUpdate = (updateFn, isShowToast = true) => {
     const updatedDominos =
@@ -23,6 +25,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
 
     if (Array.isArray(updatedDominos)) {
       mutate({ dominos: updatedDominos });
+      socket.emit("update domino", { projectId, dominos: updatedDominos });
     }
   };
 

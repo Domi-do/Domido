@@ -23,7 +23,6 @@ const OAuthCallback = () => {
           body: JSON.stringify({ code }),
         });
         const data = await response.json();
-
         if (!response.ok) {
           const errorMessage = data.message;
           console.warn("로그인 실패:", errorMessage);
@@ -33,6 +32,8 @@ const OAuthCallback = () => {
 
         localStorage.setItem("dominoAccessToken", data.token);
         localStorage.setItem("dominoRefreshToken", data.refreshToken);
+        localStorage.setItem("userNickname", data.userNickname);
+        localStorage.setItem("userID", data.userID);
         localStorage.setItem("kakaoAccessToken", data.kakaoAccessToken);
 
         navigate("/projects");

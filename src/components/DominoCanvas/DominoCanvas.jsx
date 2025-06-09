@@ -8,6 +8,7 @@ import DominoEntity from "./DominoEntity/DominoEntity";
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
 import { Ground, CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
+import OtherUserDominos from "@/components/DominoCanvas/OtherUserDominos/OtherUserDominos";
 
 const DominoCanvas = ({
   openGuideToast,
@@ -36,6 +37,7 @@ const DominoCanvas = ({
           <CameraControls />
           <Physics>
             <CursorFollowerObject />
+            <OtherUserDominos />
             <DominoEntity
               openGuideToast={openGuideToast}
               closeGuideToast={closeGuideToast}
