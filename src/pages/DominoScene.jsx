@@ -7,11 +7,12 @@ import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectLis
 import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useDominoSimulation from "@/hooks/useDominoSimulation";
 import useToastControls from "@/hooks/useToastControls";
+import { SocketProvider } from "@/store/SocketContext";
 
 const DominoScene = () => {
   const { projectId } = useParams();
-  const [isProjectListModal, setProjectListModal] = useState(!projectId);
 
+  const [isProjectListModal, setProjectListModal] = useState(!projectId);
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
 
@@ -24,7 +25,7 @@ const DominoScene = () => {
       {isProjectListModal && <ProjectListModal closeModal={() => setProjectListModal(false)} />}
 
       {projectId && (
-        <>
+        <SocketProvider>
           <DominoHUD
             isOpenGuideToastVisible={isOpenGuideToastVisible}
             rigidBodyRefs={rigidBodyRefs}
@@ -37,7 +38,7 @@ const DominoScene = () => {
             rigidBodyRefs={rigidBodyRefs}
             isOpenGuideToastVisible={isOpenGuideToastVisible}
           />
-        </>
+        </SocketProvider>
       )}
     </>
   );

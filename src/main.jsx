@@ -14,20 +14,20 @@ const root = document.getElementById("root");
 const queryClient = new QueryClient();
 
 createRoot(root).render(
-  <StrictMode>
-    <ErrorBoundary
-      fallback={ErrorFallback}
-      onReset={() => (window.location.href = "/")}
-    >
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools
-          initialIsOpen={false}
-          position="bottom-right"
-        />
-        <GlobalPortal>
-          <RouterProvider router={routes} />
-        </GlobalPortal>
-      </QueryClientProvider>
-    </ErrorBoundary>
-  </StrictMode>,
+  // <StrictMode>
+  <ErrorBoundary
+    fallback={ErrorFallback}
+    onReset={() => (window.location.href = "/")}
+  >
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools
+        initialIsOpen={false}
+        position="bottom-right"
+      />
+      <GlobalPortal>
+        <RouterProvider router={routes} />
+      </GlobalPortal>
+    </QueryClientProvider>
+  </ErrorBoundary>,
+  // </StrictMode>,
 );

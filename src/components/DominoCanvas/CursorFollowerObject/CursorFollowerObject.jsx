@@ -4,6 +4,7 @@ import * as THREE from "three";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
+import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 import useSettingStore from "@/store/useSettingStore";
 import AudioController from "@/utils/AudioController";
@@ -33,7 +34,7 @@ const CursorFollowerObject = () => {
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
   const audioController = useRef(new AudioController());
-
+  const { projectId, socket } = useSocket();
   const { mutate } = useDominoMutations();
 
   const playDominoDropSound = () => {
@@ -57,8 +58,9 @@ const CursorFollowerObject = () => {
       opacity: DEFAULT_OPACITY,
       color: selectedColor,
     };
-
-    mutate({ dominos: [...dominos, newDomino] });
+    const updatedDomino = [...dominos, newDomino];
+    mutate({ dominos: updatedDomino });
+    socket.emit("update domino", { projectId, dominos: updatedDomino });
     playDominoDropSound();
   };
 
@@ -83,6 +85,12 @@ const CursorFollowerObject = () => {
 
     meshRef.current.position.set(pos.x, centerY, pos.z);
     meshRef.current.rotation.set(0, rotationY, 0);
+
+    socket.emit("update cursor position", {
+      projectId,
+      objectInfo: selectedDomino,
+      position: [pos.x, centerY, pos.z],
+    });
   });
 
   useEffect(() => {
