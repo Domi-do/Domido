@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import useDominoStore from "@/store/useDominoStore";
 import {
   deleteSelectedDomino,
@@ -14,11 +15,25 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
   const dominos = useDominoStore((state) => state.dominos);
   const historyRef = useRef([]);
   const prevLengthRef = useRef(dominos.length);
+  const { mutate } = useDominoMutations();
+
+  const handleDominoUpdate = (updateFn, isShowToast = true) => {
+    const updatedDominos =
+      isShowToast ? updateFn(historyRef, onToggleGuideToast) : updateFn(historyRef);
+
+    if (Array.isArray(updatedDominos)) {
+      mutate({ dominos: updatedDominos });
+    }
+  };
+
+  const handleDeleteObject = () => handleDominoUpdate(deleteSelectedDomino);
+  const handleOpacityObject = () => handleDominoUpdate(toggleSelectedDominoOpacity);
+  const handleUndo = () => handleDominoUpdate(undoDominoHistory, false);
 
   const keyMap = {
-    x: () => deleteSelectedDomino(historyRef, onToggleGuideToast),
-    h: () => toggleSelectedDominoOpacity(historyRef, onToggleGuideToast),
-    u: () => undoDominoHistory(historyRef),
+    x: handleDeleteObject,
+    h: handleOpacityObject,
+    u: handleUndo,
     q: rotateDominoCounterClockwise,
     e: rotateDominoClockwise,
     escape: () => closeCurrentMode(),
