@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { HTTPError } from "@/utils/HTTPError";
+
 const OAuthCallback = () => {
   const navigate = useNavigate();
 
@@ -14,38 +16,38 @@ const OAuthCallback = () => {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/auth/login`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify({ code }),
         });
         const data = await response.json();
-        localStorage.setItem("dominoAccessToken", data.token);
 
         if (!response.ok) {
-          const errorData = await response.json();
-
-          if (errorData.message?.includes("KOE320")) {
-            console.warn("만료된 인가 코드, 카카오 로그인 다시 시도");
-            window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${
-              import.meta.env.VITE_KAKAO_REST_API_KEY
-            }&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}&response_type=code`;
-            return;
-          }
-          throw new Error("서버 응답 실패!!!");
+          const errorMessage = data.message;
+          console.warn("로그인 실패:", errorMessage);
+          navigate("/");
+          throw new HTTPError(401, data.message);
         }
 
-        navigate("/game");
+        localStorage.setItem("dominoAccessToken", data.token);
+        localStorage.setItem("dominoRefreshToken", data.refreshToken);
+
+        navigate("/projects");
       } catch (err) {
-        console.error("로그인 실패", err);
+        throw new HTTPError(err.response.status, err.message);
       }
     };
 
     fetchAccessToken();
   }, [navigate]);
 
-  return <p>로그인 처리 중...</p>;
+  return (
+    <div className="flex items-center justify-center h-screen bg-white">
+      <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 };
 
 export default OAuthCallback;
