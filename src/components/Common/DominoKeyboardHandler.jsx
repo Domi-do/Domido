@@ -1,8 +1,8 @@
 import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 
-const WithDominoKeyboard = ({ setIsGuideToastVisible, children }) => {
+const DominoKeyboardHandler = ({ setIsGuideToastVisible, children }) => {
   useDominoKeyboardControls(setIsGuideToastVisible);
   return children;
 };
 
-export default WithDominoKeyboard;
+export default DominoKeyboardHandler;

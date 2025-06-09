@@ -4,6 +4,10 @@ import { useMemo } from "react";
 import ObjectRenderer from "@/components/DominoCanvas/ObjectRenderer/ObjectRenderer";
 import { useSocket } from "@/store/SocketContext";
 
+const USER_NAME_FONT_SIZE = 0.3;
+const FONT_OUT_LINE = 0.02;
+const USERNAME_TEXT_OFFSET = 1.2;
+
 const OtherUserDominos = () => {
   const { otherCursors } = useSocket();
 
@@ -23,12 +27,12 @@ const OtherUserDominos = () => {
               />
             </group>
             <Text
-              position={[x, y + 1.2, z]}
-              fontSize={0.3}
+              position={[x, y + USERNAME_TEXT_OFFSET, z]}
+              fontSize={USER_NAME_FONT_SIZE}
               color="white"
               anchorX="center"
               anchorY="bottom"
-              outlineWidth={0.02}
+              outlineWidth={FONT_OUT_LINE}
               outlineColor="black"
             >
               {userNickname}

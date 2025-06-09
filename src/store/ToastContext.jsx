@@ -1,6 +1,23 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
+const TOAST_PLACEMENTS = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
 const ToastContext = createContext(null);
+
+const getPlacementClass = (placement) => {
+  switch (placement) {
+    case "topLeft":
+      return "top-4 left-4";
+    case "topRight":
+      return "top-4 right-4";
+    case "bottomLeft":
+      return "bottom-4 left-4";
+    case "bottomRight":
+      return "bottom-4 right-4";
+    default:
+      return "";
+  }
+};
 
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
@@ -19,17 +36,13 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {["topLeft", "topRight", "bottomLeft", "bottomRight"].map((placement) => (
+      {TOAST_PLACEMENTS.map((placement) => (
         <div
           key={placement}
-          className={`fixed z-50 p-4 space-y-2 ${
-            placement === "topLeft" && "top-4 left-4"
-          } ${placement === "topRight" && "top-4 right-4"} ${
-            placement === "bottomLeft" && "bottom-4 left-4"
-          } ${placement === "bottomRight" && "bottom-4 right-4"}`}
+          className={`fixed z-50 p-4 space-y-2 ${getPlacementClass(placement)}`}
         >
           {toasts
-            .filter((t) => t.placement === placement)
+            .filter((toast) => toast.placement === placement)
             .map((toast) => (
               <div
                 key={toast.id}
@@ -47,5 +60,6 @@ export const ToastProvider = ({ children }) => {
 export const useToast = () => {
   const toastContext = useContext(ToastContext);
   if (!toastContext) null;
+
   return toastContext;
 };

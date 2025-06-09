@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import WithDominoKeyboard from "@/components/Common/WithDominoKeyboard";
+import DominoKeyboardHandler from "@/components/Common/DominoKeyboardHandler";
 import { DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectListModal";
@@ -20,7 +20,7 @@ const DominoScene = () => {
   return (
     <SocketProvider>
       {isProjectListModal && <ProjectListModal closeModal={() => setProjectListModal(false)} />}
-      <WithDominoKeyboard setIsGuideToastVisible={setIsGuideToastVisible}>
+      <DominoKeyboardHandler setIsGuideToastVisible={setIsGuideToastVisible}>
         <DominoHUD
           isOpenGuideToastVisible={isOpenGuideToastVisible}
           rigidBodyRefs={rigidBodyRefs}
@@ -33,7 +33,7 @@ const DominoScene = () => {
           rigidBodyRefs={rigidBodyRefs}
           isOpenGuideToastVisible={isOpenGuideToastVisible}
         />
-      </WithDominoKeyboard>
+      </DominoKeyboardHandler>
     </SocketProvider>
   );
 };
