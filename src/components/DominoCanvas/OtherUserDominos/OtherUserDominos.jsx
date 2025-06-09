@@ -9,19 +9,21 @@ const OtherUserDominos = () => {
 
   const otherDominoMeshes = useMemo(() => {
     return Object.entries(otherCursors).map(
-      ([userId, { userNickname, position, objectInfo, selectedColor }]) => {
+      ([userId, { userNickname, position, objectInfo, selectedColor, rotationY }]) => {
         const [x, y, z] = position;
         return (
-          <group
-            key={userId}
-            position={[x, y, z]}
-          >
-            <ObjectRenderer
-              dominoInfo={objectInfo}
-              color={selectedColor || "white"}
-            />
+          <group key={userId}>
+            <group
+              position={[x, y, z]}
+              rotation={[0, rotationY, 0]}
+            >
+              <ObjectRenderer
+                dominoInfo={objectInfo}
+                color={selectedColor || "white"}
+              />
+            </group>
             <Text
-              position={[0, 1.2, 0]}
+              position={[x, y + 1.2, z]} // 월드 좌표 기준으로 텍스트 위치 지정
               fontSize={0.3}
               color="white"
               anchorX="center"

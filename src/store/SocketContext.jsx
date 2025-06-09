@@ -25,10 +25,10 @@ export const SocketProvider = ({ children }) => {
 
     socket.on(
       "cursor position update",
-      ({ userID, userNickname, objectInfo, position, selectedColor }) => {
+      ({ userID, userNickname, objectInfo, position, selectedColor, rotationY }) => {
         setOtherCursors((prev) => ({
           ...prev,
-          [userID]: { userNickname, objectInfo, position, selectedColor },
+          [userID]: { userNickname, objectInfo, position, selectedColor, rotationY },
         }));
       },
     );

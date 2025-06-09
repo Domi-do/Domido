@@ -91,6 +91,7 @@ const CursorFollowerObject = () => {
       objectInfo: selectedDomino,
       position: [pos.x, centerY, pos.z],
       selectedColor,
+      rotationY,
     });
   });
 
