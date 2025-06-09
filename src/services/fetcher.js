@@ -3,10 +3,15 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const fetcher = async (endpoint, { method = "GET", body } = {}) => {
   const url = `${BASE_URL}${endpoint}`;
   const accessToken = localStorage.getItem("dominoAccessToken");
+  const refreshToken = localStorage.getItem("dominoRefreshToken");
 
   const options = {
     method,
-    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` },
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${accessToken}`,
+      "refresh-token": `Bearer ${refreshToken}`,
+    },
   };
 
   if (body) {
@@ -14,6 +19,12 @@ const fetcher = async (endpoint, { method = "GET", body } = {}) => {
   }
 
   const response = await fetch(url, options);
+
+  const newAccessToken = response.headers.get("Authorization")?.split(" ")[1];
+
+  if (newAccessToken) {
+    localStorage.setItem("dominoAccessToken", newAccessToken);
+  }
 
   if (!response.ok) {
     const errorResponse = await response.json().catch(() => ({}));
