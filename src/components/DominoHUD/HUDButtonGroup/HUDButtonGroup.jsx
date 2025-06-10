@@ -1,16 +1,13 @@
 import { FaPlay } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
+import { LuClipboardList } from "react-icons/lu";
 import { RiResetLeftFill } from "react-icons/ri";
 
 import HUDButton from "@/components/DominoHUD/HUDButtonGroup/HUDButton";
 import HUDLogoutButton from "@/components/DominoHUD/HUDButtonGroup/HUDLogoutButton";
-import MODE from "@/constants/mode";
-import useSimulationStore from "@/store/useSimulationStore";
 
-const HUDButtons = ({ onClickSetting, onClickReset, onClickPlay, onClickClear, onLogout }) => {
-  const { simulationMode } = useSimulationStore();
-
+const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, onLogout, openProjectModal }) => {
   return (
     <div className="fixed top-[10px] left-[10px] z-50 flex items-center gap-2">
       <HUDButton
@@ -19,30 +16,24 @@ const HUDButtons = ({ onClickSetting, onClickReset, onClickPlay, onClickClear, o
       >
         <IoSettingsSharp className="text-[22px]" />
       </HUDButton>
-      {simulationMode === MODE.EDIT && (
-        <HUDButton
-          onClick={onClickPlay}
-          alt="play"
-        >
-          <FaPlay className="text-[20px]" />
-        </HUDButton>
-      )}
-      {simulationMode !== MODE.COUNTDOWN && (
-        <>
-          <HUDButton
-            onClick={onClickReset}
-            alt="reset"
-          >
-            <RiResetLeftFill className="text-[24px] font-bold" />
-          </HUDButton>
-          <HUDButton
-            onClick={onClickClear}
-            alt="clear"
-          >
-            <FaRegTrashAlt className="text-[22px]" />
-          </HUDButton>
-        </>
-      )}
+      <HUDButton
+        onClick={openProjectModal}
+        alt="openProjectModal"
+      >
+        <LuClipboardList className="text-[22px]" />
+      </HUDButton>
+      <HUDButton
+        onClick={onClickReset}
+        alt="reset"
+      >
+        <RiResetLeftFill className="text-[24px] font-bold" />
+      </HUDButton>
+      <HUDButton
+        onClick={onClickClear}
+        alt="clear"
+      >
+        <FaRegTrashAlt className="text-[22px]" />
+      </HUDButton>
       <div className="fixed top-4 right-6 z-50">
         <HUDLogoutButton onClick={onLogout} />
       </div>
