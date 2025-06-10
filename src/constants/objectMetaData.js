@@ -75,7 +75,6 @@ export const OBJECT_METADATA = {
       thumbnail: "/images/cannon.png",
       model: "/objects/cannon.glb",
       sound: "/sounds/domino_drop.mp3",
-      colliders: false,
       type: "fixed",
     },
     pokeball: {
