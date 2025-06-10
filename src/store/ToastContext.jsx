@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
-const TOAST_PLACEMENTS = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+const TOAST_PLACEMENTS = ["topLeft", "topRight", "bottomLeft", "bottomRight", "center"];
 
 const ToastContext = createContext(null);
 
@@ -14,6 +14,8 @@ const getPlacementClass = (placement) => {
       return "bottom-4 left-4";
     case "bottomRight":
       return "bottom-4 right-4";
+    case "center":
+      return "top-30 left-1/2 -translate-x-1/2 -translate-y-1/2";
     default:
       return "";
   }
@@ -48,7 +50,7 @@ export const ToastProvider = ({ children }) => {
                 key={toast.id}
                 className="relative w-fit max-w-[90vw] px-4 py-2 rounded border border-gray-200 bg-white text-gray-800 shadow-md animate-fade-in"
               >
-                <p className="text-sm">{toast.message}</p>
+                <p className="text-sm font-sans">{toast.message}</p>
               </div>
             ))}
         </div>
