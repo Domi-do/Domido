@@ -11,11 +11,13 @@ import {
 import MODE from "@/constants/mode";
 import useDominoReset from "@/hooks/useDominoReset";
 import fetcher from "@/services/fetcher";
+import useDominoStore from "@/store/useDominoStore";
 import useSimulationStore from "@/store/useSimulationStore";
 import { HTTPError } from "@/utils/HTTPError";
 
 const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }) => {
   const { simulationMode, countdownNumber } = useSimulationStore();
+  const clearDominos = useDominoStore((state) => state.setClearDominos);
 
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
@@ -24,6 +26,11 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
 
   const handleCloseModal = () => {
     setIsSettingModalOpen(false);
+    setClearConfirmModalOpen(false);
+  };
+
+  const handleConfirm = () => {
+    clearDominos();
     setClearConfirmModalOpen(false);
   };
 
@@ -55,7 +62,7 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
       key: "clearConfirmModal",
       Component: DominoClearConfirmModal,
       isOpen: isClearConfirmModalOpen,
-      props: { closeModal: handleCloseModal },
+      props: { closeModal: handleCloseModal, handleConfirm: handleConfirm },
     },
   ];
   return (

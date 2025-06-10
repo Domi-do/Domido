@@ -1,14 +1,6 @@
 import ModalOverlay from "@/components/Common/ModalOverlay";
-import useDominoStore from "@/store/useDominoStore";
 
-const DominoClearConfirmModal = ({ closeModal }) => {
-  const clearDominos = useDominoStore((state) => state.setClearDominos);
-
-  const handleConfirm = () => {
-    clearDominos();
-    closeModal();
-  };
-
+const DominoClearConfirmModal = ({ closeModal, handleConfirm }) => {
   return (
     <ModalOverlay closeModal={closeModal}>
       <div className="text-center">
