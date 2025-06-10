@@ -1,14 +1,6 @@
 import ModalOverlay from "@/components/Common/ModalOverlay";
-import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 
-const DominoClearConfirmModal = ({ closeModal }) => {
-  const { mutate } = useDominoMutations();
-
-  const handleConfirm = () => {
-    mutate({ dominos: [] });
-    closeModal();
-  };
-
+const DominoClearConfirmModal = ({ closeModal, handleConfirm }) => {
   return (
     <ModalOverlay closeModal={closeModal}>
       <div className="text-center">
