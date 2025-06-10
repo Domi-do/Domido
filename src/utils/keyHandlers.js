@@ -1,6 +1,4 @@
-import MODE from "@/constants/mode";
 import useDominoStore from "@/store/useDominoStore";
-import useSimulationStore from "@/store/useSimulationStore";
 
 const QUARTER_TURN = 4;
 
@@ -40,14 +38,6 @@ export const undoDominoHistory = (historyRef) => {
   const updatedDominos = historyRef.current[historyRef.current.length - 1];
 
   return updatedDominos;
-};
-
-export const closeCurrentMode = () => {
-  const { simulationMode, setSimulationMode } = useSimulationStore.getState();
-  const { setSelectedDomino } = useDominoStore.getState();
-
-  if (simulationMode === MODE.EDIT) return setSelectedDomino(null);
-  if (simulationMode === MODE.READY) return setSimulationMode(MODE.EDIT);
 };
 
 export const rotateDominoClockwise = () => {
