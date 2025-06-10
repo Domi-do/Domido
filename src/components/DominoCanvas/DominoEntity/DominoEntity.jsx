@@ -24,7 +24,7 @@ const DominoEntity = ({
           return (
             <RigidBody
               type={type}
-              colliders={colliders}
+              colliders={colliders ?? false}
               name={objectName}
               key={_id}
               restitution={0}

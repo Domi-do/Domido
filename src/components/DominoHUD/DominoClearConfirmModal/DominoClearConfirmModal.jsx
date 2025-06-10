@@ -1,11 +1,11 @@
 import ModalOverlay from "@/components/Common/ModalOverlay";
-import useDominoStore from "@/store/useDominoStore";
+import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 
 const DominoClearConfirmModal = ({ closeModal }) => {
-  const clearDominos = useDominoStore((state) => state.setClearDominos);
+  const { mutate } = useDominoMutations();
 
   const handleConfirm = () => {
-    clearDominos();
+    mutate({ dominos: [] });
     closeModal();
   };
 
