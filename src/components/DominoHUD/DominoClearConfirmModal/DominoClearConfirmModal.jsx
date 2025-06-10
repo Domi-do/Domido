@@ -1,11 +1,13 @@
 import ModalOverlay from "@/components/Common/ModalOverlay";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
+import { useSocket } from "@/store/SocketContext";
 
 const DominoClearConfirmModal = ({ closeModal }) => {
   const { mutate } = useDominoMutations();
-
+  const { projectId, socket } = useSocket();
   const handleConfirm = () => {
     mutate({ dominos: [] });
+    socket.emit("clear domino", { projectId });
     closeModal();
   };
 

@@ -62,6 +62,12 @@ export const SocketProvider = ({ children }) => {
       removeCursor(userID);
     });
 
+    socket.on("domino cleared", ({ projectId }) => {
+      if (projectId === projectId) {
+        setDominos([]);
+      }
+    });
+
     return () => {
       socket.off("user joined");
       socket.off("cursor position update");
@@ -69,6 +75,7 @@ export const SocketProvider = ({ children }) => {
       socket.off("user left");
       socket.off("other cursor clear");
       socket.off("room full");
+      socket.off("domino cleared");
     };
   }, [projectId, setDominos]);
 
