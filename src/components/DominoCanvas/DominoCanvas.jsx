@@ -10,12 +10,7 @@ import Loading from "@/components/Common/Loading";
 import { Ground, CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
 import OtherUserDominos from "@/components/DominoCanvas/OtherUserDominos/OtherUserDominos";
 
-const DominoCanvas = ({
-  openGuideToast,
-  closeGuideToast,
-  readyDominoSimulation,
-  rigidBodyRefs,
-}) => {
+const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
   return (
     <>
       <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
@@ -41,7 +36,6 @@ const DominoCanvas = ({
             <DominoEntity
               openGuideToast={openGuideToast}
               closeGuideToast={closeGuideToast}
-              readyDominoSimulation={readyDominoSimulation}
               rigidBodyRefs={rigidBodyRefs}
             />
             <Ground />

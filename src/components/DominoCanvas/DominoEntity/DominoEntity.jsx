@@ -5,12 +5,7 @@ import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisua
 import { useDominos } from "@/hooks/Queries/useDominos";
 import useDominoStore from "@/store/useDominoStore";
 
-const DominoEntity = ({
-  openGuideToast,
-  closeGuideToast,
-  readyDominoSimulation,
-  rigidBodyRefs,
-}) => {
+const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
   useDominos();
   const dominos = useDominoStore((state) => state.dominos);
 
@@ -45,7 +40,6 @@ const DominoEntity = ({
                 dominoInfo={objectInfo}
                 onPointerOver={(event) => openGuideToast(event, _id)}
                 onPointerOut={closeGuideToast}
-                onClick={(event) => readyDominoSimulation(event, index)}
                 opacity={opacity}
                 color={color}
               />
