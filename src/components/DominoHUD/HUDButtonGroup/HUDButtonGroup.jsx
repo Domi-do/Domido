@@ -1,4 +1,3 @@
-import { FaPlay } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { LuClipboardList } from "react-icons/lu";
@@ -34,8 +33,8 @@ const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, onLogout, open
       >
         <FaRegTrashAlt className="text-[22px]" />
       </HUDButton>
-      <div className="fixed top-4 right-6 z-50">
-        <HUDLogoutButton onClick={onLogout} />
+      <div className="fixed bottom-[12px] left-[10px] z-50">
+        <HUDLogoutButton onLogout={onLogout} />
       </div>
     </div>
   );
