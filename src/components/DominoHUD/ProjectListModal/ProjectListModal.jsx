@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { IoCloseCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 import ModalOverlay from "@/components/Common/ModalOverlay";
 import ProjectNameInputModal from "@/components/DominoHUD/ProjectNameInputModal/ProjectNameInputModal";
-import useCreateProjectsQueries from "@/hooks/useCreateProjectQueries";
-import useDeleteProjectsQueries from "@/hooks/useDeleteProjectQueries";
-import useProjectsQueries from "@/hooks/useProjectsQueries";
-import useUpdateProjectQueries from "@/hooks/useUpdateProjectQueries";
+import useCreateProjectsQueries from "@/hooks/Queries/useCreateProjectQueries";
+import useDeleteProjectsQueries from "@/hooks/Queries/useDeleteProjectQueries";
+import useProjectsQueries from "@/hooks/Queries/useProjectsQueries";
+import useUpdateProjectQueries from "@/hooks/Queries/useUpdateProjectQueries";
 
 const ProjectListModal = ({ closeModal }) => {
   const { data: projects, isLoading, isError } = useProjectsQueries();
@@ -21,19 +22,22 @@ const ProjectListModal = ({ closeModal }) => {
 
   const getStatus = () => {
     if (isLoading) {
-      return { text: "로딩 중...", color: "text-gray-400" };
+      return (
+        <div className="flex justify-center items-center py-8">
+          <div className="w-[48px] h-[48px] border-[4px] border-yellow-400 border-t-transparent rounded-full animate-spin" />
+        </div>
+      );
     }
-
     if (isError) {
-      return { text: "프로젝트 목록을 불러오지 못했어요", color: "text-red-500" };
+      return <p className=" text-center text-red-500">프로젝트 목록을 불러오지 못했어요</p>;
     }
 
     if (projects.length === 0) {
-      return { text: "저장된 프로젝트가 없습니다", color: "text-gray-400" };
+      return <p className=" text-center text-gray-400">생성된 프로젝트가 없습니다</p>;
     }
-  };
 
-  const status = getStatus();
+    return null;
+  };
 
   return (
     <ModalOverlay closeModal={closeModal}>
@@ -48,14 +52,13 @@ const ProjectListModal = ({ closeModal }) => {
               className="absolute top-[24px] right-[24px] w-[40px] h-[40px] flex items-center justify-center text-[28px] text-gray-400 hover:text-gray-600 transition rounded-full hover:bg-gray-100"
               aria-label="닫기"
             >
-              ×
+              <IoCloseCircleOutline className="text-[50px]" />
             </button>
           </div>
 
           <div className="space-y-[12px] max-h-[250px] overflow-y-auto">
-            {status ?
-              <p className={`text-center text-base py-[40px] ${status.color}`}>{status.text}</p>
-            : projects.map((project) => (
+            {getStatus()
+              || projects.map((project) => (
                 <div
                   key={project._id}
                   className="w-full p-[16px] border border-gray-200 hover:border-yellow-500 hover:bg-yellow-50 transition rounded-xl shadow-sm"
@@ -72,7 +75,7 @@ const ProjectListModal = ({ closeModal }) => {
                         {project.title}
                       </span>
                       <span className="block text-[12px] text-gray-400 mt-[4px]">
-                        {project.createdAt}
+                        {project.createdAt.slice(0, 10)}
                       </span>
                     </button>
 
@@ -92,8 +95,7 @@ const ProjectListModal = ({ closeModal }) => {
                     </div>
                   </div>
                 </div>
-              ))
-            }
+              ))}
           </div>
           <div className="mt-[32px] flex justify-end">
             <button
@@ -106,7 +108,9 @@ const ProjectListModal = ({ closeModal }) => {
               <ProjectNameInputModal
                 closeModal={() => setIsCreateModalOpen(false)}
                 onSubmit={(name) => createProject(name)}
+                placeholderValue="예: 도미노 시뮬레이터"
                 submitLabel="생성하기"
+                Title="프로젝트 생성"
               />
             )}
             {editTarget && (
@@ -116,8 +120,9 @@ const ProjectListModal = ({ closeModal }) => {
                   updateProject({ projectId: editTarget._id, title: newTitle });
                   setEditTarget(null);
                 }}
-                defaultValue={editTarget.title}
+                placeholderValue={editTarget.title}
                 submitLabel="수정하기"
+                Title="프로젝트 수정"
               />
             )}
           </div>
