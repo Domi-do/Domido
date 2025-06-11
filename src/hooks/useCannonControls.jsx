@@ -30,17 +30,15 @@ const useCannonControls = () => {
     const mesh = other.rigidBodyObject?.children?.[0];
     if (mesh) mesh.visible = false;
 
-    setTimeout(() => {
-      rigidBody.setTranslation(
-        { x: launchPosition.x, y: launchPosition.y, z: launchPosition.z },
-        true,
-      );
+    rigidBody.setTranslation(
+      { x: launchPosition.x, y: launchPosition.y, z: launchPosition.z },
+      true,
+    );
 
-      rigidBody.setLinvel({ x: cannonDirection.x * 5, y: 2, z: cannonDirection.z * 5 }, true);
-      rigidBody.setEnabled(true);
+    rigidBody.setLinvel({ x: cannonDirection.x * 5, y: 2, z: cannonDirection.z * 5 }, true);
+    rigidBody.setEnabled(true);
 
-      if (mesh) mesh.visible = true;
-    }, 1000);
+    if (mesh) mesh.visible = true;
   };
 
   return { handleCannonTrigger };

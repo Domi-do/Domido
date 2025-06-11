@@ -30,7 +30,7 @@ const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
             background
           />
           <CameraControls />
-          <Physics>
+          <Physics gravity={[0, -9.81 * 3, 0]}>
             <CursorFollowerObject />
             <OtherUserDominos />
             <DominoEntity
