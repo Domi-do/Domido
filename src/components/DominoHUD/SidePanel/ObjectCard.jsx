@@ -21,7 +21,7 @@ const ObjectCard = ({ objectName, objectInfo, groupName }) => {
           className="w-full h-full object-contain transform transition-transform duration-200 group-hover:scale-130 select-none"
         />
       </div>
-      <span className="text-center font-normal">{objectName}</span>
+      <span className="text-center font-normal">{objectInfo.title}</span>
     </div>
   );
 };

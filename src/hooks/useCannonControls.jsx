@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const CANNON_TARGETS = ["beachBall", "pokeball", "soccerFootball"];
+const CANNON_TARGETS = ["beachBall", "steelBall", "soccerFootball"];
 
 const useCannonControls = () => {
   const handleCannonTrigger = (other, target) => {

@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
 import DominoColorPalette from "@/components/DominoHUD/SidePanel/DominoColorPalette";
 import ObjectCard from "@/components/DominoHUD/SidePanel/ObjectCard";
-import { OBJECT_METADATA } from "@/constants/objectMetaData";
+import { OBJECT_METADATA, OBJECT_GROUP_LABELS } from "@/constants/objectMetaData";
 import useDominoStore from "@/store/useDominoStore";
 
 const SidePanel = () => {
@@ -24,7 +25,7 @@ const SidePanel = () => {
             key={groupName}
             className="flex flex-col gap-2 overflow-y-auto"
           >
-            <h2 className="font-bold text-white">{groupName.toLowerCase()}</h2>
+            <h2 className="font-bold text-white">{OBJECT_GROUP_LABELS[groupName] ?? groupName}</h2>
             <div className="grid grid-cols-3 gap-4">
               {Object.entries(groupObjects).map(([objectName, objectInfo]) => (
                 <ObjectCard
@@ -37,11 +38,10 @@ const SidePanel = () => {
             </div>
           </section>
         ))}
-        <button
-          className="absolute top-0 left-[-32px] transform
-                     text-white h-12 w-8 bg-black/40 rounded-l flex items-center justify-center font-bold"
-        >
-          {isOpen ? "⟩" : "⟨"}
+        <button className="absolute top-0 left-[-30px] transform text-white text-[22px] h-[60px] w-[30px] bg-black/40 rounded-tl-[8px] rounded-bl-[8px] flex items-center justify-center font-bold">
+          {isOpen ?
+            <IoMdArrowDropright />
+          : <IoMdArrowDropleft />}
         </button>
       </aside>
     </div>
