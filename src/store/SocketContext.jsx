@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useToast } from "./ToastContext";
 
@@ -13,11 +13,26 @@ export const SocketProvider = ({ children }) => {
   const { setDominos } = useDominoStore();
   const [otherCursors, setOtherCursors] = useState({});
   const { showToast } = useToast();
+  const myUserID = localStorage.getItem("userID");
+  const navigate = useNavigate();
+
+  const removeCursor = (userID) => {
+    setOtherCursors((prev) => {
+      const updatedOtherCursors = { ...prev };
+      delete updatedOtherCursors[userID];
+      return updatedOtherCursors;
+    });
+  };
 
   useEffect(() => {
     if (!projectId) return;
 
     socket.emit("join project room", { projectId });
+
+    socket.on("room full", ({ message }) => {
+      showToast({ message });
+      navigate("/projects");
+    });
 
     socket.on("user joined", ({ message }) => {
       showToast({ message });
@@ -26,6 +41,7 @@ export const SocketProvider = ({ children }) => {
     socket.on(
       "cursor position update",
       ({ userID, userNickname, objectInfo, position, selectedColor, rotationY }) => {
+        if (userID === myUserID) return;
         setOtherCursors((prev) => ({
           ...prev,
           [userID]: { userNickname, objectInfo, position, selectedColor, rotationY },
@@ -37,8 +53,19 @@ export const SocketProvider = ({ children }) => {
       setDominos(dominos);
     });
 
-    socket.on("user left", ({ message }) => {
+    socket.on("user left", ({ message, userID }) => {
       showToast({ message });
+      removeCursor(userID);
+    });
+
+    socket.on("other cursor clear", ({ userID }) => {
+      removeCursor(userID);
+    });
+
+    socket.on("domino cleared", ({ projectId }) => {
+      if (projectId === projectId) {
+        setDominos([]);
+      }
     });
 
     return () => {
@@ -46,11 +73,14 @@ export const SocketProvider = ({ children }) => {
       socket.off("cursor position update");
       socket.off("domino update");
       socket.off("user left");
+      socket.off("other cursor clear");
+      socket.off("room full");
+      socket.off("domino cleared");
     };
   }, [projectId, setDominos]);
 
   return (
-    <SocketContext.Provider value={{ otherCursors, projectId, socket }}>
+    <SocketContext.Provider value={{ otherCursors, projectId, socket, myUserID }}>
       {children}
     </SocketContext.Provider>
   );

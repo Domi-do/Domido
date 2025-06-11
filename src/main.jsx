@@ -16,23 +16,22 @@ const root = document.getElementById("root");
 const queryClient = new QueryClient();
 
 createRoot(root).render(
-  <StrictMode>
-    <ErrorBoundary
-      fallback={ErrorFallback}
-      onReset={() => (window.location.href = "/")}
-    >
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools
-          initialIsOpen={false}
-          position="bottom-right"
-        />
-        <ToastProvider>
-          <GlobalPortal>
-            <RouterProvider router={routes} />
-          </GlobalPortal>
-        </ToastProvider>
-      </QueryClientProvider>
-    </ErrorBoundary>
-    ,
-  </StrictMode>,
+  // <StrictMode>
+  <ErrorBoundary
+    fallback={ErrorFallback}
+    onReset={() => (window.location.href = "/")}
+  >
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools
+        initialIsOpen={false}
+        position="bottom-right"
+      />
+      <ToastProvider>
+        <GlobalPortal>
+          <RouterProvider router={routes} />
+        </GlobalPortal>
+      </ToastProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>,
+  // </StrictMode>,
 );

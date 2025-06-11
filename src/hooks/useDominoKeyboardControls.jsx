@@ -38,7 +38,12 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     u: handleUndo,
     q: rotateDominoCounterClockwise,
     e: rotateDominoClockwise,
-    escape: () => setSelectedDomino(null),
+    escape: () => {
+      setSelectedDomino(null);
+      setTimeout(() => {
+        socket.emit("clear cursor", { projectId });
+      });
+    },
   };
 
   const handleKeydown = (event) => {
