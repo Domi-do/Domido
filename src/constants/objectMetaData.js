@@ -1,5 +1,7 @@
+export const OBJECT_GROUP_NAMES = { STATIC: "STATIC_OBJECTS", DYNAMIC: "DYNAMIC_OBJECTS" };
+
 export const OBJECT_METADATA = {
-  STATIC_OBJECTS: {
+  [OBJECT_GROUP_NAMES.STATIC]: {
     defaultObject: {
       thumbnail: "/images/thumbnail/domino.png",
       model: "defaultObject",
@@ -48,7 +50,7 @@ export const OBJECT_METADATA = {
       title: "범퍼",
     },
   },
-  DYNAMIC_OBJECTS: {
+  [OBJECT_GROUP_NAMES.DYNAMIC]: {
     steelBall: {
       thumbnail: "/images/thumbnail/steel_ball.png",
       model: "/objects/steel_ball.glb",
@@ -91,6 +93,6 @@ export const OBJECT_METADATA = {
 };
 
 export const OBJECT_GROUP_LABELS = {
-  STATIC_OBJECTS: "Static Object",
-  DYNAMIC_OBJECTS: "Dynamic Object",
+  [OBJECT_GROUP_NAMES.STATIC]: "Static Object",
+  [OBJECT_GROUP_NAMES.DYNAMIC]: "Dynamic Object",
 };
