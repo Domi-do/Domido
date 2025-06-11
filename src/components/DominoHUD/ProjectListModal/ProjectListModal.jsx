@@ -21,19 +21,22 @@ const ProjectListModal = ({ closeModal }) => {
 
   const getStatus = () => {
     if (isLoading) {
-      return { text: "로딩 중...", color: "text-gray-400" };
+      return (
+        <div className="flex justify-center items-center py-8">
+          <div className="w-[48px] h-[48px] border-[4px] border-yellow-400 border-t-transparent rounded-full animate-spin" />
+        </div>
+      );
     }
-
     if (isError) {
-      return { text: "프로젝트 목록을 불러오지 못했어요", color: "text-red-500" };
+      return <p className=" text-center text-red-500">프로젝트 목록을 불러오지 못했어요</p>;
     }
 
     if (projects.length === 0) {
-      return { text: "저장된 프로젝트가 없습니다", color: "text-gray-400" };
+      return <p className=" text-center text-gray-400">생성된 프로젝트가 없습니다</p>;
     }
-  };
 
-  const status = getStatus();
+    return null;
+  };
 
   return (
     <ModalOverlay closeModal={closeModal}>
@@ -53,9 +56,8 @@ const ProjectListModal = ({ closeModal }) => {
           </div>
 
           <div className="space-y-[12px] max-h-[250px] overflow-y-auto">
-            {status ?
-              <p className={`text-center text-base py-[40px] ${status.color}`}>{status.text}</p>
-            : projects.map((project) => (
+            {getStatus()
+              || projects.map((project) => (
                 <div
                   key={project._id}
                   className="w-full p-[16px] border border-gray-200 hover:border-yellow-500 hover:bg-yellow-50 transition rounded-xl shadow-sm"
@@ -92,8 +94,7 @@ const ProjectListModal = ({ closeModal }) => {
                     </div>
                   </div>
                 </div>
-              ))
-            }
+              ))}
           </div>
           <div className="mt-[32px] flex justify-end">
             <button
