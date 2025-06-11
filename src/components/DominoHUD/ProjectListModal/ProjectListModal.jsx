@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { IoCloseCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 import ModalOverlay from "@/components/Common/ModalOverlay";
@@ -51,7 +52,7 @@ const ProjectListModal = ({ closeModal }) => {
               className="absolute top-[24px] right-[24px] w-[40px] h-[40px] flex items-center justify-center text-[28px] text-gray-400 hover:text-gray-600 transition rounded-full hover:bg-gray-100"
               aria-label="닫기"
             >
-              ×
+              <IoCloseCircleOutline className="text-[50px]" />
             </button>
           </div>
 
@@ -107,7 +108,9 @@ const ProjectListModal = ({ closeModal }) => {
               <ProjectNameInputModal
                 closeModal={() => setIsCreateModalOpen(false)}
                 onSubmit={(name) => createProject(name)}
+                placeholderValue="예: 도미노 시뮬레이터"
                 submitLabel="생성하기"
+                Title="프로젝트 생성"
               />
             )}
             {editTarget && (
@@ -117,8 +120,9 @@ const ProjectListModal = ({ closeModal }) => {
                   updateProject({ projectId: editTarget._id, title: newTitle });
                   setEditTarget(null);
                 }}
-                defaultValue={editTarget.title}
+                placeholderValue={editTarget.title}
                 submitLabel="수정하기"
+                Title="프로젝트 수정"
               />
             )}
           </div>
