@@ -1,17 +1,17 @@
-import { BiLogOut } from "react-icons/bi";
+import { LuLogOut } from "react-icons/lu";
 
 import useDominoStore from "@/store/useDominoStore";
 
-const HUDLogoutButton = ({ onClick }) => {
+const HUDLogoutButton = ({ onLogout }) => {
   const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
   return (
     <button
       onMouseOver={() => setSelectedDomino(null)}
-      onClick={onClick}
-      className="flex items-center gap-2 px-4 py-2 bg-sky-300 text-gray-800 text-sm font-semibold rounded-full shadow-md hover:bg-sky-400 transition-all cursor-pointer"
+      onClick={onLogout}
+      className="flex items-center gap-2 px-4 py-2 bg-[rgba(252,157,22,0.9)] text-white text-[14px] rounded-full cursor-pointer"
     >
-      <BiLogOut className="text-lg" />
+      <LuLogOut />
       로그아웃
     </button>
   );
