@@ -8,7 +8,7 @@ const HUDButton = ({ onClick, children }) => {
       <button
         onMouseOver={() => setSelectedDomino(null)}
         onClick={onClick}
-        className="w-12 h-12 flex items-center justify-center bg-white text-gray-700 rounded-full shadow-md hover:bg-gray-100 hover:shadow-lg transition-all duration-200 cursor-pointer"
+        className="w-12 h-12 flex items-center justify-center bg-white/90 rounded-full shadow-md cursor-pointer"
       >
         {children}
       </button>
