@@ -10,7 +10,7 @@ const routes = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "*", element: <NotFound /> },
   { path: "/oauth/callback", element: <OAuthCallback /> },
-  { path: "projects", element: <DominoScene /> },
+  { path: "projects", element: <Home /> },
   { path: "projects/:projectId", element: <DominoScene /> },
   { path: "/logout/callback", element: <LogoutCallback /> },
 ]);
