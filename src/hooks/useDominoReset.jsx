@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import * as THREE from "three";
 
+import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 
 const useDominoReset = (rigidBodyRefs) => {
   const { dominos, setDominos } = useDominoStore();
-
+  const { socket, projectId } = useSocket();
   const resetAllDominoes = () => {
     const filteredDominos = dominos.filter(
       (domino) => domino.objectInfo?.objectName === "defaultObject",
@@ -34,7 +36,19 @@ const useDominoReset = (rigidBodyRefs) => {
   const resetDominoSimulation = () => {
     if (!rigidBodyRefs.current.length > 0) return;
     resetAllDominoes();
+
+    socket.emit("reset domino", { projectId });
   };
+
+  useEffect(() => {
+    socket.on("reset domino", () => {
+      resetAllDominoes();
+    });
+
+    return () => {
+      socket.off("reset domino");
+    };
+  }, []);
 
   return { resetDominoSimulation };
 };
