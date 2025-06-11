@@ -9,7 +9,7 @@ import HUDLogoutButton from "@/components/DominoHUD/HUDButtonGroup/HUDLogoutButt
 
 const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, onLogout, openProjectModal }) => {
   return (
-    <div className="fixed top-[10px] left-[10px] z-50 flex items-center gap-2">
+    <div className="fixed top-[10px] left-[10px] z-100 flex items-center gap-2">
       <HUDButton
         onClick={onClickSetting}
         alt="setting"

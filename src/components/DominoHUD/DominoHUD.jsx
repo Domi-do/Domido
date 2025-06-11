@@ -10,9 +10,11 @@ import {
 } from "@/components/DominoHUD";
 import useDominoReset from "@/hooks/useDominoReset";
 import fetcher from "@/services/fetcher";
+import useDominoStore from "@/store/useDominoStore";
 import { HTTPError } from "@/utils/HTTPError";
 
 const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible, openProjectModal }) => {
+  const clearDominos = useDominoStore((state) => state.setClearDominos);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
 
@@ -20,6 +22,11 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible, openProjectModal })
 
   const handleCloseModal = () => {
     setIsSettingModalOpen(false);
+    setClearConfirmModalOpen(false);
+  };
+
+  const handleConfirm = () => {
+    clearDominos();
     setClearConfirmModalOpen(false);
   };
 
@@ -51,7 +58,7 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible, openProjectModal })
       key: "clearConfirmModal",
       Component: DominoClearConfirmModal,
       isOpen: isClearConfirmModalOpen,
-      props: { closeModal: handleCloseModal },
+      props: { closeModal: handleCloseModal, handleConfirm: handleConfirm },
     },
   ];
   return (
