@@ -1,5 +1,7 @@
+export const OBJECT_GROUP_NAMES = { STATIC: "STATIC_OBJECTS", DYNAMIC: "DYNAMIC_OBJECTS" };
+
 export const OBJECT_METADATA = {
-  STATIC_OBJECTS: {
+  [OBJECT_GROUP_NAMES.STATIC]: {
     defaultObject: {
       thumbnail: "/images/domino.png",
       model: "defaultObject",
@@ -63,7 +65,7 @@ export const OBJECT_METADATA = {
       colliders: "trimesh",
     },
   },
-  DYNAMIC_OBJECTS: {
+  [OBJECT_GROUP_NAMES.DYNAMIC]: {
     beachBall: {
       thumbnail: "/images/beach_ball.png",
       model: "/objects/beach_ball.glb",
@@ -98,4 +100,9 @@ export const OBJECT_METADATA = {
       colliders: "trimesh",
     },
   },
+};
+
+export const OBJECT_GROUP_LABELS = {
+  [OBJECT_GROUP_NAMES.STATIC]: "Static Object",
+  [OBJECT_GROUP_NAMES.DYNAMIC]: "Dynamic Object",
 };
