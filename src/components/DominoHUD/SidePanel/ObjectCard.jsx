@@ -18,7 +18,7 @@ const ObjectCard = ({ objectName, objectInfo, groupName }) => {
           src={objectInfo.thumbnail}
           alt={objectName}
           draggable={false}
-          className="w-full h-full object-contain transform transition-transform duration-200 group-hover:scale-130 select-none"
+          className="w-full h-full object-contain transform transition-transform duration-200 group-hover:scale-120 select-none"
         />
       </div>
       <span className="text-center font-normal">{objectInfo.title}</span>

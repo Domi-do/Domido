@@ -1,7 +1,7 @@
 export const OBJECT_METADATA = {
   STATIC_OBJECTS: {
     defaultObject: {
-      thumbnail: "/images/domino.png",
+      thumbnail: "/images/thumbnail/domino.png",
       model: "defaultObject",
       sound: "/sounds/domino_drop.mp3",
       colliders: "cuboid",
@@ -9,7 +9,7 @@ export const OBJECT_METADATA = {
       title: "도미노",
     },
     spiralStairs: {
-      thumbnail: "/images/spiral_stairs.png",
+      thumbnail: "/images/thumbnail/spiral_stairs.png",
       model: "/objects/spiral_stairs.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
@@ -17,7 +17,7 @@ export const OBJECT_METADATA = {
       title: "회전 트랙",
     },
     slide: {
-      thumbnail: "/images/slide.png",
+      thumbnail: "/images/thumbnail/slide.png",
       model: "/objects/slide.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
@@ -25,7 +25,7 @@ export const OBJECT_METADATA = {
       title: "미끄럼틀",
     },
     stairsClosedShort: {
-      thumbnail: "/images/stairs_closed_short.png",
+      thumbnail: "/images/thumbnail/stairs_closed_short.png",
       model: "/objects/stairs_closed_short.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
@@ -33,7 +33,7 @@ export const OBJECT_METADATA = {
       title: "계단",
     },
     lightbulb: {
-      thumbnail: "/images/lightbulb.png",
+      thumbnail: "/images/thumbnail/lightbulb.png",
       model: "/objects/lightbulb.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
@@ -41,7 +41,7 @@ export const OBJECT_METADATA = {
       title: "전구",
     },
     bumper: {
-      thumbnail: "/images/bumper.png",
+      thumbnail: "/images/thumbnail/bumper.png",
       model: "/objects/bumper.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
@@ -50,7 +50,7 @@ export const OBJECT_METADATA = {
   },
   DYNAMIC_OBJECTS: {
     steelBall: {
-      thumbnail: "/images/beach_ball.png",
+      thumbnail: "/images/thumbnail/steel_ball.png",
       model: "/objects/steel_ball.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "hull",
@@ -58,7 +58,7 @@ export const OBJECT_METADATA = {
       title: "쇠구슬",
     },
     beachBall: {
-      thumbnail: "/images/beach_ball.png",
+      thumbnail: "/images/thumbnail/beach_ball.png",
       model: "/objects/beach_ball.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "hull",
@@ -66,7 +66,7 @@ export const OBJECT_METADATA = {
       title: "비치볼",
     },
     soccerFootball: {
-      thumbnail: "/images/soccer_football.png",
+      thumbnail: "/images/thumbnail/soccer_football.png",
       model: "/objects/soccer_football.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "hull",
@@ -74,14 +74,14 @@ export const OBJECT_METADATA = {
       title: "축구공",
     },
     cannon: {
-      thumbnail: "/images/cannon.png",
+      thumbnail: "/images/thumbnail/cannon.png",
       model: "/objects/cannon.glb",
       sound: "/sounds/domino_drop.mp3",
       type: "fixed",
       title: "대포",
     },
     car: {
-      thumbnail: "/images/car.png",
+      thumbnail: "/images/thumbnail/car.png",
       model: "/objects/car.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
