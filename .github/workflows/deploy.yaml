@@ -10,10 +10,13 @@ jobs:
     steps:
       - name: checkout Github Action
         uses: actions/checkout@v3
+
       - name: install npm dependencies
         run: npm install
+
       - name: react build
         run: npm run build
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -25,6 +28,7 @@ jobs:
         run: |
           aws s3 sync \
             ./dist s3://$BUCKET_NAME
+
       - name: CloudFront Invalidation
         env:
           CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
