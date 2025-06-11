@@ -13,19 +13,16 @@ const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
 const OBJECT_NAMES = [
   "defaultObject",
-  "slide",
   "spiralStairs",
-  "staircase",
+  "slide",
   "stairsClosedShort",
-  "stairsClosed",
-  "stairs",
   "lightbulb",
-  "beachBall",
-  "cannon",
-  "pokeball",
-  "soccerFootball",
-  "car",
   "bumper",
+  "beachBall",
+  "steelBall",
+  "soccerFootball",
+  "cannon",
+  "car",
 ];
 
 const CursorFollowerObject = () => {
