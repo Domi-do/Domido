@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 import ModalOverlay from "@/components/Common/ModalOverlay";
 import ProjectNameInputModal from "@/components/DominoHUD/ProjectNameInputModal/ProjectNameInputModal";
-import useCreateProjectsQueries from "@/hooks/useCreateProjectQueries";
-import useDeleteProjectsQueries from "@/hooks/useDeleteProjectQueries";
-import useProjectsQueries from "@/hooks/useProjectsQueries";
-import useUpdateProjectQueries from "@/hooks/useUpdateProjectQueries";
+import useCreateProjectsQueries from "@/hooks/Queries/useCreateProjectQueries";
+import useDeleteProjectsQueries from "@/hooks/Queries/useDeleteProjectQueries";
+import useProjectsQueries from "@/hooks/Queries/useProjectsQueries";
+import useUpdateProjectQueries from "@/hooks/Queries/useUpdateProjectQueries";
 
 const ProjectListModal = ({ closeModal }) => {
   const { data: projects, isLoading, isError } = useProjectsQueries();
@@ -75,7 +75,7 @@ const ProjectListModal = ({ closeModal }) => {
                         {project.title}
                       </span>
                       <span className="block text-[12px] text-gray-400 mt-[4px]">
-                        {project.createdAt}
+                        {project.createdAt.slice(0, 10)}
                       </span>
                     </button>
 
