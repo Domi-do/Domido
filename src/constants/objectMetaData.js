@@ -48,6 +48,7 @@ export const OBJECT_METADATA = {
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
       title: "범퍼",
+      type: "fixed",
     },
   },
   [OBJECT_GROUP_NAMES.DYNAMIC]: {
@@ -88,6 +89,7 @@ export const OBJECT_METADATA = {
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
       title: "자동차",
+      type: "dynamic",
     },
   },
 };
