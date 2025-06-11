@@ -21,7 +21,7 @@ const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
               type={type}
               colliders={colliders ?? false}
               name={objectName}
-              key={_id}
+              key={_id || index}
               restitution={0}
               friction={1}
               linearDamping={0.01}
