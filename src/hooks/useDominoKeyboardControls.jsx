@@ -7,13 +7,12 @@ import {
   deleteSelectedDomino,
   toggleSelectedDominoOpacity,
   undoDominoHistory,
-  closeCurrentMode,
   rotateDominoClockwise,
   rotateDominoCounterClockwise,
 } from "@/utils/keyHandlers";
 
 const useDominoKeyboardControls = (onToggleGuideToast) => {
-  const dominos = useDominoStore((state) => state.dominos);
+  const { dominos, setSelectedDomino } = useDominoStore();
   const historyRef = useRef([]);
   const prevLengthRef = useRef(dominos.length);
   const { mutate } = useDominoMutations();
@@ -40,7 +39,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     q: rotateDominoCounterClockwise,
     e: rotateDominoClockwise,
     escape: () => {
-      closeCurrentMode();
+      setSelectedDomino(null);
       setTimeout(() => {
         socket.emit("clear cursor", { projectId });
       });

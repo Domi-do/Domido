@@ -8,15 +8,13 @@ import {
   SidePanel,
   DominoClearConfirmModal,
 } from "@/components/DominoHUD";
-import MODE from "@/constants/mode";
 import useDominoReset from "@/hooks/useDominoReset";
 import fetcher from "@/services/fetcher";
-import useSimulationStore from "@/store/useSimulationStore";
+import useDominoStore from "@/store/useDominoStore";
 import { HTTPError } from "@/utils/HTTPError";
 
-const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }) => {
-  const { simulationMode, countdownNumber } = useSimulationStore();
-
+const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible, openProjectModal }) => {
+  const clearDominos = useDominoStore((state) => state.setClearDominos);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
 
@@ -24,6 +22,11 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
 
   const handleCloseModal = () => {
     setIsSettingModalOpen(false);
+    setClearConfirmModalOpen(false);
+  };
+
+  const handleConfirm = () => {
+    clearDominos();
     setClearConfirmModalOpen(false);
   };
 
@@ -55,7 +58,7 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
       key: "clearConfirmModal",
       Component: DominoClearConfirmModal,
       isOpen: isClearConfirmModalOpen,
-      props: { closeModal: handleCloseModal },
+      props: { closeModal: handleCloseModal, handleConfirm: handleConfirm },
     },
   ];
   return (
@@ -63,16 +66,10 @@ const DominoHUD = ({ rigidBodyRefs, switchToReadyMode, isOpenGuideToastVisible }
       <HUDButtonGroup
         onClickSetting={() => setIsSettingModalOpen(true)}
         onClickReset={resetDominoSimulation}
-        onClickPlay={switchToReadyMode}
         onClickClear={() => setClearConfirmModalOpen(true)}
         onLogout={handleLogout}
+        openProjectModal={openProjectModal}
       />
-      {simulationMode === MODE.COUNTDOWN && (
-        <span className="fixed z-50 text-[200px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold">
-          {countdownNumber}
-        </span>
-      )}
-
       <SidePanel />
       <ModalLayer modals={modals} />
     </>
