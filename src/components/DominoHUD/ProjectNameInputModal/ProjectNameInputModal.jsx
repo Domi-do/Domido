@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useId } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 
 const ProjectNameInputModal = ({ closeModal, onSubmit, placeholderValue, Title, submitLabel }) => {
   const [projectName, setProjectName] = useState("");
   const inputId = useId();
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +49,7 @@ const ProjectNameInputModal = ({ closeModal, onSubmit, placeholderValue, Title, 
             required
             className="w-full px-[16px] py-[12px] border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-yellow-300 transition"
             placeholder={placeholderValue}
+            ref={inputRef}
           />
 
           <div className="mt-[32px] flex justify-end">
