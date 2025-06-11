@@ -1,18 +1,22 @@
 import { useEffect } from "react";
 import * as THREE from "three";
 
+import { OBJECT_GROUP_NAMES } from "@/constants/objectMetaData.js";
+import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 
 const useDominoReset = (rigidBodyRefs) => {
-  const { dominos, setDominos } = useDominoStore();
+  const dominos = useDominoStore((state) => state.dominos);
   const { socket, projectId } = useSocket();
+  const { mutate } = useDominoMutations();
+
   const resetAllDominoes = () => {
     const filteredDominos = dominos.filter(
-      (domino) => domino.objectInfo?.objectName === "defaultObject",
+      (domino) => domino.objectInfo?.groupName === OBJECT_GROUP_NAMES.STATIC,
     );
 
-    setDominos(filteredDominos);
+    mutate({ dominos: filteredDominos });
 
     requestAnimationFrame(() => {
       filteredDominos.forEach((domino, index) => {
