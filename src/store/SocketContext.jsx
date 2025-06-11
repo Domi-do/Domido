@@ -35,7 +35,7 @@ export const SocketProvider = ({ children }) => {
     });
 
     socket.on("user joined", ({ message }) => {
-      showToast({ message });
+      showToast({ message, placement: "bottomRight" });
     });
 
     socket.on(

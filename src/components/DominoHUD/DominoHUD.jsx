@@ -8,21 +8,24 @@ import {
   SidePanel,
   DominoClearConfirmModal,
 } from "@/components/DominoHUD";
+import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectListModal";
 import useDominoReset from "@/hooks/useDominoReset";
 import fetcher from "@/services/fetcher";
 import useDominoStore from "@/store/useDominoStore";
 import { HTTPError } from "@/utils/HTTPError";
 
-const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible, openProjectModal }) => {
+const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
   const clearDominos = useDominoStore((state) => state.setClearDominos);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
+  const [isProjectListModal, setProjectListModal] = useState(false);
 
   const { resetDominoSimulation } = useDominoReset(rigidBodyRefs);
 
   const handleCloseModal = () => {
     setIsSettingModalOpen(false);
     setClearConfirmModalOpen(false);
+    setProjectListModal(false);
   };
 
   const handleConfirm = () => {
@@ -60,6 +63,12 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible, openProjectModal })
       isOpen: isClearConfirmModalOpen,
       props: { closeModal: handleCloseModal, handleConfirm: handleConfirm },
     },
+    {
+      key: "ProjectListModal",
+      Component: ProjectListModal,
+      isOpen: isProjectListModal,
+      props: { closeModal: handleCloseModal },
+    },
   ];
   return (
     <>
@@ -68,7 +77,7 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible, openProjectModal })
         onClickReset={resetDominoSimulation}
         onClickClear={() => setClearConfirmModalOpen(true)}
         onLogout={handleLogout}
-        openProjectModal={openProjectModal}
+        openProjectModal={() => setProjectListModal(true)}
       />
       <SidePanel />
       <ModalLayer modals={modals} />
