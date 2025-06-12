@@ -8,8 +8,6 @@ const getPlacementClass = (placement) => {
   switch (placement) {
     case "topLeft":
       return "top-4 left-4";
-    case "topRight":
-      return "top-4 right-4";
     case "bottomLeft":
       return "bottom-4 left-4";
     case "bottomRight":
