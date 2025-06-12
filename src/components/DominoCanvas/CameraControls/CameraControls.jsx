@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 import useSettingStore from "@/store/useSettingStore";
 
-const CameraControls = () => {
+const CameraControls = ({ cameraAngle }) => {
   const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
 
   const { camera, gl } = useThree();
@@ -44,6 +44,11 @@ const CameraControls = () => {
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
+
+  useEffect(() => {
+    camera.position.set(...cameraAngle);
+    camera.lookAt(0, 0, 0);
+  }, [cameraAngle]);
 
   useFrame(() => {
     const direction = new THREE.Vector3();

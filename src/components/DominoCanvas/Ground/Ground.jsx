@@ -3,12 +3,13 @@ import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 import { TextureLoader } from "three";
 
+import { GAME_THEME } from "@/constants/gameThema";
 import useSettingStore from "@/store/useSettingStore";
 
 const Ground = () => {
-  const groundType = useSettingStore((state) => state.groundType);
+  const themaType = useSettingStore((state) => state.themaType);
 
-  const floorTexture = useLoader(TextureLoader, `/images/tile/${groundType}.png`);
+  const floorTexture = useLoader(TextureLoader, GAME_THEME[themaType].tile);
 
   floorTexture.wrapS = THREE.RepeatWrapping;
   floorTexture.wrapT = THREE.RepeatWrapping;
@@ -28,7 +29,7 @@ const Ground = () => {
         <meshStandardMaterial
           map={floorTexture}
           metalness={0.05}
-          roughness={0.45}
+          roughness={0.55}
         />
       </mesh>
     </RigidBody>
