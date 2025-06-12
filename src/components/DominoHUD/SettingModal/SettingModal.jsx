@@ -1,24 +1,13 @@
-import tileGrass from "/images/tile/grass.png";
-import tileWoodDark from "/images/tile/wood_dark.png";
-import tileWoodLight from "/images/tile/wood_light.png";
-
-import useSettingStore from "@/store/useSettingStore";
-import SettingGroup from "@/components/DominoHUD/SettingModal/SettingGroup";
-import GroundTypeButton from "@/components/DominoHUD/SettingModal/GroundTypeButton";
-import ModalOverlay from "@/components/Common/ModalOverlay";
-
-import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
-import { useToast } from "@/store/ToastContext";
-
 import { ImCopy } from "react-icons/im";
+import { useParams, useNavigate } from "react-router-dom";
 
-const GROUND_OPTIONS = [
-  { type: "grass", image: tileGrass },
-  { type: "wood_dark", image: tileWoodDark },
-  { type: "wood_light", image: tileWoodLight },
-];
+import ModalOverlay from "@/components/Common/ModalOverlay";
+import GroundTypeButton from "@/components/DominoHUD/SettingModal/GroundTypeButton";
+import SettingGroup from "@/components/DominoHUD/SettingModal/SettingGroup";
+import { GAME_THEME } from "@/constants/gameThema";
+import { useToast } from "@/store/ToastContext";
+import useSettingStore from "@/store/useSettingStore";
 
 const SettingModal = ({ closeModal }) => {
   const { projectId } = useParams();
@@ -29,8 +18,8 @@ const SettingModal = ({ closeModal }) => {
   const {
     rotationSensitivity,
     setRotationSensitivity,
-    groundType,
-    setGroundType,
+    themaType,
+    setThemaType,
     volumeLevel,
     setVolumeLevel,
     objectVolume,
@@ -107,15 +96,15 @@ const SettingModal = ({ closeModal }) => {
           />
         </SettingGroup>
 
-        <SettingGroup title="배경">
+        <SettingGroup title="테마">
           <ul className="flex gap-[10px]">
-            {GROUND_OPTIONS.map(({ type, image }) => (
+            {Object.entries(GAME_THEME).map(([type, { thumbnail }]) => (
               <li key={type}>
                 <GroundTypeButton
                   type={type}
-                  image={image}
-                  selected={groundType === type}
-                  onClick={setGroundType}
+                  image={thumbnail}
+                  selected={themaType === type}
+                  onClick={setThemaType}
                 />
               </li>
             ))}
