@@ -50,6 +50,14 @@ export const OBJECT_METADATA = {
       title: "범퍼",
       type: "fixed",
     },
+    rainbowSlide: {
+      thumbnail: "/images/thumbnail/rainbowSlide.png",
+      model: "/objects/rainbowSlide.glb",
+      sound: "/sounds/domino_drop.mp3",
+      colliders: "trimesh",
+      title: "무지개미끄럼틀",
+      type: "dynamic",
+    },
   },
   [OBJECT_GROUP_NAMES.DYNAMIC]: {
     steelBall: {
@@ -90,14 +98,6 @@ export const OBJECT_METADATA = {
       colliders: "trimesh",
       title: "자동차",
       type: "dynamic",
-    },
-    rainbowSlide: {
-      thumbnail: "/images/thumbnail/rainbowSlide.png",
-      model: "/objects/rainbowSlide.glb",
-      sound: "/sounds/domino_drop.mp3",
-      colliders: "trimesh",
-      title: "무지개 미끄럼틀",
-      type: "fixed",
     },
   },
 };
