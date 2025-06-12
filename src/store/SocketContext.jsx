@@ -54,7 +54,7 @@ export const SocketProvider = ({ children }) => {
     });
 
     socket.on("user left", ({ message, userID }) => {
-      showToast({ message });
+      showToast({ message, placement: "bottomRight" });
       removeCursor(userID);
     });
 
