@@ -55,7 +55,7 @@ export const OBJECT_METADATA = {
       model: "/objects/rainbowSlide.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
-      title: "무지개미끄럼틀",
+      title: "무지개 미끄럼틀",
       type: "dynamic",
     },
   },
