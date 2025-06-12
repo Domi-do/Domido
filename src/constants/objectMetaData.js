@@ -72,7 +72,7 @@ export const OBJECT_METADATA = {
       thumbnail: "/images/thumbnail/soccer_football.png",
       model: "/objects/soccer_football.glb",
       sound: "/sounds/domino_drop.mp3",
-      colliders: "hull",
+      colliders: "ball",
       type: "dynamic",
       title: "축구공",
     },
@@ -90,6 +90,14 @@ export const OBJECT_METADATA = {
       colliders: "trimesh",
       title: "자동차",
       type: "dynamic",
+    },
+    rainbowSlide: {
+      thumbnail: "/images/thumbnail/car.png",
+      model: "/objects/rainbowSlide.glb",
+      sound: "/sounds/domino_drop.mp3",
+      colliders: "trimesh",
+      title: "무지개 미끄럼틀",
+      type: "fixed",
     },
   },
 };
