@@ -92,7 +92,7 @@ export const OBJECT_METADATA = {
       type: "dynamic",
     },
     rainbowSlide: {
-      thumbnail: "/images/thumbnail/car.png",
+      thumbnail: "/images/thumbnail/rainbowSlide.png",
       model: "/objects/rainbowSlide.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
