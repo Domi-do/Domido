@@ -23,6 +23,7 @@ const OBJECT_NAMES = [
   "soccerFootball",
   "cannon",
   "car",
+  "rainbowSlide",
 ];
 
 const CursorFollowerObject = () => {

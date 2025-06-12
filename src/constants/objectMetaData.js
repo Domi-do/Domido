@@ -50,6 +50,14 @@ export const OBJECT_METADATA = {
       title: "범퍼",
       type: "fixed",
     },
+    rainbowSlide: {
+      thumbnail: "/images/thumbnail/rainbowSlide.png",
+      model: "/objects/rainbowSlide.glb",
+      sound: "/sounds/domino_drop.mp3",
+      colliders: "trimesh",
+      title: "무지개미끄럼틀",
+      type: "dynamic",
+    },
   },
   [OBJECT_GROUP_NAMES.DYNAMIC]: {
     steelBall: {
@@ -72,7 +80,7 @@ export const OBJECT_METADATA = {
       thumbnail: "/images/thumbnail/soccer_football.png",
       model: "/objects/soccer_football.glb",
       sound: "/sounds/domino_drop.mp3",
-      colliders: "hull",
+      colliders: "ball",
       type: "dynamic",
       title: "축구공",
     },
