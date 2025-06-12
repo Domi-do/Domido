@@ -64,7 +64,7 @@ export const OBJECT_METADATA = {
       thumbnail: "/images/thumbnail/beach_ball.png",
       model: "/objects/beach_ball.glb",
       sound: "/sounds/domino_drop.mp3",
-      colliders: "hull",
+      colliders: "ball",
       type: "dynamic",
       title: "비치볼",
     },
