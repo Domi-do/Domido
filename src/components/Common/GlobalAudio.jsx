@@ -1,12 +1,14 @@
 import { useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 
+import { GAME_THEME } from "@/constants/gameThema";
 import useSettingStore from "@/store/useSettingStore";
 import AudioController from "@/utils/AudioController";
 
-const BGM_PATH = "/sounds/bgm.mp3";
-
 const GlobalAudio = () => {
+  const themaType = useSettingStore((state) => state.themaType);
+  const bgmPath = GAME_THEME[themaType].sound;
+
   const { camera } = useThree();
   const volumeLevel = useSettingStore((state) => state.volumeLevel);
   const audioControllerRef = useRef(new AudioController());
@@ -16,7 +18,7 @@ const GlobalAudio = () => {
     audioController.init(camera, volumeLevel, true);
 
     const handleFirstClick = () => {
-      audioController.play(BGM_PATH);
+      audioController.play(bgmPath);
       window.removeEventListener("click", handleFirstClick);
     };
 
@@ -26,7 +28,7 @@ const GlobalAudio = () => {
       window.removeEventListener("click", handleFirstClick);
       audioController.cleanup(camera);
     };
-  }, []);
+  }, [bgmPath]);
 
   useEffect(() => {
     audioControllerRef.current.setVolume(volumeLevel);

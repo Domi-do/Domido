@@ -9,27 +9,23 @@ import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
 import { Ground, CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
 import OtherUserDominos from "@/components/DominoCanvas/OtherUserDominos/OtherUserDominos";
+import { GAME_THEME } from "@/constants/gameThema";
+import useSettingStore from "@/store/useSettingStore";
 
 const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
+  const themaType = useSettingStore((state) => state.themaType);
+  const currentThema = GAME_THEME[themaType];
+
   return (
     <>
-      <Canvas camera={{ position: [0, 5, 5], fov: 75 }}>
+      <Canvas camera={{ position: currentThema.cameraAngle, fov: 75 }}>
         <Suspense fallback={<Loading />}>
           <GlobalAudio />
-          <ambientLight
-            color="white"
-            intensity={1}
-          />
-          <directionalLight
-            castShadow
-            intensity={1}
-            position={[5, 10, 5]}
-          />
           <Environment
-            preset="park"
+            files={currentThema.background}
             background
           />
-          <CameraControls />
+          <CameraControls cameraAngle={currentThema.cameraAngle} />
           <Physics gravity={[0, -9.81 * 3, 0]}>
             <CursorFollowerObject />
             <OtherUserDominos />
