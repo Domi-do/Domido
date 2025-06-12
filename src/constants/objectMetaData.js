@@ -99,14 +99,6 @@ export const OBJECT_METADATA = {
       title: "자동차",
       type: "dynamic",
     },
-    rainbowSlide: {
-      thumbnail: "/images/thumbnail/rainbowSlide.png",
-      model: "/objects/rainbowSlide.glb",
-      sound: "/sounds/domino_drop.mp3",
-      colliders: "trimesh",
-      title: "무지개 미끄럼틀",
-      type: "fixed",
-    },
   },
 };
 
