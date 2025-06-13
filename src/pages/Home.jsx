@@ -13,6 +13,7 @@ const Home = () => {
   const location = useLocation();
   const hasProjectPath = location.pathname === "/projects";
   const [isProjectListModal, setProjectListModal] = useState(hasProjectPath && !projectId);
+
   const handleLogin = () => {
     window.location.href = kakaoURL;
   };

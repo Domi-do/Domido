@@ -5,7 +5,7 @@ import loading from "/images/loading.jpg";
 const Loading = () => {
   return (
     <Html fullscreen>
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full bg-black">
         <img
           src={loading}
           alt="로딩 중"
