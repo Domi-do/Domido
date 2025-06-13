@@ -49,7 +49,8 @@ export const SocketProvider = ({ children }) => {
       },
     );
 
-    socket.on("domino update", ({ dominos }) => {
+    socket.on("domino update", ({ dominos, sendUser }) => {
+      if (myUserID === sendUser) return;
       setDominos(dominos);
     });
 
