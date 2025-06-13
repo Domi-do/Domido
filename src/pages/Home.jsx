@@ -1,6 +1,5 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectListModal";
 import { SocketProvider } from "@/store/SocketContext";
@@ -9,27 +8,11 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 
 import logo from "/images/logo.png";
 
-import { useImagePreload } from "@/hooks/useImagePreload";
-import { decodeImage } from "@/hooks/useImagePreload";
-
-import loadingImg from "/images/loading.jpg";
-
 const Home = () => {
-  useImagePreload(loadingImg);
   const { projectId } = useParams();
   const location = useLocation();
   const hasProjectPath = location.pathname === "/projects";
   const [isProjectListModal, setProjectListModal] = useState(hasProjectPath && !projectId);
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: ["img", loadingImg],
-      queryFn: () => decodeImage(loadingImg),
-      staleTime: Infinity,
-      cacheTime: Infinity,
-    });
-  }, [queryClient]);
 
   const handleLogin = () => {
     window.location.href = kakaoURL;
