@@ -7,6 +7,7 @@ import {
   SettingModal,
   SidePanel,
   DominoClearConfirmModal,
+  Tutorial,
 } from "@/components/DominoHUD";
 import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectListModal";
 import useDominoReset from "@/hooks/useDominoReset";
@@ -19,6 +20,7 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
   const [isProjectListModal, setProjectListModal] = useState(false);
+  const [isStartTutorial, setIsStartTutorial] = useState(true);
 
   const { resetDominoSimulation } = useDominoReset(rigidBodyRefs);
 
@@ -81,6 +83,7 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
       />
       <SidePanel />
       <ModalLayer modals={modals} />
+      {isStartTutorial && <Tutorial onTutorialEnd={() => setIsStartTutorial(false)} />}
     </>
   );
 };
