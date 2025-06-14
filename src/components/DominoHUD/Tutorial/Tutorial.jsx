@@ -21,7 +21,7 @@ const Tutorial = ({ onTutorialEnd }) => {
           step={currentStep}
           total={totalStep}
           message={currentStepData.message}
-          canProceed={stepConditions[currentStep]?.(tracker)}
+          canProceed={stepConditions[currentStep](tracker)}
           onNext={nextStep}
           colPosition={currentStepData.position}
           onTutorialEnd={onTutorialEnd}
