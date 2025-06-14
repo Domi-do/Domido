@@ -24,7 +24,6 @@ const Tutorial = ({ onTutorialEnd }) => {
           message={currentStepData.message}
           canProceed={tracker[trackerKey]}
           onNext={nextStep}
-          colPosition={currentStepData.position}
           onTutorialEnd={onTutorialEnd}
         />
       }

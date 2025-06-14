@@ -10,16 +10,8 @@ export const TRACKER_KEYS = {
 };
 
 export const TUTORIAL_STEPS = [
-  {
-    message: <>📂 우측 패널을 열어보세요!</>,
-    position: "top",
-    trackerKey: TRACKER_KEYS.SIDE_PANEL_OPEN,
-  },
-  {
-    message: <>🧱 도미노를 선택해보세요!</>,
-    position: "top",
-    trackerKey: TRACKER_KEYS.DOMINO_SELECTED,
-  },
+  { message: <>📂 우측 패널을 열어보세요!</>, trackerKey: TRACKER_KEYS.SIDE_PANEL_OPEN },
+  { message: <>🧱 도미노를 선택해보세요!</>, trackerKey: TRACKER_KEYS.DOMINO_SELECTED },
   {
     message: (
       <>
@@ -28,7 +20,6 @@ export const TUTORIAL_STEPS = [
         왼쪽으로 회전시켜보세요!
       </>
     ),
-    position: "top",
     trackerKey: TRACKER_KEYS.ROTATED_LEFT,
   },
   {
@@ -39,7 +30,6 @@ export const TUTORIAL_STEPS = [
         오른쪽으로 회전시켜보세요!
       </>
     ),
-    position: "top",
     trackerKey: TRACKER_KEYS.ROTATED_RIGHT,
   },
   {
@@ -50,7 +40,6 @@ export const TUTORIAL_STEPS = [
         <span className="text-xs text-gray-400">(삭제 연습용이에요)</span>
       </>
     ),
-    position: "top",
     isShowTargetPlaceholder: true,
     requiredObjectName: "defaultObject",
     targetPositions: [[0, 0, 0]],
@@ -64,7 +53,6 @@ export const TUTORIAL_STEPS = [
         단축키 X 를 눌러 삭제해보세요!
       </>
     ),
-    position: "top",
     trackerKey: TRACKER_KEYS.DELETED_DOMINO,
   },
   {
@@ -75,7 +63,6 @@ export const TUTORIAL_STEPS = [
         <span className="text-xs text-gray-400">(곧 쓰러뜨릴 도미노예요)</span>
       </>
     ),
-    position: "top",
     isShowTargetPlaceholder: true,
     requiredObjectName: "defaultObject",
     targetPositions: [
@@ -87,28 +74,7 @@ export const TUTORIAL_STEPS = [
   },
   {
     message: <>💣 공을 넣고 대포를 발사해보세요!</>,
-    position: "top",
     isCannonPlacementStep: true,
     trackerKey: TRACKER_KEYS.CANNON_TRIGGERED,
-  },
-  {
-    message: (
-      <>
-        🔁 리셋 버튼을 눌러
-        <br />
-        다이나믹 오브젝트를 초기화하세요!
-      </>
-    ),
-    position: "bottom",
-  },
-  {
-    message: (
-      <>
-        🧹 클리어 버튼을 눌러
-        <br />
-        모든 오브젝트를 삭제하세요!
-      </>
-    ),
-    position: "bottom",
   },
 ];

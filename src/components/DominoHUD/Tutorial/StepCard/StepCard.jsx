@@ -1,13 +1,10 @@
-const StepCard = ({ step, total, message, canProceed, onNext, colPosition, onTutorialEnd }) => {
+const StepCard = ({ step, total, message, canProceed, onNext, onTutorialEnd }) => {
   const isLastStep = step === total;
   const progressPercent = Math.round((step / total) * 100);
-  const positionClasses = `
-  ${colPosition === "top" ? "top-[10px]" : "bottom-[10px]"}
-`;
 
   return (
     <div
-      className={`fixed ${positionClasses} left-[10px] z-[200] bg-white/95 backdrop-blur-md shadow-lg rounded-2xl w-[300px] px-5 py-5 text-gray-800`}
+      className={`fixed top-[10px] left-[10px] z-[200] bg-white/95 backdrop-blur-md shadow-lg rounded-2xl w-[300px] px-5 py-5 text-gray-800`}
     >
       <div className="text-center mb-4 min-h-[56px] flex items-center justify-center">
         <p className="text-base font-medium leading-snug tracking-normal">{message}</p>
