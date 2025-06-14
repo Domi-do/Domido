@@ -1,6 +1,6 @@
 const StepCard = ({ onNext, canProceed, message, step, total, colPosition, onTutorialEnd }) => {
-  const isLastStep = step === total - 1;
-  const progressPercent = total > 1 ? Math.round((step / (total - 1)) * 100) : 100;
+  const isLastStep = step === total;
+  const progressPercent = Math.round((step / total) * 100);
   const positionClasses = `
   ${colPosition === "top" ? "top-[10px]" : "bottom-[10px]"}
 `;

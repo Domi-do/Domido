@@ -39,7 +39,7 @@ const Tutorial = ({ onTutorialEnd }) => {
 
   const isIntro = step === 0;
   const totalStep = TUTORIAL_STEPS.length;
-  const currentStepData = TUTORIAL_STEPS[step];
+  const currentStepData = TUTORIAL_STEPS[step - 1];
 
   const handleNext = () => {
     setStep((prev) => Math.min(prev + 1, totalStep));
