@@ -30,15 +30,22 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     }
   };
 
-  const handleRotate = (rotateFn, trackerKey) => {
-    rotateFn();
-
+  const trackTutorialStep = (trackerKey) => {
     if (!tracker[trackerKey]) {
       setTracker(trackerKey, true);
     }
   };
 
-  const handleDeleteObject = () => handleDominoUpdate(deleteSelectedDomino);
+  const handleRotate = (rotateFn, trackerKey) => {
+    rotateFn();
+    trackTutorialStep(trackerKey);
+  };
+
+  const handleDeleteObject = () => {
+    handleDominoUpdate(deleteSelectedDomino);
+    trackTutorialStep("hasDeletedDomino");
+  };
+
   const handleOpacityObject = () => handleDominoUpdate(toggleSelectedDominoOpacity);
   const handleUndo = () => handleDominoUpdate(undoDominoHistory, false);
   const handleRotateLeft = () => handleRotate(rotateDominoCounterClockwise, "hasRotatedDominoLeft");
