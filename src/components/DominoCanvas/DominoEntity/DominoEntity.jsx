@@ -13,41 +13,41 @@ const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
   return (
     <>
       <TutorialStepHandler />
+      {dominos.length
+        && dominos.map((domino, index) => {
+          const { position, rotation, color, opacity, _id, objectInfo } = domino;
+          const { colliders, type, objectName } = objectInfo;
 
-      {dominos.map((domino, index) => {
-        const { position, rotation, color, opacity, _id, objectInfo } = domino;
-        const { colliders, type, objectName } = objectInfo;
-
-        return (
-          <RigidBody
-            key={_id || index}
-            type={type}
-            colliders={colliders ?? false}
-            name={objectName}
-            restitution={0}
-            friction={1}
-            linearDamping={0.01}
-            angularDamping={0.01}
-            position={position}
-            rotation={rotation}
-            ref={(ref) => (rigidBodyRefs.current[index] = ref)}
-          >
-            <DominoVisualUnit
-              objectName={objectName}
-              id={_id}
+          return (
+            <RigidBody
+              key={_id || index}
+              type={type}
+              colliders={colliders ?? false}
+              name={objectName}
+              restitution={0}
+              friction={1}
+              linearDamping={0.01}
+              angularDamping={0.01}
               position={position}
-              rigidBodyRefs={rigidBodyRefs}
-            />
-            <ObjectRenderer
-              dominoInfo={objectInfo}
-              onPointerOver={(event) => openGuideToast(event, _id)}
-              onPointerOut={closeGuideToast}
-              opacity={opacity}
-              color={color}
-            />
-          </RigidBody>
-        );
-      })}
+              rotation={rotation}
+              ref={(ref) => (rigidBodyRefs.current[index] = ref)}
+            >
+              <DominoVisualUnit
+                objectName={objectName}
+                id={_id}
+                position={position}
+                rigidBodyRefs={rigidBodyRefs}
+              />
+              <ObjectRenderer
+                dominoInfo={objectInfo}
+                onPointerOver={(event) => openGuideToast(event, _id)}
+                onPointerOut={closeGuideToast}
+                opacity={opacity}
+                color={color}
+              />
+            </RigidBody>
+          );
+        })}
     </>
   );
 };
