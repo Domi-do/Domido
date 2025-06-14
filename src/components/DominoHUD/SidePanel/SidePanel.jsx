@@ -1,24 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
 import DominoColorPalette from "@/components/DominoHUD/SidePanel/DominoColorPalette";
 import ObjectCard from "@/components/DominoHUD/SidePanel/ObjectCard";
 import { OBJECT_METADATA, OBJECT_GROUP_LABELS } from "@/constants/objectMetaData";
+import useTutorialTracker from "@/hooks/useTutorialTracker";
 import useDominoStore from "@/store/useDominoStore";
-import { useTutorialStore } from "@/store/useTutorialStore";
 
 const SidePanel = () => {
   const { selectedDomino } = useDominoStore();
   const [isOpen, setIsOpen] = useState(false);
-  const { tracker, setTracker } = useTutorialStore.getState();
 
-  useEffect(() => {
-    const alreadyCleared = tracker.isSidePanelOpen;
-
-    if (!alreadyCleared && isOpen) {
-      setTracker("isSidePanelOpen", true);
-    }
-  }, [isOpen]);
+  useTutorialTracker(isOpen);
 
   return (
     <div

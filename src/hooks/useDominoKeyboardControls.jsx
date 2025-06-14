@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { TUTORIAL_STEPS, TRACKER_KEYS } from "@/constants/tutorialStep";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
@@ -14,11 +15,16 @@ import {
 
 const useDominoKeyboardControls = (onToggleGuideToast) => {
   const { dominos, setSelectedDomino } = useDominoStore();
+  const setTracker = useTutorialStore((state) => state.setTracker);
   const historyRef = useRef([]);
   const prevLengthRef = useRef(dominos.length);
   const { mutate } = useDominoMutations();
   const { projectId, socket } = useSocket();
-  const { tracker, setTracker } = useTutorialStore.getState();
+
+  const getStepTrackerKey = () => {
+    const currentStep = useTutorialStore.getState().currentStep;
+    return TUTORIAL_STEPS[currentStep - 1]?.trackerKey;
+  };
 
   const handleDominoUpdate = (updateFn, isShowToast = true) => {
     const updatedDominos =
@@ -30,26 +36,29 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     }
   };
 
-  const trackTutorialStep = (trackerKey) => {
-    if (!tracker[trackerKey]) {
+  const setTrackerIfMatched = (trackerKey) => {
+    if (getStepTrackerKey() === trackerKey) {
       setTracker(trackerKey, true);
     }
   };
 
-  const handleRotate = (rotateFn, trackerKey) => {
-    rotateFn();
-    trackTutorialStep(trackerKey);
-  };
-
   const handleDeleteObject = () => {
     handleDominoUpdate(deleteSelectedDomino);
-    trackTutorialStep("hasDeletedDomino");
+    setTrackerIfMatched(TRACKER_KEYS.DELETED_DOMINO);
+  };
+
+  const handleRotateLeft = () => {
+    rotateDominoCounterClockwise();
+    setTrackerIfMatched(TRACKER_KEYS.ROTATED_LEFT);
+  };
+
+  const handleRotateRight = () => {
+    rotateDominoClockwise();
+    setTrackerIfMatched(TRACKER_KEYS.ROTATED_RIGHT);
   };
 
   const handleOpacityObject = () => handleDominoUpdate(toggleSelectedDominoOpacity);
   const handleUndo = () => handleDominoUpdate(undoDominoHistory, false);
-  const handleRotateLeft = () => handleRotate(rotateDominoCounterClockwise, "hasRotatedDominoLeft");
-  const handleRotateRight = () => handleRotate(rotateDominoClockwise, "hasRotatedDominoRight");
 
   const keyMap = {
     x: handleDeleteObject,

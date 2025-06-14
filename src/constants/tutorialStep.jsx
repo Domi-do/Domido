@@ -1,6 +1,25 @@
+export const TRACKER_KEYS = {
+  SIDE_PANEL_OPEN: "isSidePanelOpen",
+  DOMINO_SELECTED: "isDominoSelected",
+  ROTATED_LEFT: "hasRotatedDominoLeft",
+  ROTATED_RIGHT: "hasRotatedDominoRight",
+  PLACED_FOR_DELETE: "placedDominoForDelete",
+  DELETED_DOMINO: "hasDeletedDomino",
+  PLACED_FOR_KNOCK: "placedDominoForKnock",
+  CANNON_TRIGGERED: "cannonSensorTriggered",
+};
+
 export const TUTORIAL_STEPS = [
-  { message: <>📂 우측 패널을 열어보세요!</>, position: "top" },
-  { message: <>🧱 도미노를 선택해보세요!</>, position: "top" },
+  {
+    message: <>📂 우측 패널을 열어보세요!</>,
+    position: "top",
+    trackerKey: TRACKER_KEYS.SIDE_PANEL_OPEN,
+  },
+  {
+    message: <>🧱 도미노를 선택해보세요!</>,
+    position: "top",
+    trackerKey: TRACKER_KEYS.DOMINO_SELECTED,
+  },
   {
     message: (
       <>
@@ -10,6 +29,7 @@ export const TUTORIAL_STEPS = [
       </>
     ),
     position: "top",
+    trackerKey: TRACKER_KEYS.ROTATED_LEFT,
   },
   {
     message: (
@@ -20,6 +40,7 @@ export const TUTORIAL_STEPS = [
       </>
     ),
     position: "top",
+    trackerKey: TRACKER_KEYS.ROTATED_RIGHT,
   },
   {
     message: (
@@ -31,7 +52,9 @@ export const TUTORIAL_STEPS = [
     ),
     position: "top",
     isShowTargetPlaceholder: true,
+    requiredObjectName: "defaultObject",
     targetPositions: [[0, 0, 0]],
+    trackerKey: TRACKER_KEYS.PLACED_FOR_DELETE,
   },
   {
     message: (
@@ -42,6 +65,7 @@ export const TUTORIAL_STEPS = [
       </>
     ),
     position: "top",
+    trackerKey: TRACKER_KEYS.DELETED_DOMINO,
   },
   {
     message: (
@@ -53,14 +77,20 @@ export const TUTORIAL_STEPS = [
     ),
     position: "top",
     isShowTargetPlaceholder: true,
+    requiredObjectName: "defaultObject",
     targetPositions: [
       [0, 0, 0],
       [0.5, 0, 0],
       [1, 0, 0],
     ],
+    trackerKey: TRACKER_KEYS.PLACED_FOR_KNOCK,
   },
-  { message: <>🎯 표시된 위치에 대포를 놓아보세요!</>, position: "top" },
-  { message: <>💣 공을 넣고 대포를 발사해보세요!</>, position: "top" },
+  {
+    message: <>💣 공을 넣고 대포를 발사해보세요!</>,
+    position: "top",
+    isCannonPlacementStep: true,
+    trackerKey: TRACKER_KEYS.CANNON_TRIGGERED,
+  },
   {
     message: (
       <>

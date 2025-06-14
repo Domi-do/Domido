@@ -1,29 +1,19 @@
 import { create } from "zustand";
 
-import { TUTORIAL_STEPS } from "@/constants/tutorialStep";
-
-export const stepConditions = {
-  1: (tracker) => tracker.isSidePanelOpen,
-  2: (tracker) => tracker.isDominoSelected,
-  3: (tracker) => tracker.hasRotatedDominoLeft,
-  4: (tracker) => tracker.hasRotatedDominoRight,
-  5: (tracker) => tracker.placedDominoForDelete,
-  6: (tracker) => tracker.hasDeletedDomino,
-  7: (tracker) => tracker.placedDominoForKnock,
-  8: (tracker) => tracker.cannonSensorTriggered,
-};
+import { TUTORIAL_STEPS, TRACKER_KEYS } from "@/constants/tutorialStep";
 
 export const useTutorialStore = create((set) => ({
   currentStep: 0,
+
   tracker: {
-    isSidePanelOpen: false,
-    isDominoSelected: false,
-    hasRotatedDominoLeft: false,
-    hasRotatedDominoRight: false,
-    placedDominoForDelete: false,
-    hasDeletedDomino: false,
-    placedDominoForKnock: false,
-    cannonSensorTriggered: false,
+    [TRACKER_KEYS.SIDE_PANEL_OPEN]: false,
+    [TRACKER_KEYS.DOMINO_SELECTED]: false,
+    [TRACKER_KEYS.ROTATED_LEFT]: false,
+    [TRACKER_KEYS.ROTATED_RIGHT]: false,
+    [TRACKER_KEYS.PLACED_FOR_DELETE]: false,
+    [TRACKER_KEYS.DELETED_DOMINO]: false,
+    [TRACKER_KEYS.PLACED_FOR_KNOCK]: false,
+    [TRACKER_KEYS.CANNON_TRIGGERED]: false,
   },
 
   setTracker: (key, value) => set((state) => ({ tracker: { ...state.tracker, [key]: value } })),

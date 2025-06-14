@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Cannon from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/Cannon/Cannon";
 import { OBJECT_METADATA, OBJECT_GROUP_NAMES } from "@/constants/objectMetaData";
+import useTutorialTracker from "@/hooks/useTutorialTracker";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 import { useTutorialStore } from "@/store/useTutorialStore";
@@ -15,8 +16,12 @@ const TRIGGER_SIZE = [0.4, 1.4, 0.5];
 
 const CannonAutoPlacer = () => {
   const { dominos, setDominos } = useDominoStore.getState();
-  const { tracker, setTracker } = useTutorialStore();
+  const { tracker } = useTutorialStore();
   const { projectId, socket } = useSocket();
+
+  const [hasTriggered, setHasTriggered] = useState(false);
+
+  useTutorialTracker(hasTriggered);
 
   useEffect(() => {
     if (!tracker.placedDominoForKnock) return;
@@ -37,10 +42,6 @@ const CannonAutoPlacer = () => {
     socket.emit("update domino", { projectId, dominos: updatedDominos });
   }, [tracker.placedDominoForKnock]);
 
-  const handleSensorTriggered = () => {
-    setTracker("cannonSensorTriggered", true);
-  };
-
   return (
     <group
       position={CANNON_POSITION}
@@ -54,7 +55,7 @@ const CannonAutoPlacer = () => {
           opacity={0.5}
         />
       </mesh>
-      <Cannon onAfterTrigger={handleSensorTriggered} />
+      <Cannon onAfterTrigger={() => setHasTriggered(true)} />
     </group>
   );
 };
