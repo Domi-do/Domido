@@ -39,10 +39,11 @@ const TutorialTargetPlace = ({ positions }) => {
 
     setCompleted(newCompleted);
 
-    const allMatched = newCompleted.every(Boolean);
+    const matchedCount = newCompleted.filter(Boolean).length;
+    const targetCount = positions.length;
 
-    if (allMatched) {
-      setTracker("placedDominoCount", 1);
+    if (matchedCount === targetCount) {
+      setTracker("placedDominoCount", matchedCount);
     }
   }, [dominos]);
 

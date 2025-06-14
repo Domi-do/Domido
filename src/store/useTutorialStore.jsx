@@ -7,8 +7,10 @@ export const stepConditions = {
   2: (tracker) => tracker.isDominoSelected,
   3: (tracker) => tracker.hasRotatedDominoLeft,
   4: (tracker) => tracker.hasRotatedDominoRight,
-  5: (tracker) => tracker.placedDominoCount === 1,
+  5: (tracker) => tracker.placedDominoCount >= 1,
   6: (tracker) => tracker.hasDeletedDomino,
+  7: (tracker) => tracker.placedDominoCount >= 3,
+  8: (tracker) => tracker.hasPlacedCannon,
 };
 
 export const useTutorialStore = create((set) => ({
@@ -20,6 +22,7 @@ export const useTutorialStore = create((set) => ({
     hasRotatedDominoRight: false,
     placedDominoCount: 0,
     hasDeletedDomino: false,
+    hasPlacedCannon: true,
   },
 
   setTracker: (key, value) => set((state) => ({ tracker: { ...state.tracker, [key]: value } })),

@@ -24,9 +24,9 @@ export const TUTORIAL_STEPS = [
   {
     message: (
       <>
-        📍 표시된 위치에 도미노를 1개 놓아보세요!
+        📍 표시된 곳에 도미노를 놓아보세요!
         <br />
-        (삭제 연습을 위해 사용할 도미노예요)
+        <span className="text-xs text-gray-400">(삭제 연습용이에요)</span>
       </>
     ),
     position: "top",
@@ -46,9 +46,9 @@ export const TUTORIAL_STEPS = [
   {
     message: (
       <>
-        📍 표시된 위치에 도미노 3개를 나란히 놓아보세요!
+        📍 도미노 3개를 나란히 놓아보세요!
         <br />
-        (나중에 밀어서 쓰러뜨릴 도미노들이에요)
+        <span className="text-xs text-gray-400">(곧 쓰러뜨릴 도미노예요)</span>
       </>
     ),
     position: "top",
