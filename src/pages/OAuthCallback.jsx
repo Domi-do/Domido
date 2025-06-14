@@ -35,6 +35,7 @@ const OAuthCallback = () => {
         localStorage.setItem("userNickname", data.userNickname);
         localStorage.setItem("userID", data.userID);
         localStorage.setItem("kakaoAccessToken", data.kakaoAccessToken);
+        localStorage.setItem("isTutorialUser", true);
 
         navigate("/projects");
       } catch (err) {

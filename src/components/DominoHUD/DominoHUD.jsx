@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import ModalLayer from "@/components/Common/ModalLayer";
 import {
@@ -20,7 +20,13 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
   const [isProjectListModal, setProjectListModal] = useState(false);
-  const [isStartTutorial, setIsStartTutorial] = useState(true);
+  const [isTutorialUser, setIsTutorialUser] = useState(() => {
+    return localStorage.getItem("isTutorialUser") === "true";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("isTutorialUser", isTutorialUser.toString());
+  }, [isTutorialUser]);
 
   const { resetDominoSimulation } = useDominoReset(rigidBodyRefs);
 
@@ -83,7 +89,7 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
       />
       <SidePanel />
       <ModalLayer modals={modals} />
-      {isStartTutorial && <Tutorial onTutorialEnd={() => setIsStartTutorial(false)} />}
+      {isTutorialUser && <Tutorial onTutorialEnd={() => setIsTutorialUser(false)} />}
     </>
   );
 };
