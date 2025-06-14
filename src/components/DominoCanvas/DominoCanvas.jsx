@@ -3,11 +3,14 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { Suspense } from "react";
 
-import DominoEntity from "./DominoEntity/DominoEntity";
-
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
-import { Ground, CameraControls, CursorFollowerObject } from "@/components/DominoCanvas";
+import {
+  Ground,
+  CameraControls,
+  CursorFollowerObject,
+  DominoEntity,
+} from "@/components/DominoCanvas";
 import OtherUserDominos from "@/components/DominoCanvas/OtherUserDominos/OtherUserDominos";
 import { GAME_THEME } from "@/constants/gameThema";
 import useSettingStore from "@/store/useSettingStore";

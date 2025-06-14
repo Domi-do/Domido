@@ -1,14 +1,7 @@
 import * as THREE from "three";
 
-const CANNON_TARGETS = ["beachBall", "steelBall", "soccerFootball"];
-
 const useCannonControls = () => {
   const handleCannonTrigger = (other, target) => {
-    const objectName = other.rigidBodyObject?.name;
-    const isCannonTarget = CANNON_TARGETS.includes(objectName);
-
-    if (!isCannonTarget) return;
-
     const cannonObject = target.colliderObject;
     const rigidBody = other.rigidBody;
 
