@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
+import { useTutorialStore } from "@/store/useTutorialStore";
 import {
   deleteSelectedDomino,
   toggleSelectedDominoOpacity,
@@ -17,6 +18,7 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
   const prevLengthRef = useRef(dominos.length);
   const { mutate } = useDominoMutations();
   const { projectId, socket } = useSocket();
+  const { tracker, setTracker } = useTutorialStore.getState();
 
   const handleDominoUpdate = (updateFn, isShowToast = true) => {
     const updatedDominos =
@@ -28,16 +30,26 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     }
   };
 
+  const handleRotate = (rotateFn, trackerKey) => {
+    rotateFn();
+
+    if (!tracker[trackerKey]) {
+      setTracker(trackerKey, true);
+    }
+  };
+
   const handleDeleteObject = () => handleDominoUpdate(deleteSelectedDomino);
   const handleOpacityObject = () => handleDominoUpdate(toggleSelectedDominoOpacity);
   const handleUndo = () => handleDominoUpdate(undoDominoHistory, false);
+  const handleRotateLeft = () => handleRotate(rotateDominoCounterClockwise, "hasRotatedDominoLeft");
+  const handleRotateRight = () => handleRotate(rotateDominoClockwise, "hasRotatedDominoRight");
 
   const keyMap = {
     x: handleDeleteObject,
     h: handleOpacityObject,
     u: handleUndo,
-    q: rotateDominoCounterClockwise,
-    e: rotateDominoClockwise,
+    q: handleRotateLeft,
+    e: handleRotateRight,
     escape: () => {
       setSelectedDomino(null);
       setTimeout(() => {

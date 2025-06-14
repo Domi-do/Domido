@@ -5,12 +5,18 @@ import { TUTORIAL_STEPS } from "@/constants/tutorialStep";
 export const stepConditions = {
   1: (tracker) => tracker.isSidePanelOpen,
   2: (tracker) => tracker.isDominoSelected,
-  3: (tracker) => tracker.hasRotatedDomino,
+  3: (tracker) => tracker.hasRotatedDominoLeft,
+  4: (tracker) => tracker.hasRotatedDominoRight,
 };
 
 export const useTutorialStore = create((set) => ({
   currentStep: 0,
-  tracker: { isSidePanelOpen: false, isDominoSelected: false, hasRotatedDomino: false },
+  tracker: {
+    isSidePanelOpen: false,
+    isDominoSelected: false,
+    hasRotatedDominoLeft: false,
+    hasRotatedDominoRight: false,
+  },
 
   setTracker: (key, value) => set((state) => ({ tracker: { ...state.tracker, [key]: value } })),
   nextStep: () =>
