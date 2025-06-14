@@ -1,8 +1,20 @@
+import { useEffect } from "react";
+
 import useDominoStore from "@/store/useDominoStore";
+import { useTutorialStore } from "@/store/useTutorialStore";
 
 const ObjectCard = ({ objectName, objectInfo, groupName }) => {
   const { selectedDomino, setSelectedDomino } = useDominoStore();
   const isSelected = selectedDomino?.objectName === objectName;
+  const { tracker, setTracker } = useTutorialStore.getState();
+
+  useEffect(() => {
+    const alreadyCleared = tracker.isDominoSelected;
+
+    if (!alreadyCleared && selectedDomino?.objectName === "defaultObject") {
+      setTracker("isDominoSelected", true);
+    }
+  }, [selectedDomino]);
 
   return (
     <div
