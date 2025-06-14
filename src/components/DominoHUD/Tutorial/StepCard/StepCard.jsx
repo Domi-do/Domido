@@ -1,4 +1,4 @@
-const StepCard = ({ onNext, canProceed, message, step, total, colPosition, onTutorialEnd }) => {
+const StepCard = ({ step, total, message, canProceed, onNext, colPosition, onTutorialEnd }) => {
   const isLastStep = step === total;
   const progressPercent = Math.round((step / total) * 100);
   const positionClasses = `
