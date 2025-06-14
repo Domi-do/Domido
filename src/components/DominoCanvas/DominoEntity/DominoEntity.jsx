@@ -2,16 +2,25 @@ import { RigidBody } from "@react-three/rapier";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/DominoVisualUnit";
+import TutorialTargetPlace from "@/components/DominoCanvas/DominoEntity/TutorialTargetPlace/TutorialTargetPlace";
+import { TUTORIAL_STEPS } from "@/constants/tutorialStep";
 import { useDominos } from "@/hooks/Queries/useDominos";
 import useDominoStore from "@/store/useDominoStore";
+import { useTutorialStore } from "@/store/useTutorialStore";
 
 const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
   useDominos();
   const dominos = useDominoStore((state) => state.dominos);
 
+  const { currentStep } = useTutorialStore();
+  const tutorialStepData = TUTORIAL_STEPS[currentStep - 1];
+
   return (
     <>
-      {dominos.length
+      {tutorialStepData?.isShowTargetPlaceholder && (
+        <TutorialTargetPlace positions={tutorialStepData.targetPositions} />
+      )}
+      {dominos.length > 0
         && dominos.map((domino, index) => {
           const { position, rotation, color, opacity, _id, objectInfo } = domino;
           const { colliders, type, objectName } = objectInfo;

@@ -21,7 +21,22 @@ export const TUTORIAL_STEPS = [
     ),
     position: "top",
   },
-  { message: <>📍 표시된 위치에 도미노를 놓아보세요!</>, position: "top" },
+  {
+    message: <>📍 표시된 위치에 도미노를 놓아보세요!</>,
+    position: "top",
+    isShowTargetPlaceholder: true,
+    targetPositions: [[0, 0, 0]],
+  },
+  {
+    message: (
+      <>
+        🗑️ 도미노에 마우스를 올린 뒤,
+        <br />
+        단축키 X 를 눌러 삭제해보세요!
+      </>
+    ),
+    position: "top",
+  },
   { message: <>🎯 표시된 위치에 대포를 놓아보세요!</>, position: "top" },
   { message: <>💣 공을 넣고 대포를 발사해보세요!</>, position: "top" },
   {
