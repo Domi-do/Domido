@@ -15,7 +15,8 @@ const TRIGGER_OFFSET = [0, 0, -1.2];
 const TRIGGER_SIZE = [0.3, 32, 32];
 
 const CannonAutoPlacer = () => {
-  const { dominos, setDominos } = useDominoStore.getState();
+  const dominos = useDominoStore((state) => state.dominos);
+  const setDominos = useDominoStore((state) => state.setDominos);
   const { tracker } = useTutorialStore();
   const { projectId, socket } = useSocket();
 
