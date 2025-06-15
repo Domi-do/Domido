@@ -83,6 +83,8 @@ const CameraControls = ({ cameraAngle }) => {
       rotateSpeed={rotationSensitivity}
       enableDamping={true}
       dampingFactor={1.25}
+      minPolarAngle={Math.PI / 6}
+      maxPolarAngle={Math.PI / 2.2}
     />
   );
 };
