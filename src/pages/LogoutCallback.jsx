@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import useUserStore from "@/store/useUserStore";
+
 const LogoutCallback = () => {
   const navigate = useNavigate();
+  const setUserInfo = useUserStore((state) => state.setUserInfo);
 
   useEffect(() => {
     localStorage.removeItem("dominoAccessToken");
     localStorage.removeItem("dominoRefreshToken");
     localStorage.removeItem("kakaoAccessToken");
+
+    setUserInfo(null);
 
     navigate("/");
   }, [navigate]);
