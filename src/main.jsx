@@ -11,6 +11,7 @@ import { ErrorBoundary } from "@/components/Common/ErrorBoundary";
 import ErrorFallback from "@/components/Common/ErrorFallback";
 import GlobalPortal from "@/components/Common/GlobalPortal";
 import routes from "@/routers/routes";
+import "@/constants/modelPaths";
 
 const root = document.getElementById("root");
 const queryClient = new QueryClient();

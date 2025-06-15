@@ -23,8 +23,9 @@ const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity
 
 const PrimitiveObject = ({ path, position, onPointerOver, onPointerOut, onClick }) => {
   const { scene } = useGLTF(path);
-
   const clonedScene = useMemo(() => scene.clone(true), [scene]);
+
+  if (!scene) return null;
 
   return (
     <primitive

@@ -18,22 +18,15 @@ const Car = ({ rigidBodyRefs }) => {
     if (!isCar || !rigidBody || typeof rigidBody.mass !== "function" || rigidBody.mass() <= 0)
       return;
 
-    const localDirection = new Vector3(1, 0, 0);
+    const { x, y, z, w } = rigidBody.rotation();
+    const quatCopy = new Quaternion(x, y, z, w);
 
-    const carRotation = new Quaternion(
-      rigidBody.rotation().x,
-      rigidBody.rotation().y,
-      rigidBody.rotation().z,
-      rigidBody.rotation().w,
-    );
+    const mass = rigidBody.mass();
 
-    const worldDirection = localDirection.applyQuaternion(carRotation).normalize();
+    const forward = new Vector3(0, 0, 1).applyQuaternion(quatCopy).normalize();
 
-    rigidBody.applyImpulse(
-      { x: worldDirection.x * 5, y: worldDirection.y * 5, z: worldDirection.z * 5 },
-      true,
-    );
-
+    const impulse = forward.multiplyScalar(mass * 15);
+    rigidBody.applyImpulse({ x: impulse.x, y: impulse.y, z: impulse.z }, true);
     applied.current = true;
   });
 
