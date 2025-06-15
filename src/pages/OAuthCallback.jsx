@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import useUserStore from "@/store/useUserStore";
 import { HTTPError } from "@/utils/HTTPError";
 
 const OAuthCallback = () => {
+  const { setUserInfo } = useUserStore.getState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,10 +32,14 @@ const OAuthCallback = () => {
           throw new HTTPError(401, data.message);
         }
 
+        setUserInfo({
+          userID: data.userID,
+          userNickname: data.userNickname,
+          isTutorialUser: data.isTutorialUser,
+        });
+
         localStorage.setItem("dominoAccessToken", data.token);
         localStorage.setItem("dominoRefreshToken", data.refreshToken);
-        localStorage.setItem("userNickname", data.userNickname);
-        localStorage.setItem("userID", data.userID);
         localStorage.setItem("kakaoAccessToken", data.kakaoAccessToken);
 
         navigate("/projects");
