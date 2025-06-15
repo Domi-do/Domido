@@ -1,6 +1,5 @@
+import { useGLTF } from "@react-three/drei";
 import { useMemo } from "react";
-
-import useGlbLoader from "@/hooks/useGlbLoader";
 
 const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity, color }) => {
   return (
@@ -23,12 +22,8 @@ const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity
 };
 
 const PrimitiveObject = ({ path, position, onPointerOver, onPointerOut, onClick }) => {
-  const { get } = useGlbLoader([path]);
-  const glb = get(path);
-
-  const scene = useMemo(() => {
-    return glb ? glb.scene.clone(true) : null;
-  }, [glb]);
+  const { scene } = useGLTF(path);
+  const clonedScene = useMemo(() => scene.clone(true), [scene]);
 
   if (!scene) return null;
 
@@ -36,7 +31,7 @@ const PrimitiveObject = ({ path, position, onPointerOver, onPointerOut, onClick 
     <primitive
       castShadow
       receiveShadow
-      object={scene}
+      object={clonedScene}
       position={position}
       scale={1}
       onPointerOver={onPointerOver}
