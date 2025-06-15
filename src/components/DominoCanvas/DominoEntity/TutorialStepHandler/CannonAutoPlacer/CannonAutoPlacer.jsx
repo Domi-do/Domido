@@ -12,7 +12,7 @@ const cannonMetadata = OBJECT_METADATA[OBJECT_GROUP_NAMES.DYNAMIC].cannon;
 const CANNON_POSITION = [4, 0, 0];
 const CANNON_ROTATION = [0, -1.5, 0];
 const TRIGGER_OFFSET = [0, 0, -1.2];
-const TRIGGER_SIZE = [0.4, 1.4, 0.5];
+const TRIGGER_SIZE = [0.3, 32, 32];
 
 const CannonAutoPlacer = () => {
   const { dominos, setDominos } = useDominoStore.getState();
@@ -48,7 +48,7 @@ const CannonAutoPlacer = () => {
       rotation={CANNON_ROTATION}
     >
       <mesh position={TRIGGER_OFFSET}>
-        <boxGeometry args={TRIGGER_SIZE} />
+        <sphereGeometry args={TRIGGER_SIZE} />
         <meshStandardMaterial
           color="red"
           transparent
