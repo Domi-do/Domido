@@ -10,14 +10,6 @@ export const OBJECT_METADATA = {
       type: "dynamic",
       title: "도미노",
     },
-    spiralStairs: {
-      thumbnail: "/images/thumbnail/spiral_stairs.png",
-      model: "/objects/spiral_stairs.glb",
-      sound: "/sounds/domino_drop.mp3",
-      colliders: "trimesh",
-      type: "dynamic",
-      title: "회전 트랙",
-    },
     slide: {
       thumbnail: "/images/thumbnail/slide.png",
       model: "/objects/slide.glb",

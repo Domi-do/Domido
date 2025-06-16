@@ -13,7 +13,6 @@ const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
 const OBJECT_NAMES = [
   "defaultObject",
-  "spiralStairs",
   "slide",
   "stairsClosedShort",
   "lightbulb",

@@ -25,7 +25,7 @@ const Car = ({ rigidBodyRefs }) => {
 
     const forward = new Vector3(0, 0, 1).applyQuaternion(quatCopy).normalize();
 
-    const impulse = forward.multiplyScalar(mass * 15);
+    const impulse = forward.multiplyScalar(mass * 10);
     rigidBody.applyImpulse({ x: impulse.x, y: impulse.y, z: impulse.z }, true);
     applied.current = true;
   });

@@ -4,9 +4,11 @@ import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 import useSettingStore from "@/store/useSettingStore";
+import useUIStateStore from "@/store/useUIStateStore";
 
 const CameraControls = ({ cameraAngle }) => {
   const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
+  const isHUDModalOpen = useUIStateStore((state) => state.isHUDModalOpen);
 
   const { camera, gl } = useThree();
   const controlsRef = useRef(null);
@@ -51,6 +53,8 @@ const CameraControls = ({ cameraAngle }) => {
   }, [cameraAngle]);
 
   useFrame(() => {
+    if (isHUDModalOpen) return;
+
     const direction = new THREE.Vector3();
 
     const forward = new THREE.Vector3();
