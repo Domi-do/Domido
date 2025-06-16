@@ -1,23 +1,25 @@
 import { useGLTF } from "@react-three/drei";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
+import * as THREE from "three";
 
 const DefaultObject = ({ position, onPointerOver, onPointerOut, onClick, opacity, color }) => {
+  const geometry = useMemo(() => new THREE.BoxGeometry(0.2, 1, 0.5), []);
+  const material = useMemo(() => {
+    const mat = new THREE.MeshStandardMaterial({ transparent: true, opacity, color });
+    return mat;
+  }, [opacity, color]);
+
   return (
     <mesh
       castShadow
       receiveShadow
       position={position}
+      geometry={geometry}
+      material={material}
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
       onClick={onClick}
-    >
-      <boxGeometry args={[0.2, 1, 0.5]} />
-      <meshStandardMaterial
-        color={color}
-        transparent={true}
-        opacity={opacity}
-      />
-    </mesh>
+    />
   );
 };
 
@@ -71,4 +73,4 @@ const ObjectRenderer = ({
       />;
 };
 
-export default ObjectRenderer;
+export default memo(ObjectRenderer);
