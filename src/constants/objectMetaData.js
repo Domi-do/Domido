@@ -23,7 +23,7 @@ export const OBJECT_METADATA = {
       model: "/objects/slide.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
-      type: "dynamic",
+      type: "fixed",
       title: "미끄럼틀",
     },
     stairsClosedShort: {
@@ -31,7 +31,7 @@ export const OBJECT_METADATA = {
       model: "/objects/stairs_closed_short.glb",
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
-      type: "dynamic",
+      type: "fixed",
       title: "계단",
     },
     lightbulb: {
@@ -48,7 +48,7 @@ export const OBJECT_METADATA = {
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
       title: "범퍼",
-      type: "fixed",
+      type: "dynamic",
     },
     rainbowSlide: {
       thumbnail: "/images/thumbnail/rainbowSlide.png",
@@ -56,7 +56,7 @@ export const OBJECT_METADATA = {
       sound: "/sounds/domino_drop.mp3",
       colliders: "trimesh",
       title: "무지개 미끄럼틀",
-      type: "dynamic",
+      type: "fixed",
     },
   },
   [OBJECT_GROUP_NAMES.DYNAMIC]: {
