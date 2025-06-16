@@ -4,6 +4,7 @@ import { ObjectRenderer } from "@/components/DominoCanvas";
 import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/DominoVisualUnit";
 import { useDominos } from "@/hooks/Queries/useDominos";
 import useDominoStore from "@/store/useDominoStore";
+import { getCollisionGroupMask } from "@/utils/collisionGroups";
 
 const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
   useDominos();
@@ -29,6 +30,7 @@ const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
               position={position}
               rotation={rotation}
               ref={(ref) => (rigidBodyRefs.current[index] = ref)}
+              collisionGroups={getCollisionGroupMask(objectName)}
             >
               <DominoVisualUnit
                 objectName={objectName}
