@@ -5,6 +5,7 @@ import { useToast } from "./ToastContext";
 
 import socket from "@/services/socket";
 import useDominoStore from "@/store/useDominoStore";
+import useUserStore from "@/store/useUserStore";
 
 export const SocketContext = createContext(null);
 
@@ -13,7 +14,9 @@ export const SocketProvider = ({ children }) => {
   const { setDominos } = useDominoStore();
   const [otherCursors, setOtherCursors] = useState({});
   const { showToast } = useToast();
-  const myUserID = localStorage.getItem("userID");
+  const { userInfo } = useUserStore.getState();
+
+  const myUserID = userInfo?.userID;
   const navigate = useNavigate();
 
   const removeCursor = (userID) => {
