@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import fetcher from "@/services/fetcher";
-import { useTutorialStore } from "@/store/useTutorialStore";
+import useUserStore from "@/store/useUserStore";
 
 export const useUpdateTutorialStatus = () => {
   const queryClient = useQueryClient();
-  const setIsTutorialUser = useTutorialStore((state) => state.setIsTutorialUser);
+  const setIsTutorialUser = useUserStore((state) => state.setIsTutorialUser);
 
   return useMutation({
     mutationFn: ({ isTutorialUser }) =>
