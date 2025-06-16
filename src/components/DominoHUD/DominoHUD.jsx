@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import ModalLayer from "@/components/Common/ModalLayer";
 import {
@@ -10,9 +10,11 @@ import {
   Tutorial,
 } from "@/components/DominoHUD";
 import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectListModal";
+import { useUpdateTutorialStatus } from "@/hooks/Queries/useUpdateTutorialStatus";
 import useDominoReset from "@/hooks/useDominoReset";
 import fetcher from "@/services/fetcher";
 import useDominoStore from "@/store/useDominoStore";
+import useUserStore from "@/store/useUserStore";
 import { HTTPError } from "@/utils/HTTPError";
 
 const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
@@ -20,13 +22,8 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
   const [isProjectListModal, setProjectListModal] = useState(false);
-  const [isTutorialUser, setIsTutorialUser] = useState(() => {
-    return localStorage.getItem("isTutorialUser") === "true";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("isTutorialUser", isTutorialUser.toString());
-  }, [isTutorialUser]);
+  const isTutorialUser = useUserStore((state) => state.userInfo?.isTutorialUser);
+  const { mutate } = useUpdateTutorialStatus();
 
   const { resetDominoSimulation } = useDominoReset(rigidBodyRefs);
 
@@ -89,7 +86,7 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
       />
       <SidePanel />
       <ModalLayer modals={modals} />
-      {isTutorialUser && <Tutorial onTutorialEnd={() => setIsTutorialUser(false)} />}
+      {isTutorialUser && <Tutorial onTutorialEnd={() => mutate({ isTutorialUser: false })} />}
     </>
   );
 };
