@@ -2,6 +2,7 @@ import { RigidBody } from "@react-three/rapier";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/DominoVisualUnit";
+import TutorialStepHandler from "@/components/DominoCanvas/DominoEntity/TutorialStepHandler/TutorialStepHandler";
 import { useDominos } from "@/hooks/Queries/useDominos";
 import useDominoStore from "@/store/useDominoStore";
 import { getCollisionGroupMask } from "@/utils/collisionGroups";
@@ -12,6 +13,7 @@ const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
 
   return (
     <>
+      <TutorialStepHandler />
       {dominos.length
         && dominos.map((domino, index) => {
           const { position, rotation, color, opacity, _id, objectInfo } = domino;
@@ -19,10 +21,10 @@ const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
 
           return (
             <RigidBody
+              key={_id || index}
               type={type}
               colliders={colliders ?? false}
               name={objectName}
-              key={_id || index}
               restitution={0}
               friction={1}
               linearDamping={0.01}

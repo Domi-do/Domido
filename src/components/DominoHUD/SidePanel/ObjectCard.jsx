@@ -1,8 +1,14 @@
+import useTutorialTracker from "@/hooks/useTutorialTracker";
 import useDominoStore from "@/store/useDominoStore";
 
 const ObjectCard = ({ objectName, objectInfo, groupName }) => {
   const { selectedDomino, setSelectedDomino } = useDominoStore();
-  const isSelected = selectedDomino?.objectName === objectName;
+  const selectedObjectName = selectedDomino?.objectName;
+
+  const isSelected = selectedObjectName === objectName;
+  const isDefaultDominoSelected = selectedObjectName === "defaultObject";
+
+  useTutorialTracker(isDefaultDominoSelected);
 
   return (
     <div

@@ -3,3 +3,4 @@ export { default as HUDButtonGroup } from "@/components/DominoHUD/HUDButtonGroup
 export { default as SettingModal } from "@/components/DominoHUD/SettingModal/SettingModal";
 export { default as SidePanel } from "@/components/DominoHUD/SidePanel/SidePanel";
 export { default as DominoClearConfirmModal } from "@/components/DominoHUD/DominoClearConfirmModal/DominoClearConfirmModal";
+export { default as Tutorial } from "@/components/DominoHUD/Tutorial/Tutorial";
