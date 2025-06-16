@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ModalLayer from "@/components/Common/ModalLayer";
 import {
@@ -14,7 +14,6 @@ import { useUpdateTutorialStatus } from "@/hooks/Queries/useUpdateTutorialStatus
 import useDominoReset from "@/hooks/useDominoReset";
 import fetcher from "@/services/fetcher";
 import useDominoStore from "@/store/useDominoStore";
-import useUIStateStore from "@/store/useUIStateStore";
 import useUserStore from "@/store/useUserStore";
 import { HTTPError } from "@/utils/HTTPError";
 
@@ -24,20 +23,12 @@ const DominoHUD = ({ isOpenGuideToastVisible }) => {
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
   const [isProjectListModal, setProjectListModal] = useState(false);
   const isTutorialUser = useUserStore((state) => state.userInfo?.isTutorialUser);
-  const setHUDModalOpen = useUIStateStore((state) => state.setHUDModalOpen);
 
   const { mutate } = useUpdateTutorialStatus();
 
   const { resetDominoSimulation } = useDominoReset();
 
-  useEffect(() => {
-    if (isSettingModalOpen || isClearConfirmModalOpen || isProjectListModal) {
-      setHUDModalOpen(true);
-    }
-  }, [isSettingModalOpen, isClearConfirmModalOpen, isProjectListModal]);
-
   const handleCloseModal = () => {
-    setHUDModalOpen(false);
     setIsSettingModalOpen(false);
     setClearConfirmModalOpen(false);
     setProjectListModal(false);
