@@ -1,4 +1,5 @@
 import { RigidBody } from "@react-three/rapier";
+import { shallow } from "zustand/shallow";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/DominoVisualUnit";
@@ -10,7 +11,7 @@ import { getCollisionGroupMask } from "@/utils/collisionGroups";
 
 const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
   useDominos();
-  const dominos = useDominoStore((state) => state.dominos);
+  const dominos = useDominoStore((s) => s.dominos, shallow);
   const isTutorialUser = useUserStore((state) => state.userInfo?.isTutorialUser);
 
   return (
