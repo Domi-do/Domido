@@ -9,7 +9,6 @@ const MODEL_PATHS = [
   "/objects/rainbowSlide.glb",
   "/objects/slide.glb",
   "/objects/soccer_football.glb",
-  "/objects/spiral_stairs.glb",
   "/objects/stairs_closed_short.glb",
   "/objects/stairs_closed.glb",
   "/objects/steel_ball.glb",
