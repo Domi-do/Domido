@@ -12,8 +12,17 @@ export const useDominoMutations = () => {
   return useMutation({
     mutationFn: ({ dominos }) =>
       fetcher(`/dominos/${projectId}`, { method: "POST", body: { dominos } }),
-    onSuccess: (newDominos) => {
+
+    onMutate: async ({ dominos: newDominos }) => {
+      await queryClient.cancelQueries(["dominos", projectId]);
+
+      const previousDominos = queryClient.getQueryData(["dominos", projectId]);
+
       setDominos(newDominos);
+
+      queryClient.setQueryData(["dominos", projectId], newDominos);
+
+      return { previousDominos };
     },
     onError: () => {
       queryClient.refetchQueries(["dominos", projectId]);
