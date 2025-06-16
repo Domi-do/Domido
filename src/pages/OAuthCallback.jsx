@@ -41,6 +41,7 @@ const OAuthCallback = () => {
         localStorage.setItem("dominoAccessToken", data.token);
         localStorage.setItem("dominoRefreshToken", data.refreshToken);
         localStorage.setItem("kakaoAccessToken", data.kakaoAccessToken);
+        localStorage.setItem("isTutorialUser", true);
 
         navigate("/projects");
       } catch (err) {

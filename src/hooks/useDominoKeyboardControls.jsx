@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
 
+import { TUTORIAL_STEPS, TRACKER_KEYS } from "@/constants/tutorialStep";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
+import { useTutorialStore } from "@/store/useTutorialStore";
 import {
   deleteSelectedDomino,
   toggleSelectedDominoOpacity,
@@ -13,10 +15,16 @@ import {
 
 const useDominoKeyboardControls = (onToggleGuideToast) => {
   const { dominos, setSelectedDomino } = useDominoStore();
+  const setTracker = useTutorialStore((state) => state.setTracker);
   const historyRef = useRef([]);
   const prevLengthRef = useRef(dominos.length);
   const { mutate } = useDominoMutations();
   const { projectId, socket } = useSocket();
+
+  const getStepTrackerKey = () => {
+    const currentStep = useTutorialStore.getState().currentStep;
+    return TUTORIAL_STEPS[currentStep - 1]?.trackerKey;
+  };
 
   const handleDominoUpdate = (updateFn, isShowToast = true) => {
     const updatedDominos =
@@ -28,7 +36,27 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     }
   };
 
-  const handleDeleteObject = () => handleDominoUpdate(deleteSelectedDomino);
+  const setTrackerIfMatched = (trackerKey) => {
+    if (getStepTrackerKey() === trackerKey) {
+      setTracker(trackerKey, true);
+    }
+  };
+
+  const handleDeleteObject = () => {
+    handleDominoUpdate(deleteSelectedDomino);
+    setTrackerIfMatched(TRACKER_KEYS.DELETED_DOMINO);
+  };
+
+  const handleRotateLeft = () => {
+    rotateDominoCounterClockwise();
+    setTrackerIfMatched(TRACKER_KEYS.ROTATED_LEFT);
+  };
+
+  const handleRotateRight = () => {
+    rotateDominoClockwise();
+    setTrackerIfMatched(TRACKER_KEYS.ROTATED_RIGHT);
+  };
+
   const handleOpacityObject = () => handleDominoUpdate(toggleSelectedDominoOpacity);
   const handleUndo = () => handleDominoUpdate(undoDominoHistory, false);
 
@@ -36,8 +64,8 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     x: handleDeleteObject,
     h: handleOpacityObject,
     u: handleUndo,
-    q: rotateDominoCounterClockwise,
-    e: rotateDominoClockwise,
+    q: handleRotateLeft,
+    e: handleRotateRight,
     escape: () => {
       setSelectedDomino(null);
       setTimeout(() => {
