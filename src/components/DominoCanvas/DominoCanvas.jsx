@@ -21,7 +21,10 @@ const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
 
   return (
     <>
-      <Canvas camera={{ position: currentThema.cameraAngle, fov: 75 }}>
+      <Canvas
+        camera={{ position: currentThema.cameraAngle, fov: 75 }}
+        gl={{ powerPreference: "high-performance" }}
+      >
         <Suspense fallback={<Loading />}>
           <GlobalAudio />
           <Environment
