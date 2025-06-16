@@ -5,15 +5,17 @@ import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisua
 import TutorialStepHandler from "@/components/DominoCanvas/DominoEntity/TutorialStepHandler/TutorialStepHandler";
 import { useDominos } from "@/hooks/Queries/useDominos";
 import useDominoStore from "@/store/useDominoStore";
+import useUserStore from "@/store/useUserStore";
 import { getCollisionGroupMask } from "@/utils/collisionGroups";
 
 const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
   useDominos();
   const dominos = useDominoStore((state) => state.dominos);
+  const isTutorialUser = useUserStore((state) => state.userInfo?.isTutorialUser);
 
   return (
     <>
-      <TutorialStepHandler />
+      {isTutorialUser && <TutorialStepHandler />}
       {dominos.length
         && dominos.map((domino, index) => {
           const { position, rotation, color, opacity, _id, objectInfo } = domino;
