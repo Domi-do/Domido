@@ -39,7 +39,6 @@ const CursorFollowerObject = () => {
   const { showToast } = useToast();
   const lastPlacedTime = useRef(0);
 
-  const { showToast } = useToast();
   const userId = localStorage.getItem("userID");
 
   const playDominoDropSound = () => {

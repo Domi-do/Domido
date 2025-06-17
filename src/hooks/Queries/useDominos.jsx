@@ -13,6 +13,7 @@ export const useDominos = () => {
     queryKey: ["dominos", projectId],
     queryFn: () => fetcher(`/dominos/${projectId}`),
     enabled: !!projectId,
+    refetchInterval: 3000,
   });
 
   useEffect(() => {
