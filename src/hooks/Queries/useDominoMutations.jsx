@@ -27,5 +27,9 @@ export const useDominoMutations = () => {
     onError: () => {
       queryClient.refetchQueries(["dominos", projectId]);
     },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(["dominos", projectId], {});
+    },
   });
 };
