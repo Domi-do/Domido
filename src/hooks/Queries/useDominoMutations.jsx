@@ -28,8 +28,14 @@ export const useDominoMutations = () => {
       queryClient.refetchQueries(["dominos", projectId]);
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries(["dominos", projectId], {});
+    onSuccess: (serverDominos) => {
+      const cached = queryClient.getQueryData(["dominos", projectId]);
+
+      const isSame = cached.length === serverDominos.length;
+      if (!isSame) {
+        queryClient.setQueryData(["dominos", projectId], serverDominos);
+        setDominos(serverDominos);
+      }
     },
   });
 };
