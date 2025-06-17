@@ -1,5 +1,5 @@
 import { RigidBody } from "@react-three/rapier";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { shallow } from "zustand/shallow";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
@@ -11,10 +11,11 @@ import useUserStore from "@/store/useUserStore";
 import { getCollisionGroupMask } from "@/utils/collisionGroups";
 import { debounce } from "@/utils/debounce";
 
-const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
+const DominoEntity = ({ openGuideToast, closeGuideToast }) => {
   useDominos();
   const dominos = useDominoStore((s) => s.dominos, shallow);
   const isTutorialUser = useUserStore((state) => state.userInfo?.isTutorialUser);
+  const rigidBodyRefs = useRef([]);
 
   const throttledPointerOver = useMemo(() => {
     return debounce((e, id) => openGuideToast(e, id), 200);

@@ -15,7 +15,7 @@ import OtherUserDominos from "@/components/DominoCanvas/OtherUserDominos/OtherUs
 import { GAME_THEME } from "@/constants/gameThema";
 import useSettingStore from "@/store/useSettingStore";
 
-const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
+const DominoCanvas = ({ openGuideToast, closeGuideToast }) => {
   const themaType = useSettingStore((state) => state.themaType);
   const currentThema = GAME_THEME[themaType];
 
@@ -38,7 +38,6 @@ const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
             <DominoEntity
               openGuideToast={openGuideToast}
               closeGuideToast={closeGuideToast}
-              rigidBodyRefs={rigidBodyRefs}
             />
             <Ground />
           </Physics>

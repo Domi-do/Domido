@@ -1,5 +1,3 @@
-import { useRef } from "react";
-
 import DominoKeyboardHandler from "@/components/Common/DominoKeyboardHandler";
 import { DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
@@ -12,8 +10,6 @@ const DominoScene = () => {
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
 
-  const rigidBodyRefs = useRef([]);
-
   return (
     <SocketProvider>
       <DominoKeyboardHandler setIsGuideToastVisible={setIsGuideToastVisible}>
@@ -21,7 +17,6 @@ const DominoScene = () => {
         <DominoCanvas
           openGuideToast={openGuideToast}
           closeGuideToast={closeGuideToast}
-          rigidBodyRefs={rigidBodyRefs}
         />
       </DominoKeyboardHandler>
     </SocketProvider>
