@@ -24,7 +24,7 @@ const DominoHUD = ({ isOpenGuideToastVisible }) => {
 
   const { mutate } = useUpdateTutorialStatus();
 
-  const { resetDominoSimulation } = useDominoReset();
+  const { emitDominoReset } = useDominoReset();
 
   const handleCloseModal = () => {
     setIsSettingModalOpen(false);
@@ -62,7 +62,7 @@ const DominoHUD = ({ isOpenGuideToastVisible }) => {
     <>
       <HUDButtonGroup
         onClickSetting={() => setIsSettingModalOpen(true)}
-        onClickReset={resetDominoSimulation}
+        onClickReset={emitDominoReset}
         onClickClear={() => setClearConfirmModalOpen(true)}
         openProjectModal={() => setProjectListModal(true)}
       />
