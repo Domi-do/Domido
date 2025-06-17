@@ -12,10 +12,8 @@ import {
 import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectListModal";
 import { useUpdateTutorialStatus } from "@/hooks/Queries/useUpdateTutorialStatus";
 import useDominoReset from "@/hooks/useDominoReset";
-import fetcher from "@/services/fetcher";
 import useDominoStore from "@/store/useDominoStore";
 import useUserStore from "@/store/useUserStore";
-import { HTTPError } from "@/utils/HTTPError";
 
 const DominoHUD = ({ isOpenGuideToastVisible }) => {
   const clearDominos = useDominoStore((state) => state.setClearDominos);
@@ -37,22 +35,6 @@ const DominoHUD = ({ isOpenGuideToastVisible }) => {
   const handleConfirm = () => {
     clearDominos();
     setClearConfirmModalOpen(false);
-  };
-
-  const handleLogout = async () => {
-    const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
-
-    try {
-      await fetcher("/auth/logout", { method: "POST", body: { accessToken: kakaoAccessToken } });
-    } catch (err) {
-      throw new HTTPError(err.status, err.message);
-    }
-
-    const logoutURL = `https://kauth.kakao.com/oauth/logout?client_id=${
-      import.meta.env.VITE_KAKAO_REST_API_KEY
-    }&logout_redirect_uri=${import.meta.env.VITE_KAKAO_LOGOUT_REDIRECT_URI}`;
-
-    window.location.href = logoutURL;
   };
 
   const modals = [
@@ -82,7 +64,6 @@ const DominoHUD = ({ isOpenGuideToastVisible }) => {
         onClickSetting={() => setIsSettingModalOpen(true)}
         onClickReset={resetDominoSimulation}
         onClickClear={() => setClearConfirmModalOpen(true)}
-        onLogout={handleLogout}
         openProjectModal={() => setProjectListModal(true)}
       />
       <SidePanel />
