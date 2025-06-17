@@ -6,7 +6,7 @@ import { RiResetLeftFill } from "react-icons/ri";
 import HUDButton from "@/components/DominoHUD/HUDButtonGroup/HUDButton";
 import HUDLogoutButton from "@/components/DominoHUD/HUDButtonGroup/HUDLogoutButton";
 
-const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, onLogout, openProjectModal }) => {
+const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, openProjectModal }) => {
   return (
     <div className="fixed top-[10px] left-[10px] z-100 flex items-center gap-2">
       <HUDButton
@@ -34,7 +34,7 @@ const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, onLogout, open
         <FaRegTrashAlt className="text-[22px]" />
       </HUDButton>
       <div className="fixed bottom-[12px] left-[10px] z-50">
-        <HUDLogoutButton onLogout={onLogout} />
+        <HUDLogoutButton />
       </div>
     </div>
   );

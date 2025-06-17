@@ -12,11 +12,13 @@ export const useDominoMutations = () => {
   return useMutation({
     mutationFn: ({ dominos }) =>
       fetcher(`/dominos/${projectId}`, { method: "POST", body: { dominos } }),
-    onSuccess: (newDominos) => {
-      setDominos(newDominos);
-    },
+
     onError: () => {
       queryClient.refetchQueries(["dominos", projectId]);
+    },
+
+    onSuccess: (serverDominos) => {
+      setDominos(serverDominos);
     },
   });
 };
