@@ -2,9 +2,12 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
+import { CheckFirstDominoAchievement } from "@/achievments/CheckDominoAchievement";
+import { CheckHundredDominoAchievement } from "@/achievments/CheckDominoAchievement";
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import { useSocket } from "@/store/SocketContext";
+import { useToast } from "@/store/ToastContext";
 import useDominoStore from "@/store/useDominoStore";
 import useSettingStore from "@/store/useSettingStore";
 import AudioController from "@/utils/AudioController";
@@ -34,6 +37,9 @@ const CursorFollowerObject = () => {
   const { projectId, socket } = useSocket();
   const { mutate } = useDominoMutations();
 
+  const { showToast } = useToast();
+  const userId = localStorage.getItem("userID");
+
   const playDominoDropSound = () => {
     audioController.current.play(selectedDomino.sound);
   };
@@ -59,6 +65,9 @@ const CursorFollowerObject = () => {
     mutate({ dominos: updatedDomino });
     socket.emit("update domino", { projectId, dominos: updatedDomino });
     playDominoDropSound();
+
+    CheckFirstDominoAchievement({ dominoCount: updatedDomino.length, userId, showToast });
+    CheckHundredDominoAchievement({ dominoCount: updatedDomino.length, userId, showToast });
   };
 
   useFrame(() => {
