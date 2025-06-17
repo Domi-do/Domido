@@ -18,7 +18,7 @@ import useUIStateStore from "@/store/useUIStateStore";
 import useUserStore from "@/store/useUserStore";
 import { HTTPError } from "@/utils/HTTPError";
 
-const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
+const DominoHUD = ({ isOpenGuideToastVisible }) => {
   const clearDominos = useDominoStore((state) => state.setClearDominos);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);
@@ -28,7 +28,7 @@ const DominoHUD = ({ rigidBodyRefs, isOpenGuideToastVisible }) => {
 
   const { mutate } = useUpdateTutorialStatus();
 
-  const { resetDominoSimulation } = useDominoReset(rigidBodyRefs);
+  const { resetDominoSimulation } = useDominoReset();
 
   useEffect(() => {
     if (isSettingModalOpen || isClearConfirmModalOpen || isProjectListModal) {

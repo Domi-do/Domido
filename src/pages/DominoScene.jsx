@@ -34,12 +34,7 @@ const DominoScene = () => {
   return (
     <SocketProvider>
       <DominoKeyboardHandler setIsGuideToastVisible={setIsGuideToastVisible}>
-        {isCanvasReady && (
-          <DominoHUD
-            isOpenGuideToastVisible={isOpenGuideToastVisible}
-            rigidBodyRefs={rigidBodyRefs}
-          />
-        )}
+        {isCanvasReady && <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />}
         <DominoCanvas
           openGuideToast={openGuideToast}
           closeGuideToast={closeGuideToast}
