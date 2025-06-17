@@ -52,7 +52,7 @@ const DominoEntity = ({ openGuideToast, closeGuideToast }) => {
               />
               <ObjectRenderer
                 dominoInfo={objectInfo}
-                onPointerOver={(e) => throttledPointerOver(e, _id)}
+                onPointerOver={(e) => throttledPointerOver(e, _id || undefined)}
                 onPointerOut={closeGuideToast}
                 opacity={opacity}
                 color={color}
