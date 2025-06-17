@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import Bumper from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/Bumper/Bumper";
 import Cannon from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/Cannon/Cannon";
 import Car from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/Car/Car";
@@ -12,4 +14,4 @@ const DominoVisualUnit = ({ objectName, ...props }) => {
   return <Object {...props} />;
 };
 
-export default DominoVisualUnit;
+export default memo(DominoVisualUnit);

@@ -2,7 +2,6 @@ import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { Suspense } from "react";
-import { useEffect } from "react";
 
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
@@ -15,22 +14,17 @@ import {
 import OtherUserDominos from "@/components/DominoCanvas/OtherUserDominos/OtherUserDominos";
 import { GAME_THEME } from "@/constants/gameThema";
 import useSettingStore from "@/store/useSettingStore";
-import useUIStateStore from "@/store/useUIStateStore";
 
-const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
+const DominoCanvas = ({ openGuideToast, closeGuideToast }) => {
   const themaType = useSettingStore((state) => state.themaType);
   const currentThema = GAME_THEME[themaType];
-  const setCanvasReady = useUIStateStore((state) => state.setCanvasReady);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setCanvasReady(true);
-    }, 2000);
-  }, []);
 
   return (
     <>
-      <Canvas camera={{ position: currentThema.cameraAngle, fov: 75 }}>
+      <Canvas
+        camera={{ position: currentThema.cameraAngle, fov: 75 }}
+        gl={{ powerPreference: "high-performance" }}
+      >
         <Suspense fallback={<Loading />}>
           <GlobalAudio />
           <Environment
@@ -44,7 +38,6 @@ const DominoCanvas = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
             <DominoEntity
               openGuideToast={openGuideToast}
               closeGuideToast={closeGuideToast}
-              rigidBodyRefs={rigidBodyRefs}
             />
             <Ground />
           </Physics>
