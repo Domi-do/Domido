@@ -4,6 +4,8 @@ import DominoKeyboardHandler from "@/components/Common/DominoKeyboardHandler";
 import { DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import useGlbPreloader from "@/hooks/useGlbloader";
+import useInitAchievements from "@/hooks/useInitAchievements";
+import { useStrictNavigationBlock } from "@/hooks/useStrictNavigationBlock";
 import useToastControls from "@/hooks/useToastControls";
 import { SocketProvider } from "@/store/SocketContext";
 import useUIStateStore from "@/store/useUIStateStore";
@@ -30,6 +32,8 @@ const DominoScene = () => {
   const isCanvasReady = useUIStateStore((state) => state.isCanvasReady);
 
   useGlbPreloader(MODEL_PATHS);
+  useStrictNavigationBlock();
+  useInitAchievements();
 
   return (
     <SocketProvider>
