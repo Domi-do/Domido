@@ -10,6 +10,7 @@ import { useSocket } from "@/store/SocketContext";
 import { useToast } from "@/store/ToastContext";
 import useDominoStore from "@/store/useDominoStore";
 import useSettingStore from "@/store/useSettingStore";
+import useUserStore from "@/store/useUserStore";
 import AudioController from "@/utils/AudioController";
 
 const DEFAULT_OPACITY = 1;
@@ -39,7 +40,7 @@ const CursorFollowerObject = () => {
   const { showToast } = useToast();
   const lastPlacedTime = useRef(0);
 
-  const userId = localStorage.getItem("userID");
+  const userId = useUserStore((state) => state.userInfo?.userID);
 
   const playDominoDropSound = () => {
     audioController.current.play(selectedDomino.sound);

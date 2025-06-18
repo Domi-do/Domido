@@ -2,12 +2,9 @@ import { useParams, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 import ProjectListModal from "@/components/DominoHUD/ProjectListModal/ProjectListModal";
-import AchievementPanel from "@/components/AchievementPanel";
 import { SocketProvider } from "@/store/SocketContext";
 
 import { RiKakaoTalkFill } from "react-icons/ri";
-
-import useInitAchievements from "@/hooks/useInitAchievements";
 
 import logo from "/images/logo.png";
 
@@ -16,9 +13,6 @@ const Home = () => {
   const location = useLocation();
   const hasProjectPath = location.pathname === "/projects";
   const [isProjectListModal, setProjectListModal] = useState(hasProjectPath && !projectId);
-  const [isAchievementPanelOpen, setIsAchievementPanelOpen] = useState(false);
-
-  useInitAchievements();
 
   const handleLogin = () => {
     window.location.href = kakaoURL;
@@ -36,13 +30,6 @@ const Home = () => {
               draggable="false"
             />
           </h1>
-          <button
-            onClick={() => setIsAchievementPanelOpen((prev) => !prev)}
-            className="absolute top-6 right-6 bg-white/80 hover:bg-white px-4 py-2 rounded-lg text-sm shadow-md transition duration-200 z-50"
-          >
-            🏆 업적 보기
-          </button>
-          {isAchievementPanelOpen && <AchievementPanel />}
           <div className="flex items-center justify-center h-screen">
             <div className="mt-[60vh]">
               <button

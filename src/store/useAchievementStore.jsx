@@ -13,8 +13,8 @@ const useAchievementStore = create((set) => ({
   loadAchievements: (achievementList) =>
     set(() => {
       const newAchievements = {};
-      achievementList.forEach((a) => {
-        newAchievements[a.name] = { achieved: true, date: a.date };
+      achievementList.forEach((achieved) => {
+        newAchievements[achieved.name] = { achieved: true, date: achieved.date };
       });
       return { achievements: newAchievements };
     }),
