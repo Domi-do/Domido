@@ -26,8 +26,8 @@ export const useDominoMutations = () => {
       queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
+    onSuccess: (newDominos) => {
+      queryClient.setQueryData(["dominos", projectId], newDominos);
       socket.emit("update domino", { projectId });
     },
   });

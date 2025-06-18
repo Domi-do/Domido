@@ -8,6 +8,8 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 
 import logo from "/images/logo.png";
 
+const isMobile = /Mobi/i.test(window.navigator.userAgent);
+
 const Home = () => {
   const { projectId } = useParams();
   const location = useLocation();
@@ -18,6 +20,18 @@ const Home = () => {
     window.location.href = kakaoURL;
   };
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}&response_type=code`;
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100/80 p-6 z-50">
+        <div className="bg-white border-l-4 border-red-500 p-6 rounded-lg shadow-lg max-w-sm text-center">
+          <h1 className="text-xl font-semibold text-red-600 mb-2">
+            🚫 모바일은 지원하지 않습니다. 죄송합니"도미도"
+          </h1>
+          <p className="text-gray-600">서비스는 데스크톱 브라우저에서 이용해 주세요.</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
       <SocketProvider>
