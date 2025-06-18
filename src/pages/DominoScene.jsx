@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
+import AchievementPanel from "@/components/AchievementPanel";
 import DominoKeyboardHandler from "@/components/Common/DominoKeyboardHandler";
 import { DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
@@ -30,22 +31,33 @@ const DominoScene = () => {
 
   const rigidBodyRefs = useRef([]);
   const isCanvasReady = useUIStateStore((state) => state.isCanvasReady);
+  const [isAchievementPanelOpen, setIsAchievementPanelOpen] = useState(false);
 
   useGlbPreloader(MODEL_PATHS);
   useStrictNavigationBlock();
   useInitAchievements();
 
   return (
-    <SocketProvider>
-      <DominoKeyboardHandler setIsGuideToastVisible={setIsGuideToastVisible}>
-        {isCanvasReady && <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />}
-        <DominoCanvas
-          openGuideToast={openGuideToast}
-          closeGuideToast={closeGuideToast}
-          rigidBodyRefs={rigidBodyRefs}
-        />
-      </DominoKeyboardHandler>
-    </SocketProvider>
+    <>
+      <SocketProvider>
+        <DominoKeyboardHandler setIsGuideToastVisible={setIsGuideToastVisible}>
+          {isCanvasReady && <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />}
+          <DominoCanvas
+            openGuideToast={openGuideToast}
+            closeGuideToast={closeGuideToast}
+            rigidBodyRefs={rigidBodyRefs}
+          />
+        </DominoKeyboardHandler>
+      </SocketProvider>
+
+      <button
+        onClick={() => setIsAchievementPanelOpen((prev) => !prev)}
+        className="absolute top-6 right-6 bg-white/80 hover:bg-white px-4 py-2 rounded-lg text-sm shadow-md transition duration-200 z-50"
+      >
+        🏆 업적 보기
+      </button>
+      {isAchievementPanelOpen && <AchievementPanel />}
+    </>
   );
 };
 
