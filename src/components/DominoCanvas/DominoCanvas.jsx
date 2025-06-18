@@ -1,7 +1,7 @@
 import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
@@ -13,11 +13,15 @@ import {
 } from "@/components/DominoCanvas";
 import OtherUserDominos from "@/components/DominoCanvas/OtherUserDominos/OtherUserDominos";
 import { GAME_THEME } from "@/constants/gameThema";
+import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useSettingStore from "@/store/useSettingStore";
 
-const DominoCanvas = ({ openGuideToast, closeGuideToast }) => {
+const DominoCanvas = ({ setIsGuideToastVisible, openGuideToast, closeGuideToast }) => {
   const themaType = useSettingStore((state) => state.themaType);
   const currentThema = GAME_THEME[themaType];
+  const historyRef = useRef([]);
+
+  useDominoKeyboardControls(setIsGuideToastVisible, historyRef);
 
   return (
     <>
@@ -33,7 +37,7 @@ const DominoCanvas = ({ openGuideToast, closeGuideToast }) => {
           />
           <CameraControls cameraAngle={currentThema.cameraAngle} />
           <Physics gravity={[0, -9.81 * 3, 0]}>
-            <CursorFollowerObject />
+            <CursorFollowerObject historyRef={historyRef} />
             <OtherUserDominos />
             <DominoEntity
               openGuideToast={openGuideToast}
