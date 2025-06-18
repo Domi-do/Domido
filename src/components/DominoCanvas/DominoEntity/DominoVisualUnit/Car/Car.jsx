@@ -1,14 +1,24 @@
 import { useFrame } from "@react-three/fiber";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 import { Quaternion, Vector3 } from "three";
 
-import useDominoStore from "@/store/useDominoStore";
+import { useSocket } from "@/store/SocketContext";
 
 const Car = ({ rigidBodyRefs }) => {
-  const dominos = useDominoStore((state) => state.dominos);
+  const queryClient = useQueryClient();
   const applied = useRef(false);
+  const timeAccum = useRef(0);
+  const { projectId } = useSocket();
 
-  useFrame(() => {
+  const dominos = queryClient.getQueryData(["dominos", projectId]) || [];
+
+  useFrame((state, delta) => {
+    if (timeAccum.current < 0.8) {
+      timeAccum.current += delta;
+      return;
+    }
+
     if (applied.current || dominos.length === 0) return;
 
     const lastDomino = dominos[dominos.length - 1];
@@ -20,13 +30,12 @@ const Car = ({ rigidBodyRefs }) => {
 
     const { x, y, z, w } = rigidBody.rotation();
     const quatCopy = new Quaternion(x, y, z, w);
-
-    const mass = rigidBody.mass();
-
     const forward = new Vector3(0, 0, 1).applyQuaternion(quatCopy).normalize();
 
-    const impulse = forward.multiplyScalar(mass * 10);
+    const mass = rigidBody.mass();
+    const impulse = forward.multiplyScalar(mass * 15);
     rigidBody.applyImpulse({ x: impulse.x, y: impulse.y, z: impulse.z }, true);
+
     applied.current = true;
   });
 

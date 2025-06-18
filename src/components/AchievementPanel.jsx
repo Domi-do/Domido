@@ -26,7 +26,7 @@ const AchievementPanel = () => {
   const percent = Math.round((achieved / total) * 100);
 
   return (
-    <div className="fixed top-20 right-8 w-80 bg-white p-4 rounded-xl shadow-lg z-50">
+    <div className="top-12 left-0 right-8 w-80 bg-white p-4 rounded-xl shadow-lg z-50 absolute">
       <h2 className="text-xl font-bold mb-4">🏆 업적 달성률: {percent}%</h2>
       <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
         <div
