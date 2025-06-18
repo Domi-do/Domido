@@ -1,23 +1,23 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { TUTORIAL_STEPS, TRACKER_KEYS } from "@/constants/tutorialStep";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
+import { useKeyHandler } from "@/hooks/useKeyHandler";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 import { useTutorialStore } from "@/store/useTutorialStore";
-import {
-  deleteSelectedDomino,
-  toggleSelectedDominoOpacity,
-  undoDominoHistory,
-  rotateDominoClockwise,
-  rotateDominoCounterClockwise,
-} from "@/utils/keyHandlers";
 
-const useDominoKeyboardControls = (onToggleGuideToast) => {
-  const { dominos, setSelectedDomino } = useDominoStore();
+const useDominoKeyboardControls = (onToggleGuideToast, historyRef) => {
+  const {
+    deleteSelectedDomino,
+    toggleSelectedDominoOpacity,
+    undoDominoHistory,
+    rotateDominoClockwise,
+    rotateDominoCounterClockwise,
+  } = useKeyHandler();
+
+  const { setSelectedDomino } = useDominoStore();
   const setTracker = useTutorialStore((state) => state.setTracker);
-  const historyRef = useRef([]);
-  const prevLengthRef = useRef(dominos.length);
   const { mutate } = useDominoMutations();
   const { projectId, socket } = useSocket();
 
@@ -28,11 +28,10 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
 
   const handleDominoUpdate = (updateFn, isShowToast = true) => {
     const updatedDominos =
-      isShowToast ? updateFn(historyRef, onToggleGuideToast) : updateFn(historyRef);
+      isShowToast ? updateFn(historyRef, onToggleGuideToast) : updateFn(historyRef, true);
 
     if (Array.isArray(updatedDominos)) {
       mutate({ dominos: updatedDominos });
-      socket.emit("update domino", { projectId, dominos: updatedDominos });
     }
   };
 
@@ -89,13 +88,6 @@ const useDominoKeyboardControls = (onToggleGuideToast) => {
     window.addEventListener("keydown", handleKeydown);
     return () => window.removeEventListener("keydown", handleKeydown);
   }, []);
-
-  useEffect(() => {
-    if (dominos.length > prevLengthRef.current) {
-      historyRef.current.push([...dominos]);
-    }
-    prevLengthRef.current = dominos.length;
-  }, [dominos]);
 
   return;
 };
