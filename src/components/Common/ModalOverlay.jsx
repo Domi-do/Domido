@@ -21,6 +21,7 @@ const ModalOverlay = ({ closeModal, children }) => {
         >
           <button
             onClick={closeModal}
+            title="닫기"
             className="ml-auto block absolute right-[20px] top-[20px] cursor-pointer"
           >
             <IoIosCloseCircle className="text-3xl text-gray-500" />
