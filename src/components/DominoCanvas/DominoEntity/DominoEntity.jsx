@@ -1,4 +1,6 @@
 import { RigidBody } from "@react-three/rapier";
+import { useMemo, useRef } from "react";
+import { shallow } from "zustand/shallow";
 
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import DominoVisualUnit from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/DominoVisualUnit";
@@ -7,11 +9,17 @@ import { useDominos } from "@/hooks/Queries/useDominos";
 import useDominoStore from "@/store/useDominoStore";
 import useUserStore from "@/store/useUserStore";
 import { getCollisionGroupMask } from "@/utils/collisionGroups";
+import { debounce } from "@/utils/debounce";
 
-const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
+const DominoEntity = ({ openGuideToast, closeGuideToast }) => {
   useDominos();
-  const dominos = useDominoStore((state) => state.dominos);
+  const dominos = useDominoStore((s) => s.dominos, shallow);
   const isTutorialUser = useUserStore((state) => state.userInfo?.isTutorialUser);
+  const rigidBodyRefs = useRef([]);
+
+  const throttledPointerOver = useMemo(() => {
+    return debounce((e, id) => openGuideToast(e, id), 200);
+  }, [openGuideToast]);
 
   return (
     <>
@@ -44,7 +52,7 @@ const DominoEntity = ({ openGuideToast, closeGuideToast, rigidBodyRefs }) => {
               />
               <ObjectRenderer
                 dominoInfo={objectInfo}
-                onPointerOver={(event) => openGuideToast(event, _id)}
+                onPointerOver={(e) => throttledPointerOver(e, _id || undefined)}
                 onPointerOut={closeGuideToast}
                 opacity={opacity}
                 color={color}

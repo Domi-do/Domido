@@ -37,8 +37,9 @@ const CursorFollowerObject = () => {
   const audioController = useRef(new AudioController());
   const { projectId, socket } = useSocket();
   const { mutate } = useDominoMutations();
-
   const { showToast } = useToast();
+  const lastPlacedTime = useRef(0);
+
   const userId = useUserStore((state) => state.userInfo?.userID);
 
   const playDominoDropSound = () => {
@@ -48,6 +49,12 @@ const CursorFollowerObject = () => {
   const handlePlaceDomino = (e) => {
     e.stopPropagation();
 
+    const nowTime = Date.now();
+    if (nowTime - lastPlacedTime.current < 300) {
+      showToast({ message: "너무 빠르게 놓으셨네요. 잠시만요!", placement: "bottomRight" });
+      return;
+    }
+    lastPlacedTime.current = nowTime;
     const isBlockedClick = BLOCKED_MOUSE_BUTTONS.includes(e.button);
     const cannotPlaceDomino = isBlockedClick || !selectedDomino || !meshRef.current;
 

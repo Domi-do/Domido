@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import AchievementPanel from "@/components/AchievementPanel";
 import DominoKeyboardHandler from "@/components/Common/DominoKeyboardHandler";
@@ -9,7 +9,6 @@ import useInitAchievements from "@/hooks/useInitAchievements";
 import { useStrictNavigationBlock } from "@/hooks/useStrictNavigationBlock";
 import useToastControls from "@/hooks/useToastControls";
 import { SocketProvider } from "@/store/SocketContext";
-import useUIStateStore from "@/store/useUIStateStore";
 
 const MODEL_PATHS = [
   "/objects/beach_ball.glb",
@@ -29,8 +28,6 @@ const DominoScene = () => {
   const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
     useToastControls();
 
-  const rigidBodyRefs = useRef([]);
-  const isCanvasReady = useUIStateStore((state) => state.isCanvasReady);
   const [isAchievementPanelOpen, setIsAchievementPanelOpen] = useState(false);
 
   useGlbPreloader(MODEL_PATHS);
@@ -41,11 +38,10 @@ const DominoScene = () => {
     <>
       <SocketProvider>
         <DominoKeyboardHandler setIsGuideToastVisible={setIsGuideToastVisible}>
-          {isCanvasReady && <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />}
+          <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />
           <DominoCanvas
             openGuideToast={openGuideToast}
             closeGuideToast={closeGuideToast}
-            rigidBodyRefs={rigidBodyRefs}
           />
         </DominoKeyboardHandler>
       </SocketProvider>

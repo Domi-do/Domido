@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 
 import { OBJECT_GROUP_NAMES } from "@/constants/objectMetaData.js";
-import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
+import { useDominoOverwrite } from "@/hooks/Queries/useDominoOverwrite";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 
 const useDominoReset = () => {
   const dominos = useDominoStore((state) => state.dominos);
   const { socket, projectId } = useSocket();
-  const { mutate } = useDominoMutations();
+  const { mutate } = useDominoOverwrite();
 
-  const resetAllDominoes = () => {
+  const emitDominoReset = () => {
     const filteredDominos = dominos
       .filter((domino) => domino.objectInfo?.groupName === OBJECT_GROUP_NAMES.STATIC)
       .map((domino) => {
@@ -18,23 +18,16 @@ const useDominoReset = () => {
         return rest;
       });
 
-    mutate({ dominos: filteredDominos });
-  };
-
-  const resetDominoSimulation = () => {
-    if (!dominos.length) return;
-    resetAllDominoes();
-
-    socket.emit("reset domino", { projectId });
+    socket.emit("reset domino", { projectId, dominos: filteredDominos });
   };
 
   useEffect(() => {
-    socket.on("reset domino", () => {
-      resetAllDominoes();
+    socket.on("reset domino", ({ dominos }) => {
+      mutate({ dominos });
     });
 
     socket.on("user joined", () => {
-      resetAllDominoes();
+      emitDominoReset();
     });
 
     return () => {
@@ -43,7 +36,7 @@ const useDominoReset = () => {
     };
   }, []);
 
-  return { resetDominoSimulation };
+  return { emitDominoReset };
 };
 
 export default useDominoReset;
