@@ -1,10 +1,11 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import Cannon from "@/components/DominoCanvas/DominoEntity/DominoVisualUnit/Cannon/Cannon";
 import { OBJECT_METADATA, OBJECT_GROUP_NAMES } from "@/constants/objectMetaData";
+import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import useTutorialTracker from "@/hooks/useTutorialTracker";
 import { useSocket } from "@/store/SocketContext";
-import useDominoStore from "@/store/useDominoStore";
 import { useTutorialStore } from "@/store/useTutorialStore";
 
 const cannonMetadata = OBJECT_METADATA[OBJECT_GROUP_NAMES.DYNAMIC].cannon;
@@ -15,10 +16,12 @@ const TRIGGER_OFFSET = [0, 0, -1.2];
 const TRIGGER_SIZE = [0.3, 32, 32];
 
 const CannonAutoPlacer = () => {
-  const dominos = useDominoStore((state) => state.dominos);
-  const setDominos = useDominoStore((state) => state.setDominos);
+  const queryClient = useQueryClient();
+  const { projectId } = useSocket();
+  const dominos = queryClient.getQueryData(["dominos", projectId]);
+
+  const { mutate } = useDominoMutations();
   const { tracker } = useTutorialStore();
-  const { projectId, socket } = useSocket();
 
   const [hasTriggered, setHasTriggered] = useState(false);
 
@@ -39,8 +42,7 @@ const CannonAutoPlacer = () => {
     };
 
     const updatedDominos = [...dominos, newCannon];
-    setDominos(updatedDominos);
-    socket.emit("update domino", { projectId, dominos: updatedDominos });
+    mutate({ dominos: updatedDominos });
   }, [tracker.placedDominoForKnock]);
 
   return (
