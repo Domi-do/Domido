@@ -11,25 +11,25 @@ const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, openProjectMod
     <div className="fixed top-[10px] left-[10px] z-100 flex items-center gap-2">
       <HUDButton
         onClick={onClickSetting}
-        alt="setting"
+        title="설정"
       >
         <IoSettingsSharp className="text-[22px]" />
       </HUDButton>
       <HUDButton
         onClick={openProjectModal}
-        alt="openProjectModal"
+        title="프로젝트 목록"
       >
         <LuClipboardList className="text-[22px]" />
       </HUDButton>
       <HUDButton
         onClick={onClickReset}
-        alt="reset"
+        title="초기화"
       >
         <RiResetLeftFill className="text-[24px] font-bold" />
       </HUDButton>
       <HUDButton
         onClick={onClickClear}
-        alt="clear"
+        title="전체 삭제"
       >
         <FaRegTrashAlt className="text-[22px]" />
       </HUDButton>
