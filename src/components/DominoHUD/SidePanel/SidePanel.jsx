@@ -15,6 +15,7 @@ const SidePanel = () => {
 
   return (
     <div
+      data-testid="side-panel"
       className={`fixed top-0 right-0 z-50 h-full flex transform transition-transform duration-300 ${
         isOpen ? "translate-x-0" : "translate-x-[99%]"
       }`}
@@ -40,6 +41,7 @@ const SidePanel = () => {
           </section>
         ))}
         <button
+          data-testid="sidepanel-toggle"
           className="absolute top-0 left-[-30px] transform text-white text-[22px] h-[60px] w-[30px] bg-black/40 rounded-tl-[8px] rounded-bl-[8px] flex items-center justify-center font-bold cursor-pointer"
           onClick={() => setIsOpen((isOpen) => !isOpen)}
         >
