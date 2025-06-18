@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -15,6 +16,7 @@ export const SocketProvider = ({ children }) => {
   const [otherCursors, setOtherCursors] = useState({});
   const { showToast } = useToast();
   const { userInfo } = useUserStore.getState();
+  const queryClient = useQueryClient();
 
   const myUserID = userInfo?.userID;
   const navigate = useNavigate();
@@ -52,9 +54,9 @@ export const SocketProvider = ({ children }) => {
       },
     );
 
-    socket.on("domino update", ({ dominos, sendUser }) => {
+    socket.on("domino update", ({ sendUser }) => {
       if (myUserID === sendUser) return;
-      setDominos(dominos);
+      queryClient.refetchQueries({ queryKey: ["dominos", projectId], exact: true });
     });
 
     socket.on("user left", ({ message, userID }) => {

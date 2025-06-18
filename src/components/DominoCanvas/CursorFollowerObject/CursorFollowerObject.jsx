@@ -1,4 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
@@ -29,8 +30,9 @@ const OBJECT_NAMES = [
   "rainbowSlide",
 ];
 
-const CursorFollowerObject = () => {
-  const { dominos, selectedDomino, rotationY, selectedColor } = useDominoStore();
+const CursorFollowerObject = ({ historyRef }) => {
+  const queryClient = useQueryClient();
+  const { selectedDomino, rotationY, selectedColor } = useDominoStore();
   const objectVolume = useSettingStore((state) => state.objectVolume);
   const { camera, pointer, scene } = useThree();
   const meshRef = useRef();
@@ -69,11 +71,19 @@ const CursorFollowerObject = () => {
       opacity: DEFAULT_OPACITY,
       color: selectedColor,
     };
-    const updatedDomino = [...dominos, newDomino];
-    mutate({ dominos: updatedDomino });
-    socket.emit("update domino", { projectId, dominos: updatedDomino });
-    playDominoDropSound();
+    const latestDominos = queryClient.getQueryData(["dominos", projectId]) || [];
+    const updatedDomino = [...latestDominos, newDomino];
 
+    mutate(
+      { dominos: updatedDomino },
+      {
+        onSuccess: (data) => {
+          historyRef.current.push(data);
+        },
+      },
+    );
+
+    playDominoDropSound();
     CheckFirstDominoAchievement({ dominoCount: updatedDomino.length, userId, showToast });
     CheckHundredDominoAchievement({ dominoCount: updatedDomino.length, userId, showToast });
   };

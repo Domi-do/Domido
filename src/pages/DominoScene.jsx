@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import AchievementPanel from "@/components/AchievementPanel";
-import DominoKeyboardHandler from "@/components/Common/DominoKeyboardHandler";
 import { DominoCanvas } from "@/components/DominoCanvas";
 import DominoHUD from "@/components/DominoHUD/DominoHUD";
 import useGlbPreloader from "@/hooks/useGlbloader";
@@ -37,13 +36,12 @@ const DominoScene = () => {
   return (
     <>
       <SocketProvider>
-        <DominoKeyboardHandler setIsGuideToastVisible={setIsGuideToastVisible}>
-          <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />
-          <DominoCanvas
-            openGuideToast={openGuideToast}
-            closeGuideToast={closeGuideToast}
-          />
-        </DominoKeyboardHandler>
+        <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />
+        <DominoCanvas
+          setIsGuideToastVisible={setIsGuideToastVisible}
+          openGuideToast={openGuideToast}
+          closeGuideToast={closeGuideToast}
+        />
       </SocketProvider>
 
       <button

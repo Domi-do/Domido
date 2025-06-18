@@ -1,40 +1,49 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import { OBJECT_GROUP_NAMES } from "@/constants/objectMetaData.js";
+import { OBJECT_GROUP_NAMES } from "@/constants/objectMetaData";
 import { useDominoOverwrite } from "@/hooks/Queries/useDominoOverwrite";
 import { useSocket } from "@/store/SocketContext";
-import useDominoStore from "@/store/useDominoStore";
 
-const useDominoReset = () => {
-  const dominos = useDominoStore((state) => state.dominos);
+export const useDominoReset = () => {
+  const { mutate: overwriteDominos } = useDominoOverwrite();
   const { socket, projectId } = useSocket();
-  const { mutate } = useDominoOverwrite();
+  const queryClient = useQueryClient();
 
   const emitDominoReset = () => {
-    const filteredDominos = dominos
-      .filter((domino) => domino.objectInfo?.groupName === OBJECT_GROUP_NAMES.STATIC)
-      .map((domino) => {
-        const { _id, ...rest } = domino;
-        return rest;
-      });
+    if (!projectId) return;
+    const dominos = queryClient.getQueryData(["dominos", projectId]);
 
-    socket.emit("reset domino", { projectId, dominos: filteredDominos });
+    const filteredDominos = dominos.filter(
+      (domino) => domino.objectInfo?.groupName === OBJECT_GROUP_NAMES.STATIC,
+    );
+
+    overwriteDominos(
+      { dominos: filteredDominos },
+      {
+        onSuccess: () => {
+          socket.emit("reset domino", { projectId, senderId: socket.id });
+        },
+      },
+    );
   };
 
   useEffect(() => {
-    socket.on("reset domino", ({ dominos }) => {
-      mutate({ dominos });
-    });
-
-    socket.on("user joined", () => {
+    socket.on("sync domino request", ({ requesterId }) => {
+      if (requesterId === socket.id) return;
       emitDominoReset();
     });
 
+    socket.on("reset domino", ({ senderId }) => {
+      if (senderId === socket.id) return;
+      queryClient.refetchQueries(["dominos", projectId]);
+    });
+
     return () => {
+      socket.off("sync domino request");
       socket.off("reset domino");
-      socket.off("user joined");
     };
-  }, []);
+  }, [socket, projectId]);
 
   return { emitDominoReset };
 };

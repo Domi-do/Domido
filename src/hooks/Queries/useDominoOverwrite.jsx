@@ -2,21 +2,31 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 import fetcher from "@/services/fetcher";
-import useDominoStore from "@/store/useDominoStore";
 
 export const useDominoOverwrite = () => {
   const { projectId } = useParams();
-  const setDominos = useDominoStore((state) => state.setDominos);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ dominos }) =>
       fetcher(`/dominos/${projectId}/overwrite`, { method: "POST", body: { dominos } }),
-    onSuccess: (newDominos) => {
-      setDominos(newDominos);
+
+    onMutate: async ({ dominos }) => {
+      await queryClient.cancelQueries({ queryKey: ["dominos", projectId] });
+
+      const previousDominos = queryClient.getQueryData(["dominos", projectId]);
+
+      queryClient.setQueryData(["dominos", projectId], dominos);
+
+      return { previousDominos };
     },
+
     onError: () => {
-      queryClient.refetchQueries(["dominos", projectId]);
+      queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
     },
   });
 };
