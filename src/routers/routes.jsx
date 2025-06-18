@@ -2,13 +2,15 @@ import { createBrowserRouter } from "react-router-dom";
 
 import DominoScene from "@/pages/DominoScene";
 import Home from "@/pages/Home";
-import NotFound from "@/pages/NotFound";
+import LogoutCallback from "@/pages/LogoutCallback";
+import OAuthCallback from "@/pages/OAuthCallback";
 
 const routes = createBrowserRouter([
   { path: "/", element: <Home /> },
-  { path: "game", element: <DominoScene /> },
+  { path: "/oauth/callback", element: <OAuthCallback /> },
+  { path: "projects", element: <Home /> },
   { path: "projects/:projectId", element: <DominoScene /> },
-  { path: "*", element: <NotFound /> },
+  { path: "/logout/callback", element: <LogoutCallback /> },
 ]);
 
 export default routes;
