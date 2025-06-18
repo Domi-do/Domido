@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /projects/
-Disallow: /oauth/
-Disallow: /logout/
-Sitemap: https://www.domido.co.kr/sitemap.xml

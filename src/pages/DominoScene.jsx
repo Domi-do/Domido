@@ -1,29 +1,5 @@
-import { DominoCanvas } from "@/components/DominoCanvas";
-import DominoHUD from "@/components/DominoHUD/DominoHUD";
-import useInitAchievements from "@/hooks/useInitAchievements";
-import { useStrictNavigationBlock } from "@/hooks/useStrictNavigationBlock";
-import useToastControls from "@/hooks/useToastControls";
-import { SocketProvider } from "@/store/SocketContext";
-
 const DominoScene = () => {
-  const { isOpenGuideToastVisible, openGuideToast, closeGuideToast, setIsGuideToastVisible } =
-    useToastControls();
-
-  useStrictNavigationBlock();
-  useInitAchievements();
-
-  return (
-    <>
-      <SocketProvider>
-        <DominoHUD isOpenGuideToastVisible={isOpenGuideToastVisible} />
-        <DominoCanvas
-          setIsGuideToastVisible={setIsGuideToastVisible}
-          openGuideToast={openGuideToast}
-          closeGuideToast={closeGuideToast}
-        />
-      </SocketProvider>
-    </>
-  );
+  return <div>DominoScene</div>;
 };
 
 export default DominoScene;
