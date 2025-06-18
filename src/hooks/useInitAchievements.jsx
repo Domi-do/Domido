@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 
+import fetcher from "@/services/fetcher";
 import useAchievementStore from "@/store/useAchievementStore";
+import useUserStore from "@/store/useUserStore";
 
 const useInitAchievements = () => {
   const loadAchievements = useAchievementStore((state) => state.loadAchievements);
-  const userId = localStorage.getItem("userID");
+  const userId = useUserStore((state) => state.userInfo?.userID);
 
   useEffect(() => {
     if (!userId) return;
 
     const fetchAchievements = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/achievements/${userId}`);
-        const data = await res.json();
-        loadAchievements(data);
+        const res = await fetcher(`/achievements/${userId}`);
+        loadAchievements(res);
       } catch (err) {
         console.error("업적 불러오기 실패", err);
       }

@@ -1,6 +1,7 @@
 import { CheckChangeDominoColorAchievement } from "@/achievments/CheckDominoAchievement";
 import { useToast } from "@/store/ToastContext";
 import useDominoStore from "@/store/useDominoStore";
+import useUserStore from "@/store/useUserStore";
 
 const COLORS = [
   { type: "red", hex: "#EF4444" },
@@ -19,7 +20,7 @@ export default function DominoColorPalette() {
   const setSelectedColor = useDominoStore((state) => state.setSelectedColor);
 
   const { showToast } = useToast();
-  const userId = localStorage.getItem("userID");
+  const userId = useUserStore((state) => state.userInfo?.userID);
 
   const handleSelect = (color) => {
     CheckChangeDominoColorAchievement({ userId, showToast });
