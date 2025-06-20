@@ -20,4 +20,4 @@ export const HTTP_ERROR_MESSAGE = {
     BODY: "잠시 후 다시 요청해주세요.",
     BUTTON: "새로고침",
   },
-};
+} as const;
