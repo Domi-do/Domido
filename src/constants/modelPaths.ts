@@ -12,7 +12,7 @@ const MODEL_PATHS = [
   "/objects/stairs_closed_short.glb",
   "/objects/stairs_closed.glb",
   "/objects/steel_ball.glb",
-];
+] as const;
 
 MODEL_PATHS.forEach((path) => {
   useGLTF.preload(path);

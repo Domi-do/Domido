@@ -1,16 +1,34 @@
-import * as React from "react";
+import React, { ComponentType, ReactNode } from "react";
 
 import { HTTPError } from "@/utils/HTTPError";
+import { StatusCodeType } from "@/types/statusType";
 
-export class ErrorBoundary extends React.Component {
-  constructor(props) {
+export interface ErrorProps {
+  statusCode?: StatusCodeType;
+  resetError?: () => void;
+  message?: string;
+}
+
+interface ErrorBoundaryProps {
+  fallback: ComponentType<ErrorProps>;
+  onReset: () => void;
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | HTTPError | null;
+}
+
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
     this.captureReject = this.captureReject.bind(this);
     this.resetError = this.resetError.bind(this);
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error | HTTPError) {
     return { hasError: true, error };
   }
 
@@ -21,7 +39,7 @@ export class ErrorBoundary extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("unhandledrejection", this.captureReject);
   }
-  captureReject(event) {
+  captureReject(event: PromiseRejectionEvent) {
     event.preventDefault();
     const error = event.reason;
     this.setState({ hasError: true, error });
@@ -38,7 +56,9 @@ export class ErrorBoundary extends React.Component {
       return (
         <Fallback
           statusCode={
-            this.state.error instanceof HTTPError ? this.state.error.statusCode : undefined
+            this.state.error instanceof HTTPError ?
+              (this.state.error.statusCode as StatusCodeType)
+            : undefined
           }
           resetError={this.resetError}
         />

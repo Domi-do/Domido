@@ -1,8 +1,17 @@
-import React from "react";
-
 import { HTTP_ERROR_MESSAGE } from "@/constants/HTTPErrorMessage";
+import { StatusCodeType } from "@/types/statusType";
 
-const ErrorFallback = ({ statusCode = 404, resetError, message }) => {
+interface ErrorFallbackProps {
+  statusCode?: StatusCodeType | undefined;
+  resetError?: () => void;
+  message?: string;
+}
+
+const ErrorFallback = ({
+  statusCode = 404,
+  resetError = () => window.location.reload(),
+  message,
+}: ErrorFallbackProps) => {
   const currentStatusCode = statusCode;
   const { HEADING, BODY, BUTTON } = HTTP_ERROR_MESSAGE[currentStatusCode];
 
