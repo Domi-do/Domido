@@ -1,11 +1,20 @@
+import { API_PATHS } from "@/constants/apiPaths";
+import { HTTPError } from "@/utils/HTTPError";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const fetcher = async (endpoint, { method = "GET", body } = {}) => {
+interface FetcherOptions {
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+  body?: unknown;
+  headers?: HeadersInit;
+}
+
+const fetcher = async (endpoint: string, { method = "GET", body }: FetcherOptions = {}) => {
   const url = `${BASE_URL}${endpoint}`;
   const accessToken = localStorage.getItem("dominoAccessToken");
   const refreshToken = localStorage.getItem("dominoRefreshToken");
 
-  const options = {
+  const options: RequestInit = {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -28,10 +37,7 @@ const fetcher = async (endpoint, { method = "GET", body } = {}) => {
 
   if (!response.ok) {
     const errorResponse = await response.json().catch(() => ({}));
-    const error = new Error(errorResponse.message || "요청 실패");
-
-    error.status = response.status;
-    throw error;
+    throw new HTTPError(response.status, "요청 실패");
   }
 
   try {

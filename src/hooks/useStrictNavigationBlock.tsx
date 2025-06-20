@@ -9,9 +9,9 @@ export const useStrictNavigationBlock = () => {
     blockBack();
     window.addEventListener("popstate", blockBack);
 
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = "정말 새로고침 하시겠습니까?";
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "정말 새로고침 하시겠습니까?";
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);

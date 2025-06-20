@@ -80,9 +80,11 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useToast = () => {
+export const useToast = (): ToastContextType => {
   const toastContext = useContext(ToastContext);
-  if (!toastContext) null;
+  if (!toastContext) {
+    throw new Error("useToast must be used within a ToastProvider");
+  }
 
   return toastContext;
 };

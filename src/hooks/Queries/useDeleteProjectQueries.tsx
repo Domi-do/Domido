@@ -1,16 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import fetcher from "@/services/fetcher";
+import { API_PATHS } from "@/constants/apiPaths";
 
-const deleteProject = (projectId) => {
-  return fetcher(`/projects/${projectId}`, { method: "DELETE" });
+const deleteProject = (projectId: string) => {
+  return fetcher(API_PATHS.PROJECT_DETAIL(projectId), { method: "DELETE" });
 };
 
 const useDeleteProjectsQueries = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (projectId) => deleteProject(projectId),
+    mutationFn: (projectId: string) => deleteProject(projectId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },

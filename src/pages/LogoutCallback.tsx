@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import useUserStore from "@/store/useUserStore";
+import { API_PATHS } from "@/constants/apiPaths";
 
 const LogoutCallback = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const LogoutCallback = () => {
 
     setUserInfo(null);
 
-    navigate("/");
+    navigate(API_PATHS.HOME);
   }, [navigate]);
 
   return (

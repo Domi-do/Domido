@@ -9,10 +9,20 @@ import useDeleteProjectsQueries from "@/hooks/Queries/useDeleteProjectQueries";
 import useProjectsQueries from "@/hooks/Queries/useProjectsQueries";
 import useUpdateProjectQueries from "@/hooks/Queries/useUpdateProjectQueries";
 
-const ProjectListModal = ({ closeModal }) => {
+interface ProjectType {
+  _id: string;
+  title: string;
+  createdAt: string;
+}
+
+interface ProjectListModalProps {
+  closeModal: () => void;
+}
+
+const ProjectListModal = ({ closeModal }: ProjectListModalProps) => {
   const { data: projects, isLoading, isError } = useProjectsQueries();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editTarget, setEditTarget] = useState(null);
+  const [editTarget, setEditTarget] = useState<ProjectType | null>(null);
 
   const { mutate: createProject } = useCreateProjectsQueries();
   const { mutate: deleteProject } = useDeleteProjectsQueries();
@@ -58,7 +68,7 @@ const ProjectListModal = ({ closeModal }) => {
 
           <div className="space-y-[12px] max-h-[250px] overflow-y-auto">
             {getStatus()
-              || projects.map((project) => (
+              || projects.map((project: ProjectType) => (
                 <div
                   key={project._id}
                   className="w-full p-[16px] border border-gray-200 hover:border-yellow-500 hover:bg-yellow-50 transition rounded-xl shadow-sm"

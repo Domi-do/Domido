@@ -1,11 +1,16 @@
-import { useContext, useRef } from "react";
+import { ReactNode, useContext, useRef } from "react";
 import { createPortal } from "react-dom";
 import { IoIosCloseCircle } from "react-icons/io";
 
 import { PortalContext } from "@/components/Common/GlobalPortal";
 import useOnClickOutSide from "@/hooks/useOnClickOutSide";
 
-const ModalOverlay = ({ closeModal, children }) => {
+interface ModalOverlayProps {
+  closeModal: () => void;
+  children: ReactNode;
+}
+
+const ModalOverlay = ({ closeModal, children }: ModalOverlayProps) => {
   const modalRef = useRef(null);
   const portalContainer = useContext(PortalContext);
 

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import fetcher from "@/services/fetcher";
 
-const updateProject = ({ projectId, title }) => {
+const updateProject = ({ projectId, title }: { projectId: string; title: string }) => {
   return fetcher(`/projects/${projectId}`, {
     method: "PATCH",
     body: { title: title },
@@ -14,7 +14,8 @@ const useUpdateProjectQueries = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ projectId, title }) => updateProject({ projectId, title }),
+    mutationFn: ({ projectId, title }: { projectId: string; title: string }) =>
+      updateProject({ projectId, title }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },

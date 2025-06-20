@@ -1,6 +1,13 @@
+import { Achievement } from "@/types/achievements";
 import { create } from "zustand";
 
-const useAchievementStore = create((set) => ({
+export interface AchievementStoreType {
+  achievements: Record<string, { achieved: boolean; date: string }>;
+  setAchievement: (name: string) => void;
+  loadAchievements: (achievementList: Achievement[]) => void;
+}
+
+const useAchievementStore = create<AchievementStoreType>((set) => ({
   achievements: {},
 
   setAchievement: (name) =>
@@ -12,7 +19,7 @@ const useAchievementStore = create((set) => ({
     })),
   loadAchievements: (achievementList) =>
     set(() => {
-      const newAchievements = {};
+      const newAchievements: Record<string, { achieved: boolean; date: string }> = {};
       achievementList.forEach((achieved) => {
         newAchievements[achieved.name] = { achieved: true, date: achieved.date };
       });

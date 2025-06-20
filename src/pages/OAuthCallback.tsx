@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import useUserStore from "@/store/useUserStore";
 import { HTTPError } from "@/utils/HTTPError";
+import { API_PATHS } from "@/constants/apiPaths";
 
 const OAuthCallback = () => {
   const { setUserInfo } = useUserStore.getState();
@@ -14,7 +15,7 @@ const OAuthCallback = () => {
 
       if (!code) {
         console.error("인가 코드 없음");
-        navigate("/");
+        navigate(API_PATHS.HOME);
         return;
       }
 
@@ -44,7 +45,7 @@ const OAuthCallback = () => {
 
         navigate("/projects");
       } catch (err) {
-        throw new HTTPError(err.response.status, err.message);
+        throw new HTTPError(500, "로그인 실패");
       }
     };
 

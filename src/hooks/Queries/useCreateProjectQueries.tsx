@@ -1,16 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import fetcher from "@/services/fetcher";
+import { API_PATHS } from "@/constants/apiPaths";
 
-const createProject = (newName) => {
-  return fetcher("/projects", { method: "POST", body: { title: newName } });
+const createProject = (newName: string) => {
+  return fetcher(API_PATHS.PROJECTS, { method: "POST", body: { title: newName } });
 };
 
 const useProjectsQueries = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (newName) => createProject(newName),
+    mutationFn: (newName: string) => createProject(newName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, PointerEvent } from "react";
 
 import useDominoStore from "@/store/useDominoStore";
 
@@ -6,7 +6,7 @@ const useToastControls = () => {
   const [isOpenGuideToastVisible, setIsGuideToastVisible] = useState(false);
   const setSelectedDominoKey = useDominoStore((state) => state.setSelectedDominoKey);
 
-  const openGuideToast = (event, key) => {
+  const openGuideToast = (event: PointerEvent, key: string) => {
     event.stopPropagation();
     setIsGuideToastVisible(true);
     setSelectedDominoKey(key);

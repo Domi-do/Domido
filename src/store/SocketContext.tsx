@@ -1,19 +1,26 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useToast } from "./ToastContext";
+import { useToast } from "@/store/ToastContext";
 
 import socket from "@/services/socket";
-import useDominoStore from "@/store/useDominoStore";
 import useUserStore from "@/store/useUserStore";
+import { OtherCursorsState } from "@/types/otherCursor";
+import { Socket } from "socket.io-client";
 
-export const SocketContext = createContext(null);
+export interface SocketContextType {
+  otherCursors: OtherCursorsState;
+  projectId: string | undefined;
+  socket: Socket;
+  myUserID: string | undefined;
+}
 
-export const SocketProvider = ({ children }) => {
+export const SocketContext = createContext<SocketContextType | null>(null);
+
+export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { projectId } = useParams();
-  const { setDominos } = useDominoStore();
-  const [otherCursors, setOtherCursors] = useState({});
+  const [otherCursors, setOtherCursors] = useState<OtherCursorsState>({});
   const { showToast } = useToast();
   const { userInfo } = useUserStore.getState();
   const queryClient = useQueryClient();
@@ -21,7 +28,7 @@ export const SocketProvider = ({ children }) => {
   const myUserID = userInfo?.userID;
   const navigate = useNavigate();
 
-  const removeCursor = (userID) => {
+  const removeCursor = (userID: string) => {
     setOtherCursors((prev) => {
       const updatedOtherCursors = { ...prev };
       delete updatedOtherCursors[userID];
@@ -68,12 +75,6 @@ export const SocketProvider = ({ children }) => {
       removeCursor(userID);
     });
 
-    socket.on("domino cleared", ({ projectId }) => {
-      if (projectId === projectId) {
-        setDominos([]);
-      }
-    });
-
     return () => {
       socket.off("user joined");
       socket.off("cursor position update");
@@ -81,9 +82,8 @@ export const SocketProvider = ({ children }) => {
       socket.off("user left");
       socket.off("other cursor clear");
       socket.off("room full");
-      socket.off("domino cleared");
     };
-  }, [projectId, setDominos]);
+  }, [projectId]);
 
   return (
     <SocketContext.Provider value={{ otherCursors, projectId, socket, myUserID }}>

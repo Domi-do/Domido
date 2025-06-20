@@ -1,18 +1,32 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, FormEvent } from "react";
 import { useId } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 
-const ProjectNameInputModal = ({ closeModal, onSubmit, placeholderValue, Title, submitLabel }) => {
+interface ProjectNameInputModalProps {
+  closeModal: () => void;
+  onSubmit: (newTitle: string) => void;
+  placeholderValue: string;
+  Title: string;
+  submitLabel: string;
+}
+
+const ProjectNameInputModal = ({
+  closeModal,
+  onSubmit,
+  placeholderValue,
+  Title,
+  submitLabel,
+}: ProjectNameInputModalProps) => {
   const [projectName, setProjectName] = useState("");
   const inputId = useId();
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     onSubmit(projectName);
     closeModal();
   };
