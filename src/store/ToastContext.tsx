@@ -1,10 +1,22 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useState } from "react";
 
-const TOAST_PLACEMENTS = ["topLeft", "topRight", "bottomLeft", "bottomRight", "center"];
+const TOAST_PLACEMENTS = ["topLeft", "topRight", "bottomLeft", "bottomRight", "center"] as const;
 
-const ToastContext = createContext(null);
+type ToastPlacement = (typeof TOAST_PLACEMENTS)[number];
 
-const getPlacementClass = (placement) => {
+interface ToastType {
+  id: number;
+  message: string;
+  placement: ToastPlacement;
+}
+
+type ToastOptions = { message: string; placement?: ToastPlacement; duration?: number };
+
+type ToastContextType = { showToast: (options: ToastOptions) => void };
+
+const ToastContext = createContext<ToastContextType | null>(null);
+
+const getPlacementClass = (placement: ToastPlacement) => {
   switch (placement) {
     case "topLeft":
       return "top-4 left-4";
@@ -19,19 +31,30 @@ const getPlacementClass = (placement) => {
   }
 };
 
-export const ToastProvider = ({ children }) => {
-  const [toasts, setToasts] = useState([]);
+export const ToastProvider = ({ children }: { children: ReactNode }) => {
+  const [toasts, setToasts] = useState<ToastType[]>([]);
 
-  const removeToast = (id) => {
+  const removeToast = (id: number) => {
     setToasts((prevToast) => prevToast.filter((toast) => toast.id !== id));
   };
 
-  const showToast = useCallback(({ message, placement = "bottomLeft", duration = 3000 }) => {
-    const id = Date.now();
-    setToasts((prevToast) => [...prevToast, { id, message, placement }]);
+  const showToast = useCallback(
+    ({
+      message,
+      placement = "bottomLeft",
+      duration = 3000,
+    }: {
+      message: string;
+      placement?: ToastPlacement;
+      duration?: number;
+    }) => {
+      const id = Date.now();
+      setToasts((prevToast) => [...prevToast, { id, message, placement }]);
 
-    setTimeout(() => removeToast(id), duration);
-  }, []);
+      setTimeout(() => removeToast(id), duration);
+    },
+    [],
+  );
 
   return (
     <ToastContext.Provider value={{ showToast }}>
