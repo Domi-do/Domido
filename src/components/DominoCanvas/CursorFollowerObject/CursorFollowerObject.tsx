@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { DominoType } from "@/types/domino";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   CheckFirstDominoAchievement,
@@ -75,6 +76,7 @@ const CursorFollowerObject = ({ historyRef }: CursorFollowerObjectProps) => {
     const currentPosition = meshRef.current?.position;
 
     const newDomino = {
+      _id: uuidv4(),
       position: [currentPosition?.x, currentPosition?.y, currentPosition?.z],
       rotation: [0, rotationY, 0],
       objectInfo: { ...selectedDomino },
