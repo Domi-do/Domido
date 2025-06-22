@@ -1,23 +1,26 @@
 name: Front Deployment
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: react build & deploy
     runs-on: ubuntu-latest
+
     steps:
       - name: checkout Github Action
         uses: actions/checkout@v3
 
       - name: Create .env.production file
         run: |
-          echo: "VITE_KAKAO_REST_API_KEY=${{ secrets.VITE_KAKAO_REST_API_KEY }}" > .env.production
-          echo: "VITE_JAVASCRIPT_KEY=${{ secrets.VITE_JAVASCRIPT_KEY }}" > .env.production
-          echo: "VITE_KAKAO_ADMIN_KEY=${{ secrets.VITE_KAKAO_ADMIN_KEY }}" > .env.production
-          echo: "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI }}" > .env.production
-          echo: "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" > .env.production
+          echo "VITE_KAKAO_REST_API_KEY=${{ secrets.VITE_KAKAO_REST_API_KEY }}" > .env.production
+          echo "VITE_JAVASCRIPT_KEY=${{ secrets.VITE_JAVASCRIPT_KEY }}" >> .env.production
+          echo "VITE_KAKAO_ADMIN_KEY=${{ secrets.VITE_KAKAO_ADMIN_KEY }}" >> .env.production
+          echo "VITE_KAKAO_REDIRECT_URI=${{ secrets.VITE_KAKAO_REDIRECT_URI }}" >> .env.production
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> .env.production
 
       - name: install npm dependencies
         run: npm install
@@ -31,15 +34,16 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY_ID }}
           aws-region: ap-northeast-2
+
+      - name: Upload to S3
         env:
-          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME}}
+          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
         run: |
-          aws s3 sync \
-            ./dist s3://$BUCKET_NAME
+          aws s3 sync ./dist s3://$BUCKET_NAME
 
       - name: CloudFront Invalidation
         env:
-          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
+          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID }}
         run: |
           aws cloudfront create-invalidation \
             --distribution-id $CLOUD_FRONT_ID --paths /*
