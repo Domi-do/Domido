@@ -20,4 +20,4 @@ export const GAME_THEME = {
     background: "/hdr/night.hdr",
     cameraAngle: [-12, 4, -15],
   },
-};
+} as const;

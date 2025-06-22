@@ -1,4 +1,9 @@
-const Intro = ({ onStart, onTutorialEnd }) => {
+interface IntroProps {
+  onStart: () => void;
+  onTutorialEnd: () => void;
+}
+
+const Intro = ({ onStart, onTutorialEnd }: IntroProps) => {
   return (
     <div className="fixed inset-0 z-[200] bg-black/80 flex flex-col items-center justify-center text-center px-4">
       <h3 className="text-4xl font-extrabold text-white drop-shadow-sm mb-4 tracking-wide">

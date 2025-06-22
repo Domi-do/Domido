@@ -8,7 +8,19 @@ import AchievementPanel from "@/components/AchievementPanel";
 import HUDButton from "@/components/DominoHUD/HUDButtonGroup/HUDButton";
 import HUDLogoutButton from "@/components/DominoHUD/HUDButtonGroup/HUDLogoutButton";
 
-const HUDButtons = ({ onClickSetting, onClickReset, onClickClear, openProjectModal }) => {
+interface HUDButtonsProps {
+  onClickSetting: () => void;
+  onClickReset: () => void;
+  onClickClear: () => void;
+  openProjectModal: () => void;
+}
+
+const HUDButtons = ({
+  onClickSetting,
+  onClickReset,
+  onClickClear,
+  openProjectModal,
+}: HUDButtonsProps) => {
   const [isAchievementPanelOpen, setIsAchievementPanelOpen] = useState(false);
 
   return (

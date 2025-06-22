@@ -1,4 +1,13 @@
-const StepCard = ({ step, total, message, canProceed, onNext, onTutorialEnd }) => {
+interface StepCardProps {
+  step: number;
+  total: number;
+  message: string;
+  canProceed: boolean;
+  onNext: () => void;
+  onTutorialEnd: () => void;
+}
+
+const StepCard = ({ step, total, message, canProceed, onNext, onTutorialEnd }: StepCardProps) => {
   const isLastStep = step === total;
   const progressPercent = Math.round((step / total) * 100);
 

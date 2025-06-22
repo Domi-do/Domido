@@ -15,7 +15,11 @@ import useDominoReset from "@/hooks/useDominoReset";
 import useDominoStore from "@/store/useDominoStore";
 import useUserStore from "@/store/useUserStore";
 
-const DominoHUD = ({ isOpenGuideToastVisible }) => {
+interface DominoHUDProps {
+  isOpenGuideToastVisible: boolean;
+}
+
+const DominoHUD = ({ isOpenGuideToastVisible }: DominoHUDProps) => {
   const clearDominos = useDominoStore((state) => state.setClearDominos);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isClearConfirmModalOpen, setClearConfirmModalOpen] = useState(false);

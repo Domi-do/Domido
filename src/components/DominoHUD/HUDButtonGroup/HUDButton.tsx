@@ -1,6 +1,13 @@
 import useDominoStore from "@/store/useDominoStore";
+import { ReactNode } from "react";
 
-const HUDButton = ({ onClick, children, title }) => {
+interface HUDButton {
+  onClick: () => void;
+  children: ReactNode;
+  title: string;
+}
+
+const HUDButton = ({ onClick, children, title }: HUDButton) => {
   const setSelectedDomino = useDominoStore((state) => state.setSelectedDomino);
 
   return (

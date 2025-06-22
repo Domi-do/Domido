@@ -1,4 +1,13 @@
-export default function GroundTypeButton({ type, image, selected, onClick }) {
+type ThemeType = "sea" | "forest" | "desert";
+
+interface HUDButtonsProps {
+  type: ThemeType;
+  image: string;
+  selected: boolean;
+  onClick: (type: ThemeType) => void;
+}
+
+export default function GroundTypeButton({ type, image, selected, onClick }: HUDButtonsProps) {
   return (
     <button
       onClick={() => onClick(type)}

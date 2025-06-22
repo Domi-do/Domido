@@ -1,6 +1,12 @@
 import { createContext, ReactNode, useCallback, useContext, useState } from "react";
 
-const TOAST_PLACEMENTS = ["topLeft", "topRight", "bottomLeft", "bottomRight", "center"] as const;
+export const TOAST_PLACEMENTS = [
+  "topLeft",
+  "topRight",
+  "bottomLeft",
+  "bottomRight",
+  "center",
+] as const;
 
 type ToastPlacement = (typeof TOAST_PLACEMENTS)[number];
 
@@ -10,9 +16,9 @@ interface ToastType {
   placement: ToastPlacement;
 }
 
-type ToastOptions = { message: string; placement?: ToastPlacement; duration?: number };
+export type ToastOptions = { message: string; placement?: ToastPlacement; duration?: number };
 
-type ToastContextType = { showToast: (options: ToastOptions) => void };
+export type ToastContextType = { showToast: (options: ToastOptions) => void };
 
 const ToastContext = createContext<ToastContextType | null>(null);
 

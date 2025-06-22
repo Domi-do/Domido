@@ -9,7 +9,13 @@ import { GAME_THEME } from "@/constants/gameThema";
 import { useToast } from "@/store/ToastContext";
 import useSettingStore from "@/store/useSettingStore";
 
-const SettingModal = ({ closeModal }) => {
+interface SettingModalProps {
+  closeModal: () => void;
+}
+
+type ThemeType = "sea" | "forest" | "desert";
+
+const SettingModal = ({ closeModal }: SettingModalProps) => {
   const { projectId } = useParams();
   const [inviteCode, setInviteCode] = useState("");
   const navigate = useNavigate();
@@ -33,7 +39,11 @@ const SettingModal = ({ closeModal }) => {
   }, [projectId]);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(projectId);
+    if (projectId !== undefined) {
+      await navigator.clipboard.writeText(projectId);
+    } else {
+      console.warn("❗️ projectId가 없습니다. 클립보드 복사 생략");
+    }
     showToast({ message: "복사 완료 ✅  ", placement: "center" });
   };
   const handleJoin = async () => {
@@ -52,8 +62,9 @@ const SettingModal = ({ closeModal }) => {
       }
 
       navigate(`/projects/${inviteCode}`);
-    } catch (err) {
-      console.error("프로젝트 유효성 검사 실패:", err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.";
+      console.error("프로젝트 유효성 검사 실패:", message);
       showToast({ message: "존재하지 않는 프로젝트입니다 ❗", placement: "center" });
     }
   };
@@ -98,16 +109,19 @@ const SettingModal = ({ closeModal }) => {
 
         <SettingGroup title="테마">
           <ul className="flex gap-[10px]">
-            {Object.entries(GAME_THEME).map(([type, { thumbnail }]) => (
-              <li key={type}>
-                <GroundTypeButton
-                  type={type}
-                  image={thumbnail}
-                  selected={themaType === type}
-                  onClick={setThemaType}
-                />
-              </li>
-            ))}
+            {(Object.entries(GAME_THEME) as [ThemeType, { thumbnail: string }][]).map(
+              ([type, { thumbnail }]) => (
+                <li key={type}>
+                  <GroundTypeButton
+                    type={type}
+                    image={thumbnail}
+                    selected={themaType === type}
+                    onClick={setThemaType}
+                  />
+                </li>
+              ),
+            )}
+            s
           </ul>
         </SettingGroup>
         <SettingGroup title="초대 코드">

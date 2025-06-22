@@ -20,9 +20,9 @@ export default function DominoColorPalette() {
   const setSelectedColor = useDominoStore((state) => state.setSelectedColor);
 
   const { showToast } = useToast();
-  const userId = useUserStore((state) => state.userInfo?.userID);
+  const userId: string | undefined = useUserStore((state) => state.userInfo?.userID);
 
-  const handleSelect = (color) => {
+  const handleSelect = (color: string) => {
     CheckChangeDominoColorAchievement({ userId, showToast });
     setSelectedColor(color);
   };

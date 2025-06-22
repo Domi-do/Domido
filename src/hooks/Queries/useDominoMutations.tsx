@@ -2,20 +2,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 import fetcher from "@/services/fetcher";
+import { useSocket } from "@/store/SocketContext";
+import { DominoType } from "@/types/domino";
 
-export const useDominoOverwrite = () => {
+export const useDominoMutations = () => {
   const { projectId } = useParams();
   const queryClient = useQueryClient();
+  const { socket } = useSocket();
 
   return useMutation({
-    mutationFn: ({ dominos }) =>
-      fetcher(`/dominos/${projectId}/overwrite`, { method: "POST", body: { dominos } }),
+    mutationFn: ({ dominos }: { dominos: DominoType[] }) =>
+      fetcher(`/dominos/${projectId}`, { method: "POST", body: { dominos } }),
 
     onMutate: async ({ dominos }) => {
       await queryClient.cancelQueries({ queryKey: ["dominos", projectId] });
 
       const previousDominos = queryClient.getQueryData(["dominos", projectId]);
-
       queryClient.setQueryData(["dominos", projectId], dominos);
 
       return { previousDominos };
@@ -25,8 +27,9 @@ export const useDominoOverwrite = () => {
       queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
+    onSuccess: (newDominos) => {
+      queryClient.setQueryData(["dominos", projectId], newDominos);
+      socket.emit("update domino", { projectId });
     },
   });
 };
