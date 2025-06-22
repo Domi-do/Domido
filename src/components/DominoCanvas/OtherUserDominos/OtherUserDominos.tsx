@@ -4,12 +4,14 @@ import { useMemo } from "react";
 import ObjectRenderer from "@/components/DominoCanvas/ObjectRenderer/ObjectRenderer";
 import { useSocket } from "@/store/SocketContext";
 
+import type { OtherCursorsState } from "@/types/otherCursor";
+
 const USER_NAME_FONT_SIZE = 0.3;
 const FONT_OUT_LINE = 0.02;
 const USERNAME_TEXT_OFFSET = 1.2;
 
 const OtherUserDominos = () => {
-  const { otherCursors } = useSocket();
+  const { otherCursors } = useSocket() as { otherCursors: OtherCursorsState };
 
   const otherDominoMeshes = useMemo(() => {
     return Object.entries(otherCursors).map(

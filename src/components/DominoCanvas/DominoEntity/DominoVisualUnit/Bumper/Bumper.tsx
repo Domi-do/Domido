@@ -1,7 +1,9 @@
 import { CuboidCollider } from "@react-three/rapier";
 import * as THREE from "three";
 
-const Bumper = ({ position }) => {
+type BumperProps = { position: [number, number, number] };
+
+const Bumper = ({ position }: BumperProps) => {
   return (
     <CuboidCollider
       args={[0.5, 0.3, 0.5]}

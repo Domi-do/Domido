@@ -1,19 +1,24 @@
 import { useFrame } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
+import { RefObject } from "react";
 import { Quaternion, Vector3 } from "three";
+import type { RapierRigidBody } from "@react-three/rapier";
 
 import { useSocket } from "@/store/SocketContext";
+import type { DominoType } from "@/types/domino";
 
-const Car = ({ rigidBodyRefs }) => {
+export type CarProps = { rigidBodyRefs: RefObject<RapierRigidBody[]> };
+
+const Car = ({ rigidBodyRefs }: CarProps) => {
   const queryClient = useQueryClient();
   const applied = useRef(false);
   const timeAccum = useRef(0);
   const { projectId } = useSocket();
 
-  const dominos = queryClient.getQueryData(["dominos", projectId]) || [];
+  const dominos = (queryClient.getQueryData(["dominos", projectId]) as DominoType[]) || [];
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (timeAccum.current < 0.8) {
       timeAccum.current += delta;
       return;

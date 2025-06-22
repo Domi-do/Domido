@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Dispatch, KeyboardEventHandler, SetStateAction, useEffect } from "react";
 
 import { TUTORIAL_STEPS, TRACKER_KEYS } from "@/constants/tutorialStep";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
@@ -6,8 +6,20 @@ import { useKeyHandler } from "@/hooks/useKeyHandler";
 import { useSocket } from "@/store/SocketContext";
 import useDominoStore from "@/store/useDominoStore";
 import { useTutorialStore } from "@/store/useTutorialStore";
+import { dominoHistory } from "@/types/dominoHistory";
+import { DominoType } from "@/types/domino";
 
-const useDominoKeyboardControls = (onToggleGuideToast, historyRef) => {
+type UpdateFn = (
+  historyRef: dominoHistory,
+  isShowToast: Dispatch<SetStateAction<boolean>> | boolean,
+) => DominoType[];
+
+type KeyMap = Record<string, KeyboardEventHandler>;
+
+const useDominoKeyboardControls = (
+  onToggleGuideToast: Dispatch<SetStateAction<boolean>>,
+  historyRef: dominoHistory,
+) => {
   const {
     deleteSelectedDomino,
     toggleSelectedDominoOpacity,
@@ -26,7 +38,7 @@ const useDominoKeyboardControls = (onToggleGuideToast, historyRef) => {
     return TUTORIAL_STEPS[currentStep - 1]?.trackerKey;
   };
 
-  const handleDominoUpdate = (updateFn, isShowToast = true) => {
+  const handleDominoUpdate = (updateFn: UpdateFn, isShowToast = true) => {
     const updatedDominos =
       isShowToast ? updateFn(historyRef, onToggleGuideToast) : updateFn(historyRef, true);
 
@@ -35,7 +47,7 @@ const useDominoKeyboardControls = (onToggleGuideToast, historyRef) => {
     }
   };
 
-  const setTrackerIfMatched = (trackerKey) => {
+  const setTrackerIfMatched = (trackerKey: string) => {
     if (getStepTrackerKey() === trackerKey) {
       setTracker(trackerKey, true);
     }
@@ -59,7 +71,7 @@ const useDominoKeyboardControls = (onToggleGuideToast, historyRef) => {
   const handleOpacityObject = () => handleDominoUpdate(toggleSelectedDominoOpacity);
   const handleUndo = () => handleDominoUpdate(undoDominoHistory, false);
 
-  const keyMap = {
+  const keyMap: Record<string, () => void> = {
     x: handleDeleteObject,
     h: handleOpacityObject,
     u: handleUndo,
@@ -73,7 +85,7 @@ const useDominoKeyboardControls = (onToggleGuideToast, historyRef) => {
     },
   };
 
-  const handleKeydown = (event) => {
+  const handleKeydown = (event: KeyboardEvent) => {
     event.stopPropagation();
 
     const key = event.key.toLowerCase();

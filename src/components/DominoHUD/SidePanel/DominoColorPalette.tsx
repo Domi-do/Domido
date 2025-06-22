@@ -13,7 +13,7 @@ const COLORS = [
   { type: "purple", hex: "#8B5CF6" },
   { type: "white", hex: "#FFFFFF" },
   { type: "black", hex: "#000000" },
-];
+] as const;
 
 export default function DominoColorPalette() {
   const selectedColor = useDominoStore((state) => state.selectedColor);

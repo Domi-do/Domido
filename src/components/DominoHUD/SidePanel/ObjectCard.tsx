@@ -1,7 +1,14 @@
 import useTutorialTracker from "@/hooks/useTutorialTracker";
 import useDominoStore from "@/store/useDominoStore";
+import { ObjectMetaDataType } from "@/types/objectMetaData";
 
-const ObjectCard = ({ objectName, objectInfo, groupName }) => {
+interface ObjectCardProps {
+  objectName: string;
+  objectInfo: ObjectMetaDataType;
+  groupName: "STATIC_OBJECTS" | "DYNAMIC_OBJECTS";
+}
+
+const ObjectCard = ({ objectName, objectInfo, groupName }: ObjectCardProps) => {
   const { selectedDomino, setSelectedDomino } = useDominoStore();
   const selectedObjectName = selectedDomino?.objectName;
 

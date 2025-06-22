@@ -7,18 +7,19 @@ import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import useTutorialTracker from "@/hooks/useTutorialTracker";
 import { useSocket } from "@/store/SocketContext";
 import { useTutorialStore } from "@/store/useTutorialStore";
+import type { DominoType } from "@/types/domino";
 
 const cannonMetadata = OBJECT_METADATA[OBJECT_GROUP_NAMES.DYNAMIC].cannon;
 
-const CANNON_POSITION = [4, 0, 0];
-const CANNON_ROTATION = [0, -1.5, 0];
-const TRIGGER_OFFSET = [0, 0, -1.2];
-const TRIGGER_SIZE = [0.3, 32, 32];
+const CANNON_POSITION: [number, number, number] = [4, 0, 0];
+const CANNON_ROTATION: [number, number, number] = [0, -1.5, 0];
+const TRIGGER_OFFSET: [number, number, number] = [0, 0, -1.2];
+const TRIGGER_SIZE: [number, number, number] = [0.3, 32, 32];
 
 const CannonAutoPlacer = () => {
   const queryClient = useQueryClient();
   const { projectId } = useSocket();
-  const dominos = queryClient.getQueryData(["dominos", projectId]);
+  const dominos = (queryClient.getQueryData(["dominos", projectId]) as DominoType[]) ?? [];
 
   const { mutate } = useDominoMutations();
   const { tracker } = useTutorialStore();
@@ -30,15 +31,17 @@ const CannonAutoPlacer = () => {
   useEffect(() => {
     if (!tracker.placedDominoForKnock) return;
 
-    const newCannon = {
+    const newCannon: Omit<DominoType, "_id"> = {
       position: [...CANNON_POSITION],
       rotation: [...CANNON_ROTATION],
       objectInfo: {
         ...cannonMetadata,
         objectName: "cannon",
         groupName: OBJECT_GROUP_NAMES.DYNAMIC,
+        type: cannonMetadata.type as "dynamic" | "fixed",
       },
       opacity: 1,
+      color: null,
     };
 
     const updatedDominos = [...dominos, newCannon];

@@ -6,7 +6,7 @@ import { useSocket } from "@/store/SocketContext";
 import { DominoType } from "@/types/domino";
 
 export const useDominoMutations = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams<{ projectId: string }>();
   const queryClient = useQueryClient();
   const { socket } = useSocket();
 
@@ -17,14 +17,18 @@ export const useDominoMutations = () => {
     onMutate: async ({ dominos }) => {
       await queryClient.cancelQueries({ queryKey: ["dominos", projectId] });
 
-      const previousDominos = queryClient.getQueryData(["dominos", projectId]);
+      const previousDominos = queryClient.getQueryData<DominoType[]>(["dominos", projectId]);
       queryClient.setQueryData(["dominos", projectId], dominos);
 
       return { previousDominos };
     },
 
-    onError: () => {
-      queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
+    onError: (_err, _variables, context) => {
+      if (context?.previousDominos) {
+        queryClient.setQueryData(["dominos", projectId], context.previousDominos);
+      } else {
+        queryClient.invalidateQueries({ queryKey: ["dominos", projectId] });
+      }
     },
 
     onSuccess: (newDominos) => {

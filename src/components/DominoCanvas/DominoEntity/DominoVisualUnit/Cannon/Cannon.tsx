@@ -1,10 +1,12 @@
-import { CuboidCollider } from "@react-three/rapier";
+import { CuboidCollider, RapierRigidBody, RapierCollider } from "@react-three/rapier";
 
 import useCannonControls from "@/hooks/useCannonControls";
 
+type CannonProps = { onAfterTrigger?: () => void };
+
 const CANNON_TARGETS = ["beachBall", "steelBall", "soccerFootball"];
 
-const Cannon = ({ onAfterTrigger }) => {
+const Cannon = ({ onAfterTrigger }: CannonProps) => {
   const { handleCannonTrigger } = useCannonControls();
 
   return (
@@ -14,14 +16,14 @@ const Cannon = ({ onAfterTrigger }) => {
       sensor
       onIntersectionEnter={({ other, target }) => {
         const objectName = other.rigidBodyObject?.name;
-        const isCannonTarget = CANNON_TARGETS.includes(objectName);
+        const isCannonTarget = CANNON_TARGETS?.includes(objectName as string);
 
         if (!isCannonTarget) return;
 
         handleCannonTrigger(other, target);
 
         if (onAfterTrigger) {
-          onAfterTrigger(other, target);
+          onAfterTrigger();
         }
       }}
     />

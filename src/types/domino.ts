@@ -1,8 +1,8 @@
 import type { ObjectMetaDataType } from "@/types/objectMetaData";
 
 export interface DominoType {
-  _id: string;
-  projectId: string;
+  _id?: string;
+  projectId?: string;
   position: [number, number, number];
   rotation: [number, number, number];
   opacity: number;
@@ -10,6 +10,5 @@ export interface DominoType {
   objectInfo: ObjectMetaDataType & {
     objectName: string;
     groupName: "STATIC_OBJECTS" | "DYNAMIC_OBJECTS";
-    _id: string;
   };
 }

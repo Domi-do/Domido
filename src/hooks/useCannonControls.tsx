@@ -1,9 +1,12 @@
 import * as THREE from "three";
+import { CollisionTarget } from "@react-three/rapier";
 
 const useCannonControls = () => {
-  const handleCannonTrigger = (other, target) => {
+  const handleCannonTrigger = (other: CollisionTarget, target: CollisionTarget) => {
     const cannonObject = target.colliderObject;
     const rigidBody = other.rigidBody;
+
+    if (!cannonObject) return;
 
     const cannonDirection = new THREE.Vector3();
     cannonObject.getWorldDirection(cannonDirection);
@@ -17,6 +20,8 @@ const useCannonControls = () => {
       .add(cannonDirection.clone().multiplyScalar(launchOffset));
 
     launchPosition.y += 0.75;
+
+    if (!rigidBody) return;
 
     rigidBody.setEnabled(false);
 

@@ -1,11 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-import TargetPlaceholder from "@/components/DominoCanvas/DominoEntity/TutorialStepHandler/TutorialTargetPlace/TargetPlaceHolder/TargetPlaceHolder";
+import TargetPlaceholder from "@/components/DominoCanvas/DominoEntity/TutorialStepHandler/TutorialTargetPlace/TargetPlaceholder/TargetPlaceholder";
 import useTutorialTracker from "@/hooks/useTutorialTracker";
 
-const TutorialTargetPlace = ({ positions }) => {
+interface TutorialTargetPlaceProps {
+  positions: [number, number, number];
+}
+
+const TutorialTargetPlace = ({ positions }: TutorialTargetPlaceProps) => {
   const { projectId } = useParams();
   const queryClient = useQueryClient();
   const dominos = queryClient.getQueryData(["dominos", projectId]);

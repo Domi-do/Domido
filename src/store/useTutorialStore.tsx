@@ -2,7 +2,18 @@ import { create } from "zustand";
 
 import { TUTORIAL_STEPS, TRACKER_KEYS } from "@/constants/tutorialStep";
 
-export const useTutorialStore = create((set) => ({
+type TrackerState = { [K in (typeof TRACKER_KEYS)[keyof typeof TRACKER_KEYS]]: boolean };
+
+interface TutorialStoreType {
+  currentStep: number;
+  tracker: TrackerState;
+  setTracker: (key: TrackerStateKey, value: boolean) => void;
+  nextStep: () => void;
+}
+
+type TrackerStateKey = TrackerState extends Record<infer K, boolean> ? K : never;
+
+export const useTutorialStore = create<TutorialStoreType>((set) => ({
   currentStep: 0,
 
   tracker: {

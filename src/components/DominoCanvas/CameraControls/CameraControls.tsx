@@ -1,39 +1,40 @@
 import { OrbitControls } from "@react-three/drei";
+import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { useThree, useFrame } from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
 import useSettingStore from "@/store/useSettingStore";
+import { CameraAngleType } from "@/types/cameraAngle";
 
-const CameraControls = ({ cameraAngle }) => {
+type CameraAngle = CameraAngleType;
+
+interface CameraControlsProps {
+  cameraAngle: CameraAngle;
+}
+
+const CameraControls = ({ cameraAngle }: CameraControlsProps) => {
   const rotationSensitivity = useSettingStore((state) => state.rotationSensitivity);
-
   const { camera, gl } = useThree();
-  const controlsRef = useRef(null);
+  const controlsRef = useRef<OrbitControlsImpl | null>(null);
   const moveSpeed = 0.15;
 
-  const moveState = useRef({ KeyW: false, KeyA: false, KeyS: false, KeyD: false });
+  const moveState = useRef<Record<string, boolean>>({
+    KeyW: false,
+    KeyA: false,
+    KeyS: false,
+    KeyD: false,
+  });
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      switch (e.code) {
-        case "KeyW":
-        case "KeyA":
-        case "KeyS":
-        case "KeyD":
-          moveState[e.code] = true;
-          break;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (moveState.current.hasOwnProperty(e.code)) {
+        moveState.current[e.code] = true;
       }
     };
-
-    const handleKeyUp = (e) => {
-      switch (e.code) {
-        case "KeyW":
-        case "KeyA":
-        case "KeyS":
-        case "KeyD":
-          moveState[e.code] = false;
-          break;
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (moveState.current.hasOwnProperty(e.code)) {
+        moveState.current[e.code] = false;
       }
     };
 
@@ -46,7 +47,7 @@ const CameraControls = ({ cameraAngle }) => {
   }, []);
 
   useEffect(() => {
-    camera.position.set(...cameraAngle);
+    camera.position.set(...(cameraAngle as [number, number, number]));
     camera.lookAt(0, 0, 0);
   }, [cameraAngle]);
 
@@ -60,27 +61,24 @@ const CameraControls = ({ cameraAngle }) => {
 
     const right = new THREE.Vector3().crossVectors(forward, camera.up).normalize();
 
-    if (moveState["KeyW"]) direction.add(forward);
-    if (moveState["KeyS"]) direction.sub(forward);
-    if (moveState["KeyA"]) direction.sub(right);
-    if (moveState["KeyD"]) direction.add(right);
+    if (moveState.current["KeyW"]) direction.add(forward);
+    if (moveState.current["KeyS"]) direction.sub(forward);
+    if (moveState.current["KeyA"]) direction.sub(right);
+    if (moveState.current["KeyD"]) direction.add(right);
 
     if (direction.lengthSq() > 0) {
       direction.normalize().multiplyScalar(moveSpeed);
       camera.position.add(direction);
-      if (controlsRef.current) {
-        controlsRef.current.target.add(direction);
-      }
+      controlsRef.current?.target.add(direction);
     }
   });
 
   return (
     <OrbitControls
       ref={controlsRef}
-      args={[camera, gl.domElement]}
       enableZoom={true}
-      mouseButtons={{ LEFT: null, MIDDLE: 0, RIGHT: 2 }}
-      rotateSpeed={rotationSensitivity}
+      mouseButtons={{ MIDDLE: 0, RIGHT: 2 }}
+      rotateSpeed={Number(rotationSensitivity)}
       enableDamping={true}
       dampingFactor={1.25}
       minPolarAngle={Math.PI / 6}

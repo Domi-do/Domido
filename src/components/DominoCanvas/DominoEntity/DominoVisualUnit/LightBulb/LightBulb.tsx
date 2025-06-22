@@ -1,8 +1,17 @@
-import { CuboidCollider } from "@react-three/rapier";
+import { CuboidCollider, RapierCollider } from "@react-three/rapier";
 import { useState } from "react";
+import type { RapierRigidBody } from "@react-three/rapier";
 
-const LightBulb = ({ id }) => {
-  const [lightOnMap, setLightOnMap] = useState({});
+interface LightBulbProps {
+  id: string;
+}
+
+const LightBulb = ({ id }: LightBulbProps) => {
+  const [lightOnMap, setLightOnMap] = useState<Record<string, boolean>>({});
+
+  function isRapierRigidBody(obj: unknown): obj is RapierRigidBody {
+    return !!obj && typeof obj === "object" && "applyImpulse" in obj;
+  }
 
   return (
     <>
@@ -10,8 +19,8 @@ const LightBulb = ({ id }) => {
         args={[0.3, 0.4, 0.4]}
         position={[1.65, -0.5, 1.25]}
         sensor
-        onIntersectionEnter={(other) => {
-          if (other.rigidBodyObject.name === "defaultObject") {
+        onIntersectionEnter={({ other }) => {
+          if (isRapierRigidBody(other) && other.rigidBodyObject?.name === "defaultObject") {
             setTimeout(() => {
               setLightOnMap((prev) => ({ ...prev, [id]: true }));
             }, 300);

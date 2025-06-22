@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { TUTORIAL_STEPS } from "@/constants/tutorialStep";
 import { useTutorialStore } from "@/store/useTutorialStore";
 
-const useTutorialTracker = (shouldClearStep) => {
+const useTutorialTracker = (shouldClearStep: boolean) => {
   const { currentStep, tracker, setTracker } = useTutorialStore.getState();
   const stepTrackerKey = TUTORIAL_STEPS[currentStep - 1]?.trackerKey;
 

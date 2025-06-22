@@ -2,9 +2,12 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
+import { DominoType } from "@/types/domino";
 
-import { CheckFirstDominoAchievement } from "@/achievments/CheckDominoAchievement";
-import { CheckHundredDominoAchievement } from "@/achievments/CheckDominoAchievement";
+import {
+  CheckFirstDominoAchievement,
+  CheckHundredDominoAchievement,
+} from "@/achievments/CheckDominoAchievement";
 import { ObjectRenderer } from "@/components/DominoCanvas";
 import { useDominoMutations } from "@/hooks/Queries/useDominoMutations";
 import { useSocket } from "@/store/SocketContext";
@@ -13,6 +16,11 @@ import useDominoStore from "@/store/useDominoStore";
 import useSettingStore from "@/store/useSettingStore";
 import useUserStore from "@/store/useUserStore";
 import AudioController from "@/utils/AudioController";
+import { dominoHistory } from "@/types/dominoHistory";
+
+interface CursorFollowerObjectProps {
+  historyRef: dominoHistory;
+}
 
 const DEFAULT_OPACITY = 1;
 const BLOCKED_MOUSE_BUTTONS = [1, 2];
@@ -30,12 +38,12 @@ const OBJECT_NAMES = [
   "rainbowSlide",
 ];
 
-const CursorFollowerObject = ({ historyRef }) => {
+const CursorFollowerObject = ({ historyRef }: CursorFollowerObjectProps) => {
   const queryClient = useQueryClient();
   const { selectedDomino, rotationY, selectedColor } = useDominoStore();
   const objectVolume = useSettingStore((state) => state.objectVolume);
   const { camera, pointer, scene } = useThree();
-  const meshRef = useRef();
+  const meshRef = useRef<THREE.Mesh>(null);
   const audioController = useRef(new AudioController());
   const { projectId, socket } = useSocket();
   const { mutate } = useDominoMutations();
@@ -45,10 +53,12 @@ const CursorFollowerObject = ({ historyRef }) => {
   const userId = useUserStore((state) => state.userInfo?.userID);
 
   const playDominoDropSound = () => {
+    if (!selectedDomino) return;
+
     audioController.current.play(selectedDomino.sound);
   };
 
-  const handlePlaceDomino = (e) => {
+  const handlePlaceDomino = (e: MouseEvent) => {
     e.stopPropagation();
 
     const nowTime = Date.now();
@@ -62,22 +72,23 @@ const CursorFollowerObject = ({ historyRef }) => {
 
     if (cannotPlaceDomino) return;
 
-    const currentPosition = meshRef.current.position;
+    const currentPosition = meshRef.current?.position;
 
     const newDomino = {
-      position: [currentPosition.x, currentPosition.y, currentPosition.z],
+      position: [currentPosition?.x, currentPosition?.y, currentPosition?.z],
       rotation: [0, rotationY, 0],
       objectInfo: { ...selectedDomino },
       opacity: DEFAULT_OPACITY,
       color: selectedColor,
     };
-    const latestDominos = queryClient.getQueryData(["dominos", projectId]) || [];
-    const updatedDomino = [...latestDominos, newDomino];
+
+    const latestDominos = (queryClient.getQueryData(["dominos", projectId]) as DominoType[]) || [];
+    const updatedDomino: DominoType[] = [...latestDominos, newDomino] as DominoType[];
 
     mutate(
       { dominos: updatedDomino },
       {
-        onSuccess: (data) => {
+        onSuccess: (data: DominoType[]) => {
           historyRef.current.push(data);
         },
       },

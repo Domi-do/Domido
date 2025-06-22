@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 interface SettingStoreType {
-  themaType: "sea" | "forest" | "desert";
+  themaType: "sea" | "garden" | "night";
   rotationSensitivity: string;
   volumeLevel: number;
   objectVolume: number;

@@ -1,7 +1,7 @@
 import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { Suspense, useRef } from "react";
+import { Dispatch, SetStateAction, Suspense, useRef } from "react";
 
 import GlobalAudio from "@/components/Common/GlobalAudio";
 import Loading from "@/components/Common/Loading";
@@ -16,7 +16,17 @@ import { GAME_THEME } from "@/constants/gameThema";
 import useDominoKeyboardControls from "@/hooks/useDominoKeyboardControls";
 import useSettingStore from "@/store/useSettingStore";
 
-const DominoCanvas = ({ setIsGuideToastVisible, openGuideToast, closeGuideToast }) => {
+interface DominoCanvasProps {
+  setIsGuideToastVisible: Dispatch<SetStateAction<boolean>>;
+  openGuideToast: (event: React.PointerEvent<Element>, key: string) => void;
+  closeGuideToast: () => void;
+}
+
+const DominoCanvas = ({
+  setIsGuideToastVisible,
+  openGuideToast,
+  closeGuideToast,
+}: DominoCanvasProps) => {
   const themaType = useSettingStore((state) => state.themaType);
   const currentThema = GAME_THEME[themaType];
   const historyRef = useRef([]);

@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
+
 interface StepCardProps {
   step: number;
   total: number;
-  message: string;
+  message: ReactNode;
   canProceed: boolean;
   onNext: () => void;
   onTutorialEnd: () => void;

@@ -2,7 +2,12 @@ import { Box } from "@react-three/drei";
 
 const TARGET_COLORS = { SUCCESS: "#28a745", PENDING: "#007BFF" };
 
-const TargetPlaceholder = ({ position, isCompleted }) => {
+interface TargetPlaceholderProps {
+  position: [number, number, number];
+  isCompleted: boolean;
+}
+
+const TargetPlaceholder = ({ position, isCompleted }: TargetPlaceholderProps) => {
   const color = isCompleted ? TARGET_COLORS.SUCCESS : TARGET_COLORS.PENDING;
 
   return (
