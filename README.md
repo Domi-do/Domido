@@ -1,195 +1,166 @@
-# [Domido](https://www.domido.co.kr) – 3D 도미노 시뮬레이터
+<div align="center">
 
-- 마우스로 직접 도미노를 배치하고, 중력의 법칙에 따라 쓰러지는 도미노의 연쇄 반응을 시뮬레이션할 수 있습니다.
+![compressed_image_under_1MB (1)](https://github.com/user-attachments/assets/b78436a3-0832-4696-b9ce-71a4e1e6f4a6)
 
-## 📑 Table of Contents
+**Domido - 3D 도미노 시뮬레이터**
 
-- [Domido – 3D 도미노 시뮬레이터](#domido--3d-도미노-시뮬레이터)
-  - [📑 Table of Contents](#-table-of-contents)
-  - [🔥 Motivation](#-motivation)
-  - [📱 Preview](#-preview)
-  - [💻 Development](#-development)
+마우스로 직접 도미노를 배치하고, 중력의 법칙에 따라 쓰러지는 도미노의 연쇄 반응을 시뮬레이션할 수 있습니다.
+
+</div>
+
+## 목차
+
+- [Domido - 3D 도미노 시뮬레이터](#domido---3d-도미노-시뮬레이터)
+  - [목차](#목차)
+  - [주요 기능](#주요-기능)
+  - [기술 스택](#기술-스택)
+  - [개발 과정](#개발-과정)
     - [1. 다양한 도미노 오브젝트를 어떻게 관리할까?](#1-다양한-도미노-오브젝트를-어떻게-관리할까)
-      - [❗ 문제 상황](#-문제-상황)
-      - [💡 해결 아이디어](#-해결-아이디어)
-      - [⚙️ 구현 방식](#️-구현-방식)
     - [2. 사용자가 클릭한 3D 위치에 도미노를 어떻게 정확히 배치할까?](#2-사용자가-클릭한-3d-위치에-도미노를-어떻게-정확히-배치할까)
-      - [❗ 문제 상황](#-문제-상황-1)
-      - [💡 해결 아이디어](#-해결-아이디어-1)
-      - [⚙️ 구현 방식](#️-구현-방식-1)
     - [3. 멀티플레이시 사용자에게 정확하고 빠른 결과를 어떻게 줄 수 있을까?](#3-멀티플레이시-사용자에게-정확하고-빠른-결과를-어떻게-줄-수-있을까)
-      - [❗ 문제 상황](#-문제-상황-2)
-      - [💡 해결 아이디어](#-해결-아이디어-2)
-      - [⚙️ 구현 방식](#️-구현-방식-2)
     - [4. 튜토리얼 로직을 기존 기능에 영향을 주지 않고 어떻게 설계할까?](#4-튜토리얼-로직을-기존-기능에-영향을-주지-않고-어떻게-설계할까)
-      - [❗ 문제 상황](#-문제-상황-3)
-      - [💡 해결 아이디어](#-해결-아이디어-3)
-      - [⚙️ 구현 방식](#️-구현-방식-3)
     - [5. 단축키 하나에 모든 도미노가 반응한다고? React key 문제 해결기](#5-단축키-하나에-모든-도미노가-반응한다고-react-key-문제-해결기)
-      - [🎯 구현 상황](#-구현-상황)
-      - [❗ 문제 상황](#-문제-상황-4)
-      - [💡 해결 아이디어](#-해결-아이디어-4)
-      - [⚙️ 구현 방식](#️-구현-방식-4)
-  - [🛠️ Optimization](#️-optimization)
-    - [1. 키 이벤트 중복 등록 최적화](#1-키-이벤트-중복-등록-최적화)
-      - [🔁 KeyDown 이벤트 중복 처리 리팩토링 필요성 및 대응 방안](#-keydown-이벤트-중복-처리-리팩토링-필요성-및-대응-방안)
-      - [✅ 문제점 1: 이벤트 중복 등록 가능성](#-문제점-1-이벤트-중복-등록-가능성)
-      - [✅ 문제점 2: 로직의 분산](#-문제점-2-로직의-분산)
-      - [💡 해결 방안: `useDominoKeyboardControls` 커스텀 훅 도입](#-해결-방안-usedominokeyboardcontrols-커스텀-훅-도입)
-    - [2. 커서 이동시 프레임 저하 최적화](#2-커서-이동시-프레임-저하-최적화)
-      - [배경](#배경)
-      - [❗ 문제점 요약](#-문제점-요약)
-      - [💡 해결 전략](#-해결-전략)
-      - [✅ debounce 적용 (throttle 방식)](#-debounce-적용-throttle-방식)
-      - [비교 스크린샷](#비교-스크린샷)
-  - [🔫 Trouble Shooting](#-trouble-shooting)
-    - [1. Three.js + React에서 GLTF 모델이 배열에 추가되지 않는 문제](#1-threejs--react에서-gltf-모델이-배열에-추가되지-않는-문제)
-      - [❓ 문제 요약](#-문제-요약)
-      - [🧪 재현 상황](#-재현-상황)
-      - [❗️문제 원인](#️문제-원인)
-      - [💡 해결 방법: .clone(true)로 깊은 복제](#-해결-방법-clonetrue로-깊은-복제)
-      - [왜 .clone(true)가 꼭 필요한가?](#왜-clonetrue가-꼭-필요한가)
-    - [2. 새로고침 시 배경음악이 꺼지는 현상](#2-새로고침-시-배경음악이-꺼지는-현상)
-      - [❓ 문제 요약](#-문제-요약-1)
-      - [🎯 BGM이 재생되지 않는 상황](#-bgm이-재생되지-않는-상황)
-      - [⚠️ 문제 원인](#️-문제-원인)
-      - [📜 브라우저 콘솔 경고 메시지 예시](#-브라우저-콘솔-경고-메시지-예시)
-      - [💡 해결 방법](#-해결-방법)
-    - [3. WebAssembly “recursive use of an object detected” 에러](#3-webassembly-recursive-use-of-an-object-detected-에러)
-      - [🧐 어떤 상황에서 발생했는가?](#-어떤-상황에서-발생했는가)
-      - [⚠️ 어떤 에러가 발생했는가?](#️-어떤-에러가-발생했는가)
-      - [🔍 어떤 원인을 추정했는가?](#-어떤-원인을-추정했는가)
-      - [🛠️ 어떤 시도를 했는가?](#️-어떤-시도를-했는가)
-      - [💡 해결 방법](#-해결-방법-1)
-    - [4. React 상태 업데이트 직후 socket.emit이 잘못된 상태로 실행되는 버그](#4-react-상태-업데이트-직후-socketemit이-잘못된-상태로-실행되는-버그)
-      - [🐞 버그 개요](#-버그-개요)
-      - [🔍 버그 발생 코드](#-버그-발생-코드)
-      - [⚠️ 문제 분석](#️-문제-분석)
-      - [🛠️ 해결 시도 1: await new Promise로 타이밍 지연](#️-해결-시도-1-await-new-promise로-타이밍-지연)
-      - [🛠️ 해결 시도 2: flushSync 강제 동기화](#️-해결-시도-2-flushsync-강제-동기화)
-      - [✅ 최종 해결: setTimeout(..., 0)으로 메크로 태스크 큐에 지연](#-최종-해결-settimeout-0으로-메크로-태스크-큐에-지연)
-  - [🛠️ 기술 스택](#️-기술-스택)
-    - [Frontend](#frontend)
-    - [Backend](#backend)
-    - [배포 환경 (AWS)](#배포-환경-aws)
-  - [🚀 구현 기능](#-구현-기능)
-      - [**도미노 배치 \& 편집**](#도미노-배치--편집)
-      - [**도미노 회전 \& 색상 선택**](#도미노-회전--색상-선택)
-      - [**물리 기반 시뮬레이션**](#물리-기반-시뮬레이션)
-      - [**실시간 멀티플레이**](#실시간-멀티플레이)
-      - [**사운드 \& UX**](#사운드--ux)
-      - [**업적 시스템**](#업적-시스템)
-      - [**Undo/Redo \& 히스토리**](#undoredo--히스토리)
-      - [**퍼포먼스 최적화**](#퍼포먼스-최적화)
+  - [🔧 트러블슈팅 기록서](#-트러블슈팅-기록서)
+    - [이슈 #1: \[WebAssembly "recursive use of an object detected" 에러\]](#-이슈-1-webassembly-recursive-use-of-an-object-detected-에러)
+    - [이슈 #2: \[React 상태 업데이트 직후 socket.emit이 잘못된 상태로 실행되는 버그\]](#-이슈-2-react-상태-업데이트-직후-socketemit이-잘못된-상태로-실행되는-버그)
+    - [이슈 #3: \[DominoHUD 노출 타이밍 제어: Suspense와 상태 관리 기반 해결\]](#-이슈-3-dominohud-노출-타이밍-제어-suspense와-상태-관리-기반-해결)
+  - [🔥 최적화](#-최적화)
+    - [도미노 상태, 누가 책임지는 게 맞을까?](#-도미노-상태-누가-책임지는-게-맞을까)
+    - [입력과 렌더링 사이, 그 지연을 줄일 수는 없을까?](#-입력과-렌더링-사이-그-지연을-줄일-수는-없을까)
+    - [다양한 오브젝트, 어떻게 더 빠르게 보여줄 수 있을까?](#-다양한-오브젝트-어떻게-더-빠르게-보여줄-수-있을까)
+    - [여러 키 입력을 한 곳에서, 깔끔하게 관리할 수 없을까?](#-여러-키-입력을-한-곳에서-깔끔하게-관리할-수-없을까)
+    - [커서만 움직였을 뿐인데, 왜 프레임이 떨어질까?](#-커서만-움직였을-뿐인데-왜-프레임이-떨어질까)
 
----
+## 주요 기능
 
-## 🔥 Motivation
+### 핵심 게임플레이
 
-- 단순한 렌더링을 넘어, 실제 **물리 법칙을 반영한 상호작용 가능한 시뮬레이션**을 만들고 싶었습니다.
-- 도미노를 하나씩 배치하고 넘어뜨리며 발생하는 연쇄 반응은 단순하지만 깊은 몰입감을 줍니다.
-- 성능과 현실감을 모두 만족시키기 위해, **Three.js + Rapier + drei** 구조를 설계했습니다.
+<table>
+<tr>
+<td width="45%">
 
----
+- **3D 도미노 배치**: 마우스 클릭으로 정확한 위치에 배치
+- **물리 시뮬레이션**: 중력과 충돌을 통한 현실적인 연쇄 반응
+- **다양한 오브젝트**: 12가지 이상의 다양한 3D 오브젝트
+- **실시간 멀티플레이**: 최대 4명까지 동시 협업
 
-## 📱 Preview
+</td>
+<td width="55%">
 
-- ![Image](https://github.com/user-attachments/assets/6c83427c-19ed-47dc-b9f9-d2e660d76a08)
-- 배포 사이트: [www.domido.co.kr](https://www.domido.co.kr)
+![Image](https://github.com/user-attachments/assets/6c83427c-19ed-47dc-b9f9-d2e660d76a08)
 
----
+</td>
+</tr>
+</table>
 
-## 💻 Development
+### 커스터마이징
+
+<table>
+<tr>
+<td width="45%">
+
+- **색상 변경**: 9가지 색상 팔레트로 도미노 커스터마이징 기능
+- **테마 변경**: 정원, 바다, 밤 테마로 배경 변경
+- **음량 조절**: 배경음악과 효과음 개별 조절
+
+</td>
+<td width="55%">
+
+![녹화_2025_07_23_17_03_29_833 (2)](https://github.com/user-attachments/assets/a48bbc64-3918-4cdc-8b85-e37d198e1ef2)
+
+</td>
+</tr>
+</table>
+
+### 협업 기능
+
+<table>
+<tr>
+<td width="45%">
+
+- **실시간 동기화**: 다른 사용자의 도미노 배치 실시간 반영
+- **커서 추적**: 다른 사용자의 마우스 커서 실시간 표시
+- **프로젝트 공유**: 초대 코드를 통한 프로젝트 공유 및 참여
+
+</td>
+<td width="55%">
+
+![화면-기록-2025-07-23-오후-5 02 09](https://github.com/user-attachments/assets/70660232-d9dc-41f3-8be4-57b88a5a277c)
+
+</td>
+</tr>
+</table>
+
+<br>
+
+## 기술 스택
+
+### Frontend
+
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+
+![Three.js](https://img.shields.io/badge/three.js-black?style=for-the-badge&logo=three.js&logoColor=white) ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&logoColor=white) ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+
+![React Query](https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white) ![React Icons](https://img.shields.io/badge/React_Icons-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+
+### Backend
+
+![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+
+![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![Nodemon](https://img.shields.io/badge/Nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white)
+
+### 개발 도구
+
+![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white) ![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E) ![Husky](https://img.shields.io/badge/husky-000000?style=for-the-badge&logo=husky&logoColor=white) ![Vitest](https://img.shields.io/badge/vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white) ![Git](https://img.shields.io/badge/git-%23F05032.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+
+<br>
+
+## 개발 과정
 
 ### 1. 다양한 도미노 오브젝트를 어떻게 관리할까?
-
-#### ❗ 문제 상황  
 
 초기에는 도미노 하나만 렌더링했지만, 기능이 확장되면서 **다양한 오브젝트(도미노, 미끄럼틀, 전구, 계단, 공 등)** 들을 동적으로 추가하고, 사용자 선택에 따라 **모델을 불러오고, 썸네일을 보여주며, 소리와 충돌 형태까지** 다르게 지정해야 하는 요구사항이 생겼습니다.
 
 하지만 이 데이터를 **하드코딩으로 컴포넌트에 박아두는 방식**은 다음과 같은 한계가 있었습니다:
 
-- 새로운 오브젝트를 추가할 때마다 컴포넌트 로직을 수정해야 함  
-- 썸네일, 모델, 충돌 형태 등 메타데이터가 흩어져 있어 유지보수 어려움  
+- 새로운 오브젝트를 추가할 때마다 컴포넌트 로직을 수정해야 함
+- 썸네일, 모델, 충돌 형태 등 메타데이터가 흩어져 있어 유지보수 어려움
 - 사용자가 오브젝트를 선택하는 UI 구현이 복잡해짐
 
----
+### 💡 해결 아이디어
 
-#### 💡 해결 아이디어  
+모든 오브젝트 정보를 **JSON 스타일의 오브젝트 메타데이터로 정리**해두고, 이를 기반으로 UI, 로딩, 렌더링, 충돌 처리까지 통합되게 관리하도록 구현했습니다.
 
-모든 오브젝트 정보를 **JSON 스타일의 오브젝트 메타데이터로 정리**해두고, 이를 기반으로 UI, 로딩, 렌더링, 충돌 처리까지 통합되게 관리하자.
+### ⚙️ 적용 방식
 
----
-
-#### ⚙️ 구현 방식
-
-- `OBJECT_GROUP_NAMES`: 오브젝트 그룹을 `STATIC`, `DYNAMIC`으로 나눠 분류
+- `OBJECT_GROUP_NAMES`: 오브젝트 그룹을 `STATIC`, `DYNAMIC`으로 나누어 분류
 - `OBJECT_METADATA`: 각 오브젝트마다 아래의 메타데이터를 설정
+- `OBJECT_GROUP_LABELS`: 그룹별 라벨 이름을 제공하여 UI 렌더링에 활용
 
-| 키 | 설명 |
-|----|------|
-| `thumbnail` | 선택 UI에 사용될 썸네일 경로 |
-| `model` | GLB 3D 모델 경로 or 이름 |
-| `sound` | 상호작용 시 재생될 효과음 |
+| 키          | 설명                                             |
+| ----------- | ------------------------------------------------ |
+| `thumbnail` | 선택 UI에 사용될 썸네일 경로                     |
+| `model`     | GLB 3D 모델 경로 or 이름                         |
+| `sound`     | 상호작용 시 재생될 효과음                        |
 | `colliders` | 물리 충돌 타입 (`cuboid`, `ball`, `trimesh`, 등) |
-| `type` | 물리 시뮬레이션 상 성질 (`fixed` or `dynamic`) |
-| `title` | 사용자에게 보여지는 이름 |
+| `type`      | 물리 시뮬레이션 상 성질 (`fixed` or `dynamic`)   |
+| `title`     | 사용자에게 보여지는 이름                         |
 
-- `OBJECT_GROUP_LABELS`: 그룹별 라벨 이름을 제공해 UI 렌더링에 활용
-
-```ts
-export const OBJECT_GROUP_NAMES = {
-  STATIC: "STATIC_OBJECTS",
-  DYNAMIC: "DYNAMIC_OBJECTS",
-} as const;
-
-export const OBJECT_METADATA = {
-  [OBJECT_GROUP_NAMES.STATIC]: {
-    slide: {
-      thumbnail: "/images/thumbnail/slide.png",
-      model: "/objects/slide.glb",
-      colliders: "trimesh",
-      type: "fixed",
-      title: "미끄럼틀",
-    },
-    ...
-  },
-  [OBJECT_GROUP_NAMES.DYNAMIC]: {
-    steelBall: {
-      thumbnail: "/images/thumbnail/steel_ball.png",
-      model: "/objects/steel_ball.glb",
-      colliders: "hull",
-      type: "dynamic",
-      title: "쇠구슬",
-    },
-    ...
-  },
-};
-
-export const OBJECT_GROUP_LABELS = {
-  [OBJECT_GROUP_NAMES.STATIC]: "Static Object",
-  [OBJECT_GROUP_NAM
-```
+---
 
 ### 2. 사용자가 클릭한 3D 위치에 도미노를 어떻게 정확히 배치할까?
-
-#### ❗ 문제 상황  
 
 사용자가 3D 씬 위에 마우스를 클릭했을 때, 도미노를 정확히 그 위치에 배치하기 위해서는  
 **2D 화면 좌표(mouse)** → **3D 공간 좌표(world)** 로 변환해야 했습니다.  
 또한 클릭 위치가 단순히 평면이 아닌, 여러 오브젝트 위일 수도 있어 **충돌 대상 감지 필터링**도 필요했습니다.
 
----
-
-#### 💡 해결 아이디어  
+### 💡 해결 아이디어
 
 Three.js의 `Raycaster`를 활용하여,  
 **카메라 + 마우스 위치를 기준으로 광선을 쏘고**,  
 그 광선이 씬 내 어떤 오브젝트와 먼저 교차하는지를 통해 3D 좌표를 얻기로 했습니다.
 
----
-
-#### ⚙️ 구현 방식
+### ⚙️ 적용 방식
 
 - `useFrame()` 내에서 매 프레임마다 `Raycaster`를 갱신하여 마우스 위치 추적
 - `scene.getObjectByName("ground")`로 바닥을 찾고, 도미노들과 함께 `intersectObjects` 대상에 포함
@@ -199,103 +170,47 @@ Three.js의 `Raycaster`를 활용하여,
 - `socket.emit("update cursor position", ...)`으로 실시간 위치 브로드캐스트
 - 클릭 시 `onPointerDown`으로 해당 위치에 도미노를 생성
 
-```ts
-const raycaster = new THREE.Raycaster();
-raycaster.setFromCamera(pointer, camera);
-
-const intersects = raycaster.intersectObjects([ground, ...allDominoes], true);
-const [firstHit] = intersects;
-
-if (!firstHit) return;
-
-const pos = firstHit.point;
-const boundingBox = new THREE.Box3().setFromObject(meshRef.current);
-const height = boundingBox.max.y - boundingBox.min.y;
-const centerY = pos.y + height / 2;
-
-meshRef.current.position.set(pos.x, centerY, pos.z);
-```
+---
 
 ### 3. 멀티플레이시 사용자에게 정확하고 빠른 결과를 어떻게 줄 수 있을까?
 
-#### ❗ 문제 상황  
-
 여러 사용자가 동시에 도미노를 배치하는 실시간 협업 환경에서,
 
-- 내가 놓은 도미노는 **즉시 반영**되어야 하고  
-- 다른 사용자가 놓은 도미노도 **빠르게 갱신**되어야 하며  
+- 내가 놓은 도미노는 **즉시 반영**되어야 하고
+- 다른 사용자가 놓은 도미노도 **빠르게 갱신**되어야 하며
 - 과도한 클릭이나 충돌을 방지할 **제한 로직**도 필요했습니다.
 
----
+### 💡 해결 아이디어
 
-#### 💡 해결 아이디어  
-
-- `React Query`를 통해 클라이언트 로컬 캐시에 도미노 리스트를 빠르게 갱신  
-- `Socket.IO`로 도미노 변경 이벤트를 모든 사용자에게 실시간 브로드캐스트  
-- 서버가 응답되기 전에도 **낙관적 UI 업데이트**로 즉시 결과 반영  
+- `React Query`를 통해 클라이언트 로컬 캐시에 도미노 리스트를 빠르게 갱신
+- `Socket.IO`로 도미노 변경 이벤트를 모든 사용자에게 실시간 브로드캐스트
+- 서버가 응답되기 전에도 **낙관적 UI 업데이트**로 즉시 결과 반영
 - 빠른 클릭을 방지하기 위한 최소 시간 간격 체크 추가 (`lastPlacedTime`)
 
----
-
-#### ⚙️ 구현 방식
+### ⚙️ 적용 방식
 
 1. **도미노 배치 처리**
 
-- 클릭한 위치에 도미노를 생성해 로컬에 먼저 반영
-- `mutate()`를 통해 서버 상태 갱신 요청
-- 성공 시 히스토리에 push
+   - 클릭한 위치에 도미노를 생성해 로컬에 먼저 반영
+   - `mutate()`를 통해 서버 상태 갱신 요청
+   - 성공 시 히스토리에 push
 
-```ts
-mutate(
-  { dominos: updatedDomino },
-  {
-    onSuccess: (data: DominoType[]) => {
-      historyRef.current.push(data);
-    },
-  },
-);
-```
+2. **다른 유저와 동기화**
 
-2. 다른 유저와 동기화
+   - socket.emit("domino update", ...)은 서버를 통해 다른 유저에게 브로드캐스트
+   - 수신한 유저는 refetchQueries를 통해 최신 도미노 목록 재요청
 
-- socket.emit("domino update", ...)은 서버를 통해 다른 유저에게 브로드캐스트
-- 수신한 유저는 refetchQueries를 통해 최신 도미노 목록 재요청
+3. **빠른 중복 클릭 방지**
 
-```ts
-socket.on("domino update", ({ sendUser }) => {
-  if (myUserID === sendUser) return;
-  queryClient.refetchQueries({ queryKey: ["dominos", projectId], exact: true });
-});
-```
+   - lastPlacedTime을 기준으로 300ms 이내 중복 클릭 방지
 
-3. 빠른 중복 클릭 방지
+4. **다른 유저의 커서 상태 공유**
+   - "cursor position update" 이벤트를 통해 실시간 커서 위치 공유
+   - 각 유저의 오브젝트 위치, 색상, 회전 상태를 함께 전달
 
-- lastPlacedTime을 기준으로 300ms 이내 중복 클릭 방지
-
-```ts
-if (nowTime - lastPlacedTime.current < 300) {
-  showToast({ message: "너무 빠르게 놓으셨네요. 잠시만요!" });
-  return;
-}
-```
-
-4. 다른 유저의 커서 상태 공유
-
-- "cursor position update" 이벤트를 통해 실시간 커서 위치 공유
-- 각 유저의 오브젝트 위치, 색상, 회전 상태를 함께 전달
-
-```ts
-socket.on("cursor position update", ({ userID, ... }) => {
-  setOtherCursors((prev) => ({
-    ...prev,
-    [userID]: { ... },
-  }));
-});
-```
+---
 
 ### 4. 튜토리얼 로직을 기존 기능에 영향을 주지 않고 어떻게 설계할까?
-
-#### ❗ 문제 상황
 
 튜토리얼 단계별 행동을 감지하려면 기존 기능의 상태를 추적하거나 로직을 수정해야 했습니다.
 예를 들어 도미노 선택 여부나 사이드 패널 열림 상태를 감지하기 위해
@@ -305,19 +220,15 @@ socket.on("cursor position update", ({ userID, ... }) => {
 - 단계 추가 시 기존 UI 컴포넌트를 수정해야 함
 - 메시지와 조건이 분리돼 있어 유지보수가 힘듦
 
----
+### 💡 해결 아이디어
 
-#### 💡 해결 아이디어
-
-튜토리얼 전용 상태 트래커를 도입해,
+튜토리얼 전용 상태 트래커를 도입하여,
 **기존 로직은 그대로 두고 "관찰만" 하는 구조**로 설계했습니다.
 
 모든 튜토리얼 단계는 `TUTORIAL_STEPS` 배열에 선언형으로 정의되어 있고,
 각 단계는 특정 trackerKey 조건을 기준으로 자동 진행됩니다.
 
----
-
-#### ⚙️ 구현 방식
+### ⚙️ 적용 방식
 
 - 튜토리얼 단계는 메시지와 완료 조건 키를 포함한 배열로 선언형 정의됨
 - 사용자의 행동은 클릭, 키 입력, 배치 등으로 감지되며, 전용 상태 저장소에 기록됨
@@ -326,38 +237,21 @@ socket.on("cursor position update", ({ userID, ... }) => {
 - 전체 로직은 별도 컴포넌트에 고립되어 있으며, 기존 기능이나 화면 구조를 수정하지 않고 동작함
 - 단계 추가는 배열에 항목만 추가하면 적용되도록 설계됨
 
-```ts
-// 튜토리얼 단계 선언 예시
-const TUTORIAL_STEPS = [
-  {
-    message: "도미노를 선택해보세요",
-    trackerKey: "isDominoSelected",
-  },
-];
-```
-
-```ts
-// 사용자 행동 감지 및 상태 갱신 예시
-if (userSelectedDomino) {
-  setTracker("isDominoSelected", true);
-}
-```
+---
 
 ### 5. 단축키 하나에 모든 도미노가 반응한다고? React key 문제 해결기
 
-#### 🎯 구현 상황
 사용자가 플레이 도중 특정 도미노에 마우스를 올리면 단축키 안내창이 노출되며,
-단축키 입력을 통해 해당 도미노를 삭제, 되돌리기, 투명 처리 할 수 있는 기능을 구현했습니다.
+단축키 입력을 통해 해당 도미노를 삭제, 되돌리기, 투명 처리할 수 있는 기능을 구현했습니다.
 
 이때 단축키 안내창은 화면 하단 중앙에 게임 플레이를 방해하지 않는 위치에 표시되며,
 안내창이 닫힐 때는 100ms의 지연 시간을 두어 사용자 시야에서 자연스럽게 사라지도록 UX를 조정했습니다.
 
 #### ❗ 문제 상황
+
 - 단축키 입력 시 마우스가 올려진 도미노에만 반응해야 하지만, 모든 도미노 오브젝트가 함께 반응하는 현상이 발생하였습니다.
 
----
-
-#### 💡 해결 아이디어
+### 💡 해결 아이디어
 
 초기 구현에서는 각 도미노를 index 값을 기준으로 식별하고 있었는데,
 도미노를 삽입하거나 삭제하는 과정에서 동일한 index 값을 공유하는 경우가 발생했고,
@@ -368,354 +262,34 @@ if (userSelectedDomino) {
 > "항목이 삽입되거나 삭제되거나 배열의 순서가 바뀌면 시간이 지남에 따라 항목을 렌더링하는 순서가 변경됩니다.인덱스를 key로 사용하면 종종 미묘하고 혼란스러운 버그가 발생합니다."  
 > — [React Docs: 리스트 렌더링](https://ko.react.dev/learn/rendering-lists)
 
-
 즉, 동적으로 추가/삭제되는 리스트에서는 인덱스를 키로 사용하면 컴포넌트가 정확하게 매칭되지 않고 불필요하게 리렌더링되거나 잘못된 항목에 이벤트가 전달되는 오류가 생길 수 있다는 것입니다.
 
-
----
-
-#### ⚙️ 구현 방식
+### ⚙️ 적용 방식
 
 **UUID를 사용한 고유 식별자 생성**
-```ts
-const newDomino = {
-  _id: uuidv4(),
-  position: [currentPosition?.x, currentPosition?.y, currentPosition?.z],
-}
-```
-- 각 도미노가 생성될 때 ```uuidv4()``` 함수를 사용하여 고유한 UUID를 생성합니다.
-- 이 UUID가 도미노의 ```id```값에 할당되어 전역적으로 고유한 식별자가 됩니다.
 
+- 각 도미노가 생성될 때 `uuidv4()` 함수를 사용하여 고유한 UUID를 생성합니다.
+- 이 UUID가 도미노의 `id`값에 할당되어 전역적으로 고유한 식별자가 됩니다.
 
 **키 값을 활용한 마우스 이벤트 처리**
-```ts
-const throttledPointerOver = useMemo(() => {
-  return debounce((event: PointerEvent, key: string) => {
-    openGuideToast(event, key); 
-  }, 200);
-}, [openGuideToast]);
 
-
-onPointerOver={(e: PointerEvent<Element>) => throttledPointerOver(e, _id)}
-```
 - 마우스 오버 시 해당 도미노의 id를 이벤트 핸들러에 전달합니다.
 - 디바운싱을 통해 과도한 이벤트 발생을 방지합니다.
-- 고유한 식별자를 통해 중복 이벤트를 방지합니다. 
+- 고유한 식별자를 통해 중복 이벤트를 방지합니다.
 
+<br/>
 
+## 🔧 트러블슈팅 기록서
 
-****
+### 📌 이슈 #1: [WebAssembly "recursive use of an object detected" 에러]
 
-## 🛠️ Optimization
-
-### 1. 키 이벤트 중복 등록 최적화
-
-#### 🔁 KeyDown 이벤트 중복 처리 리팩토링 필요성 및 대응 방안
-
-현재 코드에서는 `keydown` 이벤트를 직접 `useEffect` 내부에서 등록하여 사용하는 구조로 되어 있으며, 다양한 키 입력(예: `x`, `h`, `u` 등)을 감지해 각각의 동작을 수행하도록 하고 있습니다. 하지만 이러한 방식은 다음과 같은 문제점을 가지고 있다고 판단하였습니다.
-
----
-
-#### ✅ 문제점 1: 이벤트 중복 등록 가능성
-
-- 컴포넌트 내부에서 `window.addEventListener('keydown', handler)`를 여러 곳에서 반복적으로 작성할 경우, 동일한 이벤트에 대해 **중복된 리스너가 등록**될 수 있음
-- 하나의 키 입력에 대해 의도하지 않은 **중복 실행 발생**
-- 메모리 낭비 및 **성능 저하** 가능성
-
----
-
-#### ✅ 문제점 2: 로직의 분산
-
-- 키별 이벤트 핸들러가 흩어져 있어 전체 흐름을 한눈에 파악하기 어려움
-- 코드의 가독성과 유지보수성 저하
-
----
-
-#### 💡 해결 방안: `useDominoKeyboardControls` 커스텀 훅 도입
-
-키 입력 이벤트를 **통합적으로 관리**하고, **중복 등록을 방지**하며, **재사용성과 가독성**까지 확보할 수 있도록 `useDominoKeyboardControls`라는 커스텀 훅을 도입했습니다.
-
-```tsx
-import { useEffect, useRef } from "react";
-
-const useDominoKeyboardControls = (onToggleGuideToast) => {
-  const dominos = useDominoStore((state) => state.dominos);
-  const historyRef = useRef([]);
-  const prevLengthRef = useRef(dominos.length);
-
-  const keyMap = {
-    x: () => deleteSelectedDomino(historyRef, onToggleGuideToast),
-    h: () => toggleSelectedDominoOpacity(historyRef, onToggleGuideToast),
-    u: () => undoDominoHistory(historyRef),
-    q: rotateDominoCounterClockwise,
-    e: rotateDominoClockwise,
-    escape: () => closeCurrentMode(),
-  };
-
-  const handleKeydown = (event) => {
-    event.stopPropagation();
-
-    const key = event.key.toLowerCase();
-    const handler = keyMap[key];
-    if (typeof handler === "function") handler();
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeydown);
-    return () => window.removeEventListener("keydown", handleKeydown);
-  }, []);
-};
-
-export default useDominoKeyboardControls;
-
-```
-
-💎 리팩토링 효과
-
-| 항목               | 개선 전                        | 개선 후                            |
-|--------------------|--------------------------------|-------------------------------------|
-| 키 이벤트 처리 위치 | 컴포넌트 여러 곳               | 단일 훅으로 집중                   |
-| 중복 등록 위험      | 있음                           | 없음                                |
-| 유지보수            | 키마다 수정 위치 다름          | `keyMap`만 수정하면 됨             |
-| 가독성              | 이벤트 흐름 파악 어려움        | 전체 흐름이 한눈에 보임            |
-| 성능               | 메모리 낭비 가능성             | 안정적인 등록/해제 구조            |
-
-✅ 적용 결과
-
-- 도미노 시뮬레이션 편집 모드에서의 키보드 조작 기능 안정화
-- 단일 entry point를 통한 이벤트 처리로 디버깅 용이성 증가
-- 리팩토링 전 대비 약 30% 코드량 감소
-- 향후 새로운 키 입력 기능(Ctrl+Z, Space 등) 추가 시 생산성 향상 기대
-
-📚 학습 및 통찰
-
-- 핵심 로직은 통합하면 협업 시 의도 전달이 쉬워지고, 디버깅도 용이하다는 것을 실감했습니다.
-- 기능별 분산 구조가 항상 최선은 아님. 이벤트 리스너는 컨트롤러처럼 한 곳에 집중시켜야 합니다.
-
-### 2. 커서 이동시 프레임 저하 최적화
-
-#### 배경
-
-사용자가 3D 도미노 오브젝트 위로 마우스를 올릴 때마다 `pointerOver` 이벤트가 발생하고, 이때마다 토스트 안내가 나타났습니다.  
-하지만 이 이벤트가 **매 프레임마다 발생하며** 성능 저하를 유발했고, 특히 도미노 개수가 많을수록 **렌더링 프레임 드랍**이 심해졌습니다.
-
----
-
-#### ❗ 문제점 요약
-
-- `pointerOver`가 너무 자주 호출되어 렌더링 병목 발생
-- 상태 변경이 자주 일어나면서 Recoil/Zustand 기반 렌더링도 과도하게 트리거됨
-- 성능 이슈로 인해 UX가 저하되고, 커서 반응이 버벅이는 현상 발생
-
----
-
-#### 💡 해결 전략
-
-#### ✅ debounce 적용 (throttle 방식)
-
-`pointerOver` 이벤트에 직접 반응하지 않고, `debounce()`를 통해 **200ms 간격으로만 처리**하도록 제한
-
-```ts
-export function debounce<T extends (...args: any[]) => void>(
-  func: T,
-  delay: number,
-): (...args: Parameters<T>) => void {
-  let timer: ReturnType<typeof setTimeout> | null = null;
-
-  return (...args: Parameters<T>) => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, delay);
-  };
-}
-
-
-const throttledPointerOver = useMemo(() => {
-  return debounce((event: PointerEvent, key: string) => {
-    openGuideToast(event, key);
-  }, 200);
-}, [openGuideToast]);
-
-```
-
-#### 비교 스크린샷
-
-Before (Debounce 전)
-
-<https://github.com/user-attachments/assets/6501fb9d-46ef-4323-bffa-5cfc51c19c89>
-
-After (Debounce 후)
-
-<https://github.com/user-attachments/assets/b78909c1-68b9-45aa-bcf7-8e3572024476>
-
-## 🔫 Trouble Shooting
-
-### 1. Three.js + React에서 GLTF 모델이 배열에 추가되지 않는 문제
-
-#### ❓ 문제 요약
-
-`@react-three/drei`의 `useGLTF`를 통해 불러온 모델을 **여러 개의 위치에 렌더링**하거나 배열에 추가하려 했을 때,  
-일부 모델만 보이거나 **렌더링이 누락**, **상태 배열에 제대로 추가되지 않는 문제**가 발생했습니다.
-
-#### 🧪 재현 상황
-
-아래처럼 `useGLTF()`로 불러온 `scene` 객체를 `<primitive />`로 여러 번 렌더링하려 했습니다.
-
-```tsx
-const PrimitiveObject = ({ path, position }) => {
-  const { scene } = useGLTF(path);
-
-  return (
-    <primitive object={scene} position={position} />
-  );
-};
-```
-
-하지만
-
-- 일부만 렌더링됨
-- 배열로 상태에 추가 시, 참조 충돌 발생
-- 예상치 못한 렌더링 누락 발생
-
-#### ❗️문제 원인
-
-useGLTF()로 불러온 scene은 내부적으로 Object3D의 단일 인스턴스이며 참조값이 동일합니다.
-
-Three.js는 동일한 Object3D를 여러 번 씬에 추가하는 것을 허용하지 않습니다.
-이미 추가된 객체를 또 다른 위치에 붙이면, 이전 parent에서 제거되고 새로운 위치만 남습니다.
-
-즉:
-
-- 같은 GLTF 객체를 여러 위치에 렌더링 → 한 군데만 보임
-- 상태 배열에 동일 참조 추가 → React/Three의 동기화 깨짐
-
-#### 💡 해결 방법: .clone(true)로 깊은 복제
-
-- 불러온 scene 객체는 .clone(true)를 사용해 반드시 깊은 복제한 뒤 사용해야 합니다.
-
-```tsx
-import { useMemo } from "react";
-import { useGLTF } from "@react-three/drei";
-
-const PrimitiveObject = ({ path, position, onPointerOver, onPointerOut, onClick }) => {
-  const { scene } = useGLTF(path);
-
-  // 깊은 복제
-  const clonedScene = useMemo(() => scene.clone(true), [scene]);
-
-  return (
-    <primitive
-      castShadow
-      receiveShadow
-      object={clonedScene}
-      position={position}
-      scale={1}
-      onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}
-      onClick={onClick}
-    />
-  );
-};
-```
-
-#### 왜 .clone(true)가 꼭 필요한가?
-
-|                            | **.clone() (기본)**               | **.clone(true) (깊은 복제)**                         |
-|----------------------------|-----------------------------------|------------------------------------------------------|
-| 복제 방식                  | 참조만 복사됨                     | 하위 구조까지 모두 새로운 인스턴스로 생성됨         |
-| geometry & material 공유   | geometry, material 공유됨        | geometry, material도 분리되어 독립적 렌더링 가능    |
-| 렌더링 안정성              | 렌더링 충돌 발생 가능            | 여러 위치에서 안전하게 렌더링 가능                  |
-
-### 2. 새로고침 시 배경음악이 꺼지는 현상
-
-#### ❓ 문제 요약
-
-- 웹페이지에 배경음악(BGM)을 넣었는데, **초기 진입 시에는 잘 재생되지만**, **페이지를 새로고침하거나 다시 방문할 경우 음악이 재생되지 않는 현상**이 발생했습니다.
-
-#### 🎯 BGM이 재생되지 않는 상황
-
-- 사용자가 페이지에 **처음 진입**했을 때
-- 사용자가 **페이지를 새로고침 (F5 / ⌘R)** 했을 때  
-- BGM이 자동으로 재생되기를 기대했지만, **정적 상태**로 남음
-
-#### ⚠️ 문제 원인
-
-*브라우저의 [Autoplay Policy](https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide)*에 따르면,  
-사용자의 **명시적인 상호작용**(예: 클릭, 키 입력 등)이 없는 상태에서는  
-`<audio>` 또는 `AudioContext`를 통한 오디오 자동 재생이 **기본적으로 차단**됩니다.
-
-#### 📜 브라우저 콘솔 경고 메시지 예시
-
-```text
-Uncaught (in promise) DOMException: play() failed because the user didn't interact with the document first.
-```
-
-#### 💡 해결 방법
-
-- 사용자 인터랙션(예: 클릭 이벤트) 이후에만 .play()를 호출하도록 로직을 수정합니다.
-
-```tsx
-import { useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
-
-import useSettingStore from "@/store/useSettingStore";
-import AudioController from "@/utils/AudioController";
-
-const BGM_PATH = "/sounds/bgm.mp3";
-
-const GlobalAudio = () => {
-  const { camera } = useThree();
-  const volumeLevel = useSettingStore((state) => state.volumeLevel);
-  const audioControllerRef = useRef(new AudioController());
-
-  useEffect(() => {
-    const audioController = audioControllerRef.current;
-    audioController.init(camera, volumeLevel, true);
-
-    // 최초 클릭 이후에만 재생 시도
-    const handleFirstClick = () => {
-      audioController.play(BGM_PATH);
-      window.removeEventListener("click", handleFirstClick);
-    };
-
-    // 최초 클릭 이벤트 등록
-    window.addEventListener("click", handleFirstClick);
-
-    return () => {
-      window.removeEventListener("click", handleFirstClick);
-      audioController.cleanup(camera);
-    };
-  }, [camera, volumeLevel]);
-
-  useEffect(() => {
-    audioControllerRef.current.setVolume(volumeLevel);
-  }, [volumeLevel]);
-
-  return null;
-};
-
-export default GlobalAudio;
-```
-
-- window.addEventListener("click", ...)로 최초 사용자 상호작용 감지
-- 상호작용이 감지되면 오디오를 재생하고 이벤트 리스너 제거
-- 브라우저 autoplay 정책을 우회하면서 UX를 해치지 않음
-
-### 3. WebAssembly “recursive use of an object detected” 에러
-
-#### 🧐 어떤 상황에서 발생했는가?
-
-- `@react-three/fiber`, `@react-three/rapier`, `Socket.IO`를 사용해
-  도미노 시뮬레이션을 실시간 동기화하는 기능을 개발
-- 사용자가 오브젝트를 선택하여 캔버스에 도미노를 추가하면,
-  전체 `dominos` 배열에 추가 후 소켓으로 서버에 전송:
+`@react-three/fiber`, `@react-three/rapier`, `Socket.IO`를 사용해 도미노 시뮬레이션을 실시간 동기화하는 기능을 개발하였습니다. 사용자가 오브젝트를 선택하여 캔버스에 도미노를 추가하면, 전체 `dominos` 배열에 추가 후 소켓으로 서버에 전송합니다.
 
 ```jsx
 socket.emit("update domino", { projectId, dominos: updatedDomino });
 ```
 
-- 이때 updatedDomino에는 기존 배열에 아래와 같은 newDomino 객체가 포함되어 있었음
+이때 updatedDomino에는 기존 배열에 아래와 같은 newDomino 객체가 포함되어 있습니다.
 
 ```ts
 const newDomino = {
@@ -726,60 +300,43 @@ const newDomino = {
 }
 ```
 
-#### ⚠️ 어떤 에러가 발생했는가?
-
 ```bash
 Uncaught Error: recursive use of an object detected which would lead to unsafe aliasing in rust
 ```
 
-- 이 오류는 wasm-bindgen 내부의 WasmRefCell에 중복된 mutable reference가 발생했을 때 Rust 런타임이 강제로 차단하며 발생함
-- 특히 selectedDomino 객체를 참조한 상태에서 이를 그대로 objectInfo에 포함해 emit한 것이 원인
+- 이 오류는 `wasm-bindgen` 내부의 `WasmRefCell`에 중복된 `mutable reference`가 발생했을 때 `Rust` 런타임이 강제로 차단하며 발생하였습니다.
+- 특히 `selectedDomino` 객체를 참조한 상태에서 이를 그대로 `objectInfo`에 포함해 `emit`한 것이 원인이였습니다.
 
-#### 🔍 어떤 원인을 추정했는가?
+#### **🧪 해결 시도 1: 객체 참조 직접 전달**
 
-- JavaScript는 객체를 참조로 전달하므로 동일한 selectedDomino 객체가 여러 도미노 인스턴스에서 동일하게 참조됨
-- Rust Wasm 측에서는 이 객체가 mutable reference로 동시에 사용되는 것으로 감지
-- 결과적으로 borrow rule 위반 → 런타임 에러 발생
+- **내용**: selectedDomino 객체를 그대로 objectInfo에 전달하여 코드를 간결하게 유지하도록 하였습니다.
+- **문제**: JavaScript의 참조 전달 특성 때문에 동일 객체가 재사용되며, Wasm 내부에서 mutable reference 중복 사용으로 판단되어 borrow rule 위반 → 런타임 에러 발생
+- **결론**: WebAssembly에서 안정성을 보장할 수 없습니다.
 
-#### 🛠️ 어떤 시도를 했는가?
+#### **🧪 해결 시도 2: 명시적 객체 복사**
 
-- 처음에는 objectInfo: selectedDomino로 직접 참조하여 emit
-- 재사용 시 **재귀 참조(recursive use)**로 간주되어 충돌
-- 키 설정 누락이나 RigidBody 리렌더 문제 등으로 의심했으나 본질적 원인은 아님
+- **내용**: selectedDomino 객체의 모든 필드를 명시적으로 복사하여 새로운 객체를 생성하도록 하였습니다.
+- **문제**: 코드가 장황해지고, 속성 추가/변경 시 복사 누락 가능성이 존재합니다.
+- **결론**: WebAssembly에서 안정성을 보장할 수 있지만 유지보수가 어려울 수 있습니다.
 
-#### 💡 해결 방법
+#### ✅ **최종 선택: 명시적 객체 복사**
 
-- objectInfo에 원본 객체를 넘기지 말고, 필드를 하나하나 복사해 새 객체로 생성하도록 변경
+- **선택 이유**: WebAssembly에서의 안정성을 확보하는 것이 우선이며, 명시적 복사를 통해 참조 충돌 없이 객체를 안전하게 사용할 수 있습니다.
 
-```ts
-const newDomino = {
-  position: [x, y, z],
-  rotation: [0, rotationY, 0],
-  objectInfo: {
-    colliders: selectedDomino.colliders,
-    groupName: selectedDomino.groupName,
-    model: selectedDomino.model,
-    objectName: selectedDomino.objectName,
-    sound: selectedDomino.sound,
-    thumbnail: selectedDomino.thumbnail,
-    type: selectedDomino.type,
-  },
-  opacity: DEFAULT_OPACITY,
-  color: selectedColor,
-};
-```
+#### ⚙️ 구현 상세
 
-- 명시적 복사로 Wasm 내부의 참조 중복 문제를 해결
+- objectInfo에 원본 객체를 넘기지 말고, 필드를 하나하나 복사해 새 객체로 생성하도록 변경했습니다.
+- 명시적 복사로 Wasm 내부의 참조 중복 문제를 해결했습니다.
 
-### 4. React 상태 업데이트 직후 socket.emit이 잘못된 상태로 실행되는 버그
+#### 🚀 개선 및 회고
 
-#### 🐞 버그 개요
-
-- `Escape` 키를 눌러 `setSelectedDomino(null)`로 상태를 초기화하고, 이후 `socket.emit("clear cursor")`로 서버의 커서를 지우는 로직을 사용했으나, **상태 반영 이전에 `socket.emit`이 실행되어**, 여전히 이전 `selectedDomino` 값으로 처리되는 버그 발생.
+- WebAssembly와의 연동 시 객체 참조 전달보다는 명시적 복사가 안전합니다.
 
 ---
 
-#### 🔍 버그 발생 코드
+### 📌 이슈 #2: [React 상태 업데이트 직후 socket.emit이 잘못된 상태로 실행되는 버그]
+
+`Escape` 키를 눌러 `setSelectedDomino(null)`로 상태를 초기화하고, 이후 `socket.emit("clear cursor")`로 서버의 커서를 지우는 로직을 사용했으나, **상태 반영 이전에 `socket.emit`이 실행되어**, 여전히 이전 `selectedDomino` 값으로 처리되는 버그 발생했습니다.
 
 ```jsx
 escape: () => {
@@ -788,132 +345,307 @@ escape: () => {
 },
 ```
 
-#### ⚠️ 문제 분석
+React의 setState는 비동기 처리되므로, 바로 다음 줄에 실행되는 socket.emit은 변경 전 상태를 읽습니다.
+그 결과, selectedDomino가 null로 변경되었다고 가정하고 emit했지만, 실제로는 이전 값 기준으로 서버에 전달됩니다.
 
-- React의 setState는 비동기 처리되므로,
-바로 다음 줄에 실행되는 socket.emit은 변경 전 상태를 읽습니다.
-- 그 결과, selectedDomino가 null로 변경되었다고 가정하고 emit했지만, 실제로는 이전 값 기준으로 서버에 전달됩니다.
+#### **🧪 해결 시도 1: await new Promise로 타이밍 지연**
 
-#### 🛠️ 해결 시도 1: await new Promise로 타이밍 지연
+- **내용**: React의 setState가 비동기 처리되므로, await new Promise를 사용하여 상태 업데이트 완료를 기다린 후 socket.emit을 실행하도록 하였습니다.
+- **문제**: 단순히 이벤트 큐 뒤로 밀 뿐, React 상태 업데이트 완료를 보장하지 않습니다.
+- **결론**: React의 상태 업데이트 완료를 확실히 보장할 수 없어 안정적이지 않습니다.
 
-```tsx
-escape: async () => {
-  setSelectedDomino(null);
+#### **🧪 해결 시도 2: flushSync 강제 동기화**
 
-  await new Promise((res) => setTimeout(res, 0)); // 반영 보장 안 됨
+- **내용**: React 18의 flushSync를 사용하여 상태 업데이트를 강제로 동기화한 후 socket.emit을 실행하도록 하였습니다.
+- **문제**: React 18 이상의 Concurrent Mode에서는 여전히 비결정적일 수 있습니다.
+- **결론**: Concurrent Mode 환경에서 안정성을 보장할 수 없습니다.
 
-  socket.emit("clear cursor", { projectId });
-},
-```
+#### ✅ **최종 선택: setTimeout(..., 0)으로 메크로 태스크 큐에 지연**
 
-- 실패 이유:
-  - 단순히 이벤트 큐 뒤로 밀 뿐, React 상태 업데이트 완료를 보장하지 않음.
+- **선택 이유**: React 상태 업데이트 이후 외부 사이드 이펙트(socket.emit 등)를 안전하게 실행하려면, 렌더 타이밍 이후를 보장하는 메크로 태스크(setTimeout) 사용이 가장 안정적입니다.
 
-#### 🛠️ 해결 시도 2: flushSync 강제 동기화
+#### ⚙️ 구현 상세
 
-```tsx
-import { flushSync } from "react-dom";
+- setTimeout(..., 0)을 사용해 렌더링 이후 메크로 태스크 큐에서 실행을 보장하여, setSelectedDomino(null)이 실제 반영된 후 emit이 호출됩니다.
 
-escape: () => {
-  flushSync(() => {
-    setSelectedDomino(null);
-  });
+#### 🚀 개선 및 회고
 
-  socket.emit("clear cursor", { projectId }); // 여전히 불안정
-},
-```
-
-- 실패 이유:
-  - React 18 이상의 Concurrent Mode에서는 여전히 비결정적일 수 있음.
-
-#### ✅ 최종 해결: setTimeout(..., 0)으로 메크로 태스크 큐에 지연
-
-```tsx
-escape: () => {
-  setSelectedDomino(null);
-
-  setTimeout(() => {
-    socket.emit("clear cursor", { projectId }); // 상태 반영 이후 안전 실행
-  }, 0);
-},
-```
-
-- 작동 원리:
-  - setTimeout(..., 0)을 사용해 렌더링 이후 메크로 태스크 큐에서 실행을 보장하여, setSelectedDomino(null)이 실제 반영된 후 emit이 호출됩니다.
-
-- React 상태 업데이트 이후 외부 사이드 이펙트(socket.emit 등)를 안전하게 실행하려면,
-렌더 타이밍 이후를 보장하는 메크로 태스크(setTimeout) 사용이 가장 안정적입니다.
-
-## 🛠️ 기술 스택
-
-### Frontend
-
-- **Core**: <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white"/>, <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=white"/>  
-- **3D & Physics**: <img src="https://img.shields.io/badge/React_Three_Fiber-61DAFB?style=flat&logo=react&logoColor=white"/>, <img src="https://img.shields.io/badge/drei-000000?style=flat&logo=react&logoColor=white"/>, <img src="https://img.shields.io/badge/Rapier-000000?style=flat&logo=rust&logoColor=white"/>  
-- **State & Data Fetching**: <img src="https://img.shields.io/badge/Zustand-000000?style=flat&logo=react&logoColor=white"/>, <img src="https://img.shields.io/badge/TanStack_Query-FF4154?style=flat&logo=reactquery&logoColor=white"/>  
-- **Realtime**: <img src="https://img.shields.io/badge/Socket.IO-010101?style=flat&logo=socketdotio&logoColor=white"/>  
-- **Routing & Utilities**: <img src="https://img.shields.io/badge/React_Router-CA4245?style=flat&logo=reactrouter&logoColor=white"/>, <img src="https://img.shields.io/badge/UUID-000000?style=flat&logo=uuid&logoColor=white"/>  
-- **Styling & Build**:, <img src="https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=white"/>, <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white"/>  
-- **Quality & Testing**: <img src="https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white"/>, <img src="https://img.shields.io/badge/Prettier-F7B93E?style=flat&logo=prettier&logoColor=white"/>, <img src="https://img.shields.io/badge/Vitest-6E9F18?style=flat&logo=vitest&logoColor=white"/>, <img src="https://img.shields.io/badge/Testing_Library-FF4154?style=flat&logo=testinglibrary&logoColor=white"/>  
+- React 상태 업데이트 이후 외부 사이드 이펙트를 안전하게 실행하려면 메크로 태스크 사용이 가장 안정적입니다.
 
 ---
 
-### Backend
+### 📌 이슈 #3: [DominoHUD 노출 타이밍 제어: Suspense와 상태 관리 기반 해결]
 
-- **Core**: <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white"/>, <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white"/>, <img src="https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white"/>  
-- **Database**: <img src="https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white"/>  
-- **Realtime & Auth**: <img src="https://img.shields.io/badge/Socket.IO-010101?style=flat&logo=socketdotio&logoColor=white"/>, <img src="https://img.shields.io/badge/JSON_Web_Token-000000?style=flat&logo=JSONwebtokens&logoColor=white"/>  
-- **Utilities**: <img src="https://img.shields.io/badge/Dotenv-ECD53F?style=flat&logo=dotenv&logoColor=black"/>, <img src="https://img.shields.io/badge/CORS-000000?style=flat&logo=CORS&logoColor=white"/>, <img src="https://img.shields.io/badge/Body_Parser-000000?style=flat&logo=bodyparser&logoColor=white"/>  
-- **Quality & Dev Tools**: <img src="https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white"/>, <img src="https://img.shields.io/badge/Prettier-F7B93E?style=flat&logo=prettier&logoColor=white"/>, <img src="https://img.shields.io/badge/Husky-000000?style=flat&logo=husky&logoColor=white"/>, <img src="https://img.shields.io/badge/Lint-staged-000000?style=flat&logo=lintstaged&logoColor=white"/>, <img src="https://img.shields.io/badge/Nodemon-76D04B?style=flat&logo=nodemon&logoColor=black"/>, <img src="https://img.shields.io/badge/TSX-3178C6?style=flat&logo=typescript&logoColor=white"/>  
+3D 씬을 렌더링하는 React Three Fiber (R3F)의 Canvas와 2D UI인 DominoHUD가 함께 있을 때, DominoHUD가 로딩 중에도 갑자기 화면에 보이는 문제가 발생했습니다. DominoHUD는 2D DOM UI이고, Canvas와는 연결되지 않아 로딩 상태(fallback)에서 숨겨지지 않았습니다.
+
+#### **🧪 해결 시도 1: DominoHUD를 lazy 로딩하여 Suspense로 숨기기**
+
+- **내용**: 로딩 중인 상태에서 DominoHUD를 숨기기 위해 React에서 컴포넌트를 지연 로딩하기 위한 함수인 `React.lazy`를 사용하여 비동기적으로 DominoHUD를 불러오도록 하였습니다.
+- **문제**: DominoHUD 내부에서 useThree 훅을 사용하고 있었고, 이 훅은 반드시 Canvas 내부에서만 작동해야 하므로 에러가 발생했습니다.
+- **결론**: `three.js`에서 제공하는 `useThree` 훅을 사용하는 컴포넌트는 lazy 로딩할 수 없습니다.
+
+#### **🧪 해결 시도 2: 전역 상태로 Canvas 로딩 여부를 관리하기**
+
+- **내용**: DominoHUD라는 사용자 인터페이스(UI)를 너무 이르게 화면에 띄우지 않기 위해, React의 React.lazy 대신 전역 상태 관리 도구인 Zustand를 사용했습니다. 이 전역 상태는 `<Canvas>`(3D 씬 영역)가 준비됐는지를 추적하며, 준비가 끝났을 때에만 DominoHUD를 화면에 보여주도록 설정했습니다.
+
+- **문제**: 상태만으로는 정확한 시점을 제어하기 어려웠습니다. 화면이 아직 다 준비되지 않았는데도 DominoHUD가 먼저 나타나는 일이 생겼습니다. 그 이유는 상태가 너무 빨리 true로 바뀌어버려서, 실제 3D 화면이 준비되기 전인데도 UI가 먼저 그려진 것입니다.
+
+- **결론**: 이 문제를 해결하기 위해 `setTimeout(..., 2000)`을 사용하여 약간의 시간을 지연시켰습니다. 이렇게 하면 브라우저가 실제 화면을 다 그린 뒤 다음 작업에서 상태를 true로 바꾸게 되어, 3D 씬이 완전히 준비된 이후에 DominoHUD가 자연스럽게 나타나게 됩니다.
+
+#### ✅ **최종 선택: 대안 2**
+
+- DominoHUD 안에서는 Three.js에서 제공하는 특수한 기능들(R3F 훅)을 사용하기 때문에, React의 lazy 로딩을 사용할 수 없습니다. 이런 이유로 전역 상태 + 조건부 렌더링 방식이 해결책이 되었습니다.
+
+#### ⚙️ 구현 상세
+
+- Zustand, 전역 상태 관리 라이브러리를 사용하여 `isCancasReady`를 생성하고, `<Canvas>` 내부에서 초기화 완료 시 `setIsCanvasReady(true)`를 호출하도록 하였습니다.
+- `<DominoHUD>` 컴포넌트는 `isCanvasReady`가 `true`일 때만 렌더링되도록 조건부로 노출하도록 하였습니다.
+- 실제 브라우저 렌더 타이밍과의 오차로 인해 상태가 너무 일찍 `true`가 되는 문제를 해결하기 위해, `setTimeout`을 사용하여 노출 타이밍을 지연시켰습니다.
+- `three.js`에서 제공하는 훅들은 `<Canvas>` 컨텍스트 내에서만 호출되어야 하므로, 전역 상태를 활용해 2D UI(DominoHUD)가 너무 이르게 렌더링되지 않도록 제어했습니다. 이를 통해 사용자가 Canvas가 완전히 로드되기 전에 실행할 수 없는 코드와 상호작용하는 상황을 사전에 방지할 수 있었습니다.
+
+#### 🚀 개선 및 회고
+
+- 현재의 setTimeout으로 인위적으로 제어하는 방식은 임시적인 제어이므로 렌더링 성능이나 기기 환경에 따라 오차가 발생할 수 있습니다. 이를 개선하기 위한 다른 방식을 고려할 필요가 있습니다.
+
+<br/>
+
+## 🔥 최적화
+
+### 📌 도미노 상태, 누가 책임지는 게 맞을까?
+
+본 프로젝트는 여러 사용자가 동시에 도미노를 배치하거나 삭제할 수 있는 실시간 멀티플레이 환경을 지원합니다.
+이처럼 동시성이 중요한 구조에서는 상태 충돌이나 반영 지연 없이 일관성을 유지하는 것이 핵심 과제였습니다.
+
+하지만 초기 구조에서는 도미노 상태를 클라이언트 전역 상태와 React Query 캐시에 중복 저장하고 있었습니다.
+이로 인해 같은 데이터를 두 곳에서 따로 관리하게 되었고, 수동 동기화 로직이 추가로 필요해졌습니다.
+
+특히 빠른 조작이 반복되는 환경에서는 업데이트 타이밍이 엇갈리며 불필요한 리렌더링이나 상태 불일치가 발생할 수 있었습니다.
+결과적으로, 데이터 흐름은 복잡해졌고 멀티플레이 환경에서의 안정성도 떨어질 우려가 있었습니다.
+
+#### ⚙️ 적용 방식
+
+1. 클라이언트 전역 상태를 제거하고 React Query의 setQueryData를 단일 데이터 소스로 활용하는 구조로 개편했습니다.
+2. 모든 렌더링은 서버 응답 기반의 캐시 갱신 결과에 따라 동작하도록 변경했습니다.
+
+이로써 클라이언트-서버 간 수동 동기화가 필요 없어졌고, 데이터 흐름과 렌더링 흐름이 자연스럽게 일치하도록 만들었습니다.
+
+#### ✅ 적용 효과
+
+| 항목            | 개선 전                                    | 개선 후                                |
+| --------------- | ------------------------------------------ | -------------------------------------- |
+| 상태 구조       | 전역 상태와 캐시 이중 관리                 | 캐시 단일 소스로 통합                  |
+| 렌더링 흐름     | 전역 상태 변경에 따라 렌더링               | 서버 응답 기반으로 캐시 갱신 후 렌더링 |
+| 동기화 관리     | 수동 동기화 로직 필요                      | 데이터 흐름 단순화, 관리 포인트 감소   |
+| 멀티플레이 대응 | 상태 불일치 및 충돌 우려                   | 서버 중심 흐름으로 실시간 일관성 확보  |
+| 유지보수        | 상태 분산으로 수정/디버깅 포인트 다수 존재 | 구조 통일로 유지보수성과 확장성 향상   |
 
 ---
 
-### 배포 환경 (AWS)
+### 📌 입력과 렌더링 사이, 그 지연을 줄일 수는 없을까?
 
-| 서비스                                              | 역할                                               |
-|-----------------------------------------------------|----------------------------------------------------|
-| <img src="https://img.shields.io/badge/AWS S3-569A31?style=flat&logo=amazons3&logoColor=white"/>           | 프론트엔드 정적 파일 (React 빌드) 저장             |
-| <img src="https://img.shields.io/badge/AWS CloudFront-232F3E?style=flat&logo=amazonaws&logoColor=white"/> | CDN을 통한 프론트엔드 배포 및 캐싱 최적화           |
-| <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=flat&logo=amazonec2&logoColor=white"/>        | 백엔드 서버 호스팅 (Node.js + Express)             |
-| <img src="https://img.shields.io/badge/PM2-2B037A?style=flat&logo=pm2&logoColor=white"/>                  | 백엔드 프로세스 관리 및 자동 재시작                |
+기존에는 도미노 생성 시 서버에서 고유 ID를 발급한 뒤 해당 응답을 받은 후에야 화면에 도미노가 렌더링되는 구조였습니다.
+이로 인해 사용자 입력과 화면 반영 사이에 시간 차가 발생했으며 입력이 지연되거나 적용되지 않은 것처럼 보이는 문제가 있었습니다.
 
-## 🚀 구현 기능
+해당 문제를 완화하기 위해 낙관적 업데이트 방식을 적용하여 도미노 생성 시점에 즉시 화면에 표시되도록 개선하였습니다.
 
-#### **도미노 배치 & 편집**  
+그러나 도미노 ID는 여전히 서버에서 발급되었기 때문에 응답 수신 후 캐시를 갱신해야 했고,
+이 과정에서 setQueryData가 한 차례 더 호출되어 중복 렌더링이 발생하는 문제가 남아 있었습니다.
 
-- 마우스 클릭 → `Raycaster`로 3D 좌표 계산 → 도미노 위치/회전 설정  
-- `x` 키로 도미노 삭제, `h` 키로 투명도 토글, `u` 키로 실행 취소 지원  
+#### ⚙️ 적용 방식
 
-#### **도미노 회전 & 색상 선택**  
+1. 도미노 생성 시 클라이언트에서 UUID를 선할당한 뒤 해당 ID를 포함한 데이터로 캐시를 즉시 업데이트하도록 변경했습니다.
+2. 서버가 클라이언트에서 전달한 UUID를 그대로 저장하므로 응답 후에도 추가 setQueryData 없이 렌더링이 유지됩니다.
 
-- 회전 버튼 또는 키맵(Q/E)으로 Y축 회전  
-- 팔레트에서 색상 선택 → `Zustand`로 전역 상태 관리  
+이 구조를 통해 렌더링 타이밍을 앞당기면서도 서버-클라이언트 간 동기화 충돌이나 재처리를 완전히 제거할 수 있었습니다.
 
-#### **물리 기반 시뮬레이션**  
+#### ✅ 적용 효과
 
-- Rapier 물리 엔진 연동 → 충돌·중력 시뮬레이션  
+| 항목             | 개선 전                                         | 개선 후                                            |
+| ---------------- | ----------------------------------------------- | -------------------------------------------------- |
+| 렌더링 반영 시점 | 서버가 ID를 발급한 뒤 응답이 도착해야 렌더링됨  | 사용자 입력 시점에 즉시 렌더링됨                   |
+| ID 처리 흐름     | 서버에서 ID 생성 후 클라이언트에 전달           | 클라이언트에서 UUID를 선할당하고 서버에 전달함     |
+| 렌더링 횟수      | 캐시 갱신을 위해 `setQueryData`를 2회 호출함    | 최초 1회만 호출하여 렌더링                         |
+| UX 반응성        | 입력 직후 화면 반영이 지연되어 반응 속도 저하됨 | 입력과 동시에 반영되어 자연스럽고 빠른 UX 제공     |
+| 구조 안정성      | 서버 응답과 기존 캐시 간 ID 불일치 가능성 존재  | ID를 공유함으로써 응답 후에도 캐시 변경이 불필요함 |
 
-#### **실시간 멀티플레이**  
+---
 
-- Socket.IO로 커서 위치·도미노 배치 브로드캐스트  
-- React Query + 낙관적 업데이트 → 즉시 UI 반영 + 서버 동기화  
+### 📌 다양한 오브젝트, 어떻게 더 빠르게 보여줄 수 있을까?
 
-#### **사운드 & UX**  
+본 프로젝트에서는 12종 이상의 3D GLB 모델과 썸네일 이미지가 사용자의 상호작용 시점에 실시간으로 로딩되었습니다.
+이로 인해 초기 렌더링 지연, UI 깜빡임, 높은 메모리 사용 등 사용자 경험을 해치는 문제가 발생했습니다.
 
-- 도미노 낙하 효과음 재생  
-- 최초 클릭 시 BGM 재생 (Autoplay 정책 우회)  
-- 애니메이션 전환 & 토스트 알림  
+이를 해결하기 위해 3D 리소스를 사전에 불러오는 프리로드 전략과
+중복 요청을 줄이는 캐싱 시스템을 도입하여 전체 렌더링 성능을 개선하였습니다.
 
-#### **업적 시스템**  
+#### ⚙️ 적용 방식
 
-- 첫 배치 도미노, 100개 배치 달성 시 토스트 알림  
+1. 앱 초기 진입 시점에 모든 GLB 모델 경로를 배열로 정리해 한 번씩 미리 로드하였습니다.
+2. `useGLTF.preload()`로 모델을 메모리에 적재하고, 이후에는 `useGLTF()`를 통해 캐시에서 바로 불러와 사용하였습니다.
+3. 동일한 GLB 파일을 여러 번 불러와도 네트워크 요청은 최초 1회만 발생하며, 이후에는 메모리에서 즉시 재사용됩니다.
 
-#### **Undo/Redo & 히스토리**  
+```ts
+const MODEL_PATHS = ["/objects/beach_ball.glb"] as const;
 
-- `historyRef`에 상태 스냅샷 저장 → 무제한 실행 취소/재실행 지원  
+MODEL_PATHS.forEach((path) => {
+  useGLTF.preload(path);
+});
+```
 
-#### **퍼포먼스 최적화**  
+```ts
+const { scene } = useGLTF(path); // 캐시된 GLB 사용
+const clonedScene = useMemo(() => scene.clone(true), [scene]);
+```
 
-- `useMemo`/`useCallback` 적용  
-- `shallow` 비교로 상태 리렌더 최소화  
-- `pointerOver` 이벤트 `debounce` 적용  
+#### ✅ 적용 효과
+
+| 항목            | 개선 전                                | 개선 후                            |
+| --------------- | -------------------------------------- | ---------------------------------- |
+| 초기 로딩 시간  | 3–5초                                  | 1–2초                              |
+| 오브젝트 반응성 | 배치 시 100–200ms 지연 발생            | 30–60ms 이내로 즉시 반응           |
+| 메모리 사용량   | 동일 모델 중복 로딩으로 150–200MB 사용 | 2.7–3.2KB로 축소, 캐시 기반 재사용 |
+| 사용자 경험     | 로딩 지연과 깜빡임으로 UX 저하         | 부드럽고 끊김 없는 상호작용 제공   |
+
+---
+
+### 📌 여러 키 입력을 한 곳에서, 깔끔하게 관리할 수 없을까?
+
+도미노 프로젝트에서는 사용자가 다양한 키(`x`, `h`, `u` 등)를 통해 도미노를 회전하거나 제거하는 등 여러 상호작용을 수행할 수 있습니다.  
+하지만 기존 구조에서는 `keydown` 이벤트 리스너를 각 컴포넌트에서 별도로 등록하고 있어 관리가 분산되고, 의도치 않은 문제로 이어질 수 있었습니다.
+
+#### ⚙️ 적용 방식
+
+1. `keydown` 이벤트 처리를 하나의 커스텀 훅(`useDominoKeyboardControls`)으로 통합하였습니다.
+2. 키 입력에 따른 동작은 `keyMap` 객체를 통해 분기 처리하도록 구성하였습니다.
+3. 컴포넌트 진입 시 전역 리스너를 1회 등록하고, 언마운트 시에는 정확하게 해제되도록 설계하였습니다.
+
+```ts
+const keyMap = {
+  x: () => deleteSelectedDomino(...),
+  h: () => toggleSelectedDominoOpacity(...),
+  u: () => undoDominoHistory(...),
+  q: rotateDominoCounterClockwise,
+  e: rotateDominoClockwise,
+  escape: () => closeCurrentMode(),
+};
+```
+
+#### ✅ 적용 효과
+
+| 항목             | 개선 전                         | 개선 후                           |
+| ---------------- | ------------------------------- | --------------------------------- |
+| 이벤트 처리 위치 | 여러 컴포넌트에 분산            | 단일 커스텀 훅으로 집중           |
+| 중복 등록 위험   | 동일 키 입력에 여러 핸들러 작동 | 단일 리스너 구조로 중복 제거      |
+| 유지보수         | 키별 수정 위치가 달라 번거로움  | `keyMap` 수정만으로 관리 가능     |
+| 가독성           | 흐름 파악이 어려움              | 전체 키 입력 처리가 한눈에 보임   |
+| 성능             | 메모리 낭비 가능성 존재         | 등록/해제 구조로 리소스 낭비 방지 |
+
+---
+
+### 📌 커서만 움직였을 뿐인데, 왜 프레임이 떨어질까?
+
+도미노 오브젝트 위로 마우스를 올릴 때마다 `pointerOver` 이벤트가 발생하고, 이때마다 토스트 안내가 뜨는 구조였습니다.
+하지만 해당 이벤트가 매 프레임마다 반복 호출되면서 성능 병목이 생겼고, 도미노가 많을수록 프레임 드랍 현상이 심해졌습니다.
+
+#### ⚙️ 적용 방식
+
+1. `pointerOver` 이벤트를 직접 처리하지 않고, `debounce()` 함수를 적용하여 호출 간격을 200ms로 제한했습니다.
+2. 실제 토스트 렌더링 로직은 throttledPointerOver로 감싸 불필요한 호출을 방지했습니다.
+
+```ts
+const throttledPointerOver = useMemo(() => {
+  return debounce((event: PointerEvent, key: string) => {
+    openGuideToast(event, key);
+  }, 200);
+}, [openGuideToast]);
+```
+
+#### ✅ 적용 효과
+
+| 항목               | 개선 전                                       | 개선 후                                   |
+| ------------------ | --------------------------------------------- | ----------------------------------------- |
+| 이벤트 호출 빈도   | `pointerOver`가 매 프레임마다 발생            | 200ms 간격으로 제한                       |
+| 렌더링 트리거 횟수 | 상태 변경으로 인한 과도한 렌더링 발생         | 불필요한 리렌더링 대폭 감소               |
+| 프레임 유지율      | 도미노가 많을수록 프레임 드랍 심화            | 수십 개 도미노 상황에서도 부드럽게 유지   |
+| UX 반응성          | 커서 움직임이 버벅이고 안내가 과도하게 노출됨 | 커서 이동이 자연스럽고 안내도 적절히 노출 |
+
+---
+
+## 회고록
+
+### 최은서
+
+**가장 어려웠던 부분**
+3D 렌더링과 실시간 멀티플레이를 동시에 구현하는 것이 가장 큰 도전이었습니다. Three.js와 Socket.IO를 함께 사용하면서 발생하는 성능 이슈와 상태 동기화 문제를 해결하는 데 많은 시간을 보냈습니다.
+
+**배운 점**
+
+- React Query의 낙관적 업데이트를 활용한 UX 개선 방법
+- WebAssembly와의 연동 시 객체 참조 관리의 중요성
+- 디바운싱과 쓰로틀링을 통한 성능 최적화 기법
+
+**개선하고 싶은 부분**
+
+- 현재 setTimeout으로 임시 해결한 Canvas 로딩 타이밍 문제를 더 우아한 방법으로 개선
+- 3D 모델 프리로딩 전략을 더 체계적으로 관리
+- 테스트 커버리지 확대
+
+**다음 프로젝트에서 적용할 점**
+
+- 초기 설계 단계에서 상태 관리 아키텍처를 더 신중하게 설계
+- 성능 최적화를 사후 처리가 아닌 설계 단계에서 고려
+- 기술 스택 선택 시 호환성과 안정성을 우선 검토
+
+---
+
+### 문인
+
+**가장 어려웠던 부분**
+사용자 인터페이스와 3D 공간의 조화를 이루는 것이 가장 어려웠습니다. 2D UI 컴포넌트들이 3D Canvas와 자연스럽게 연동되도록 하면서도, 사용자가 직관적으로 조작할 수 있는 경험을 만드는 데 많은 고민을 했습니다.
+
+**배운 점**
+
+- React Three Fiber를 활용한 3D 컴포넌트 설계 방법
+- Zustand를 통한 전역 상태 관리 최적화
+- 커스텀 훅을 활용한 로직 재사용성 향상
+- TypeScript를 활용한 타입 안정성 확보
+
+**개선하고 싶은 부분**
+
+- 컴포넌트 간 의존성을 더 명확하게 분리
+- 에러 바운더리와 로딩 상태 관리 개선
+- 접근성(Accessibility) 기능 강화
+- 반응형 디자인 적용
+
+**다음 프로젝트에서 적용할 점**
+
+- 컴포넌트 설계 시 재사용성과 확장성을 우선 고려
+- 타입 시스템을 활용한 개발 생산성 향상
+- 사용자 피드백을 반영한 지속적인 개선
+
+---
+
+### 임승현
+
+**가장 어려웠던 부분**
+실시간 멀티플레이 환경에서의 사용자 경험을 최적화하는 것이 가장 큰 과제였습니다. 여러 사용자가 동시에 조작할 때 발생하는 지연이나 깜빡임 없이 부드러운 경험을 제공하는 데 집중했습니다.
+
+**배운 점**
+
+- Socket.IO를 활용한 실시간 데이터 동기화 방법
+- React Query의 캐싱 전략을 통한 성능 최적화
+- UUID를 활용한 고유 식별자 관리
+- 디바운싱을 통한 이벤트 최적화
+
+**개선하고 싶은 부분**
+
+- 네트워크 상태에 따른 적응형 동기화 전략 구현
+- 오프라인 모드 지원
+- 더 정교한 에러 핸들링 시스템 구축
+- 성능 모니터링 도구 도입
+
+**다음 프로젝트에서 적용할 점**
+
+- 실시간 기능 설계 시 네트워크 불안정성을 고려한 방어 로직 구현
+- 사용자 행동 패턴을 분석한 UX 개선
+- 마이크로 인터랙션을 통한 사용자 피드백 강화
