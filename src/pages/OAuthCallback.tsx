@@ -37,13 +37,14 @@ const OAuthCallback = () => {
           userID: data.userID,
           userNickname: data.userNickname,
           isTutorialUser: data.isTutorialUser,
+          isMember: data.isMember,
         });
 
         localStorage.setItem("dominoAccessToken", data.token);
         localStorage.setItem("dominoRefreshToken", data.refreshToken);
         localStorage.setItem("kakaoAccessToken", data.kakaoAccessToken);
 
-        navigate("/projects");
+        navigate(`${API_PATHS.PROJECTS}`);
       } catch (err) {
         throw new HTTPError(500, "로그인 실패");
       }

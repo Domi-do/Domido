@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-
+import { API_PATHS } from "@/constants/apiPaths";
 import ModalOverlay from "@/components/Common/ModalOverlay";
 import ProjectNameInputModal from "@/components/DominoHUD/ProjectNameInputModal/ProjectNameInputModal";
 import useCreateProjectsQueries from "@/hooks/Queries/useCreateProjectQueries";
@@ -77,7 +77,7 @@ const ProjectListModal = ({ closeModal }: ProjectListModalProps) => {
                     <button
                       onClick={() => {
                         closeModal();
-                        navigate(`/projects/${project._id}`);
+                        navigate(`${API_PATHS.PROJECT_DETAIL(project._id)}`);
                       }}
                       className="w-full text-left"
                     >
