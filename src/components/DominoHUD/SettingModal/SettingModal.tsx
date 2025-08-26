@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ImCopy } from "react-icons/im";
 import { useParams, useNavigate } from "react-router-dom";
-
+import { API_PATHS } from "@/constants/apiPaths";
 import ModalOverlay from "@/components/Common/ModalOverlay";
 import GroundTypeButton from "@/components/DominoHUD/SettingModal/GroundTypeButton";
 import SettingGroup from "@/components/DominoHUD/SettingModal/SettingGroup";
@@ -52,16 +52,16 @@ const SettingModal = ({ closeModal }: SettingModalProps) => {
 
     const token = localStorage.getItem("dominoAccessToken");
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/projects/${inviteCode}`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}${API_PATHS.PROJECT_INVITE(inviteCode)}`,
+        { method: "GET", headers: { Authorization: `Bearer ${token}` } },
+      );
 
       if (!res.ok) {
         throw new Error("존재하지 않는 프로젝트입니다.");
       }
 
-      navigate(`/projects/${inviteCode}`);
+      navigate(`${API_PATHS.PROJECT_INVITE(inviteCode)}`);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.";
       console.error("프로젝트 유효성 검사 실패:", message);
