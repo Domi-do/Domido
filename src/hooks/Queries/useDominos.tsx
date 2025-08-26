@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-
+import { API_PATHS } from "@/constants/apiPaths";
 import fetcher from "@/services/fetcher";
 import type { DominoType } from "@/types/domino";
 
@@ -9,6 +9,6 @@ export const useDominos = () => {
 
   return useSuspenseQuery<DominoType[]>({
     queryKey: ["dominos", projectId],
-    queryFn: () => fetcher(`/dominos/${projectId}`),
+    queryFn: () => fetcher(`${API_PATHS.DOMINO(projectId!)}`),
   });
 };

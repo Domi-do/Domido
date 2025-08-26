@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-
+import { API_PATHS } from "@/constants/apiPaths";
 import fetcher from "@/services/fetcher";
 import { useSocket } from "@/store/SocketContext";
 import { DominoType } from "@/types/domino";
@@ -12,7 +12,7 @@ export const useDominoMutations = () => {
 
   return useMutation({
     mutationFn: ({ dominos }: { dominos: DominoType[] }) =>
-      fetcher(`/dominos/${projectId}`, { method: "POST", body: { dominos } }),
+      fetcher(`${API_PATHS.DOMINO(projectId!)}`, { method: "POST", body: { dominos } }),
 
     onMutate: async ({ dominos }) => {
       await queryClient.cancelQueries({ queryKey: ["dominos", projectId] });

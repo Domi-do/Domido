@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useToast } from "@/store/ToastContext";
+import { API_PATHS } from "@/constants/apiPaths";
 
 import socket from "@/services/socket";
 import useUserStore from "@/store/useUserStore";
@@ -43,7 +44,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     socket.on("room full", ({ message }) => {
       showToast({ message });
-      navigate("/projects");
+      navigate(`${API_PATHS.PROJECTS}`);
     });
 
     socket.on("user joined", ({ message }) => {
